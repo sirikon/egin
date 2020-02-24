@@ -13,22 +13,11 @@
         <property name="can_focus">True</property>
         <property name="position">100</property>
         <child>
-          <object class="GtkListBox">
+          <object class="GtkButton" id="AddButton">
+            <property name="label" translatable="yes">button</property>
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkListBoxRow">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">label</property>
-                  </object>
-                </child>
-              </object>
-            </child>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
           </object>
           <packing>
             <property name="resize">False</property>
@@ -36,9 +25,26 @@
           </packing>
         </child>
         <child>
-          <object class="GtkTextView">
+          <object class="GtkScrolledWindow">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkViewport">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkBox" id="Container">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
           </object>
           <packing>
             <property name="resize">True</property>
@@ -47,11 +53,5 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkButton" id="Option">
-    <property name="label" translatable="yes">Amazing</property>
-    <property name="visible">True</property>
-    <property name="can_focus">True</property>
-    <property name="receives_default">True</property>
   </object>
 </interface>
