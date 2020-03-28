@@ -1,6 +1,6 @@
 {
     "appname" : "egin",
-    "appport" : "0",
+    "appport" : "31000",
     "mode" : "window",
     "window" : {
         "width" : "1000",

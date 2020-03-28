@@ -1,0 +1,15 @@
+{
+    "scripts": {
+        "build": "parcel build -d ../app/assets/dist ./app/main.js",
+        "start": "parcel watch -d ../app/assets/dist ./app/main.js"
+    },
+    "devDependencies": {
+        "@vue/component-compiler-utils": "^3.1.1",
+        "parcel-bundler": "^1.12.4",
+        "vue-template-compiler": "^2.6.11"
+    },
+    "dependencies": {
+        "vue": "^2.6.11",
+        "vue-hot-reload-api": "^2.3.4"
+    }
+}
