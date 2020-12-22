@@ -1,5 +1,5 @@
 # Egin
 
-```
-gjs-console main.js
+```bash
+xdg-open src/index.html
 ```
