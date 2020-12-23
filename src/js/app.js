@@ -44,6 +44,10 @@ function removeTask(index) {
     }
 }
 
+function removeTaskIfEmpty(index) {
+    if (taskStore.get(index).name === '') { removeTask(index) }
+}
+
 function Task(vnode) {
     const taskIndex = () => vnode.attrs.key
     const task = () => taskStore.get(taskIndex())
@@ -54,7 +58,6 @@ function Task(vnode) {
 
     const setSelected = () => uiState.selectedTaskIndex = taskIndex()
     const removeSelected = () => isSelected() && (uiState.selectedTaskIndex = null)
-    const removeIfEmpty = () => task().name === '' && removeTask(taskIndex())
 
     const view = () => m('div.egin-task', {class: classes()}, [
         m('input', {
@@ -62,14 +65,14 @@ function Task(vnode) {
             checked: task().done,
             onchange: (e) => task().done = e.target.checked,
             onfocus: setSelected,
-            onblur: () => { removeSelected(); removeIfEmpty() }
+            onblur: removeSelected
         }),
         m('input', {
             type: 'text',
             value: task().name,
             oninput: (e) => task().name = e.target.value,
             onfocus: setSelected,
-            onblur: () => { removeSelected(); removeIfEmpty() }
+            onblur: removeSelected
         })
     ])
 
@@ -89,6 +92,7 @@ function buildClasses(obj) {
 }
 
 function focusSelectedTaskInput() {
+    console.log("selectedTaskIndex before focusing", uiState.selectedTaskIndex)
     document.querySelector('.egin-task.is-selected input[type="text"]').focus()
 }
 
@@ -100,19 +104,23 @@ const globalKeyHandlers = {
     ArrowUp: (e) => {
         e.preventDefault()
         e.stopPropagation()
+        const previousTaskIndex = uiState.selectedTaskIndex
         if (uiState.selectedTaskIndex === null) { uiState.selectedTaskIndex = 0 }
         uiState.selectedTaskIndex = uiState.selectedTaskIndex > 0
             ? uiState.selectedTaskIndex - 1
             : 0
+        if (previousTaskIndex !== null) { removeTaskIfEmpty(previousTaskIndex) }
         return focusSelectedTaskInput
     },
     ArrowDown: (e) => {
         e.preventDefault()
         e.stopPropagation()
+        const previousTaskIndex = uiState.selectedTaskIndex
         if (uiState.selectedTaskIndex === null) { uiState.selectedTaskIndex = 0 }
         uiState.selectedTaskIndex = uiState.selectedTaskIndex < taskStore.count()-1
             ? uiState.selectedTaskIndex + 1
             : taskStore.count()-1
+        if (previousTaskIndex !== null) { removeTaskIfEmpty(previousTaskIndex) }
         return focusSelectedTaskInput
     },
     Escape: () => blurSelectedTaskInput(),
@@ -140,7 +148,6 @@ const globalKeyHandlers = {
 }
 
 document.addEventListener('keydown', (e) => {
-    console.log(e.key);
     if (globalKeyHandlers[e.key]) {
         const cb = globalKeyHandlers[e.key](e)
         m.redraw.sync()
