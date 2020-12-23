@@ -30,6 +30,10 @@ body {
     border-width: 1px;
 }
 
+.egin-task.is-selected, .egin-task:focus {
+    background-color: #ffffdb;
+}
+
 .egin-task input[type='text'] {
     appearance: none;
     -webkit-appearance: none;
