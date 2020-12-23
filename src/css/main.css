@@ -1,0 +1,45 @@
+body {
+    background-color: whitesmoke;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+#app {
+    position: absolute;
+    margin: 15px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.egin-task {
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #ccc;
+    border-width: 1px 1px 0 1px;
+    box-sizing: border-box;
+}
+
+.egin-task:last-child {
+    border-width: 1px;
+}
+
+.egin-task input[type='text'] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    border: none;
+    display: block;
+    flex-grow: 1;
+}
+
+.egin-task input[type='checkbox'] {
+    flex-shrink: 0;
+}
