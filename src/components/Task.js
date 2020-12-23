@@ -1,22 +1,22 @@
 import * as taskStore from '../services/taskStore'
-import uiState from '../services/uiState'
-import { removeTaskIfEmpty } from '../actions/actions'
+import { state, historify, delayedHistorify } from '../services/state'
+import { removeTaskIfEmpty, setSelectedTaskIndex } from '../actions/actions'
 
 export default function Task(vnode) {
     const taskIndex = () => vnode.attrs.key
     const task = () => taskStore.get(taskIndex())
-    const isSelected = () => taskIndex() === uiState.selectedTaskIndex
+    const isSelected = () => taskIndex() === state.ui.selectedTaskIndex
     const isDone = () => task().done
     const classes = () => buildClasses({
         'is-selected': isSelected(),
         'is-done': isDone()
     })
 
-    const setDone = (value) => taskStore.setDone(taskIndex(), value)
-    const setName = (value) => taskStore.setName(taskIndex(), value)
-    const setSelected = () => uiState.selectedTaskIndex = taskIndex()
-    const removeSelected = () => isSelected() && (uiState.selectedTaskIndex = null)
-    const removeTaskOnBlur = () => (uiState.selectedTaskIndex === null) && removeTaskIfEmpty(taskIndex())
+    const setDone = (value) => { taskStore.setDone(taskIndex(), value); historify() }
+    const setName = (value) => { taskStore.setName(taskIndex(), value); delayedHistorify() }
+    const setSelected = () => setSelectedTaskIndex(taskIndex())
+    const removeSelected = () => isSelected() && setSelectedTaskIndex(null)
+    const removeTaskOnBlur = () => (state.ui.selectedTaskIndex === null) && removeTaskIfEmpty(taskIndex())
 
     const view = () => m('div.egin-task', {class: classes()}, [
         m('input', {

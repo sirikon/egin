@@ -10,16 +10,19 @@ export default {
         file: 'dist/app.js',
         format: 'iife',
         globals: {
-            mithril: 'm'
+            mithril: 'm',
+            'fast-json-patch': 'jsonpatch'
         }
     },
     external: [
-        "mithril"
+        "mithril",
+        "fast-json-patch"
     ],
     plugins: [
         copy({targets: [
             { src: './src/index.html', dest: 'dist' },
             { src: `./node_modules/mithril/mithril${production ? '.min' : ''}.js`, dest: 'dist/vendor', rename: 'mithril.js' },
+            { src: `./node_modules/fast-json-patch/dist/fast-json-patch${production ? '.min' : ''}.js`, dest: 'dist/vendor', rename: 'fast-json-patch.js' }
         ]}),
         scss({
             sass: require('sass'),

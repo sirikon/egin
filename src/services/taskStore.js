@@ -1,36 +1,33 @@
-const tasks = [
-    {name: 'Easy task boi', done: false},
-    {name: 'Harder task boi', done: true}
-]
+import { state } from './state'
 
 export function getAll() {
-    return tasks;
+    return state.tasks;
 }
 
 export function get(index) {
-    return tasks[index];
+    return state.tasks[index];
 }
 
 export function count() {
-    return tasks.length;
+    return state.tasks.length;
 }
 
 export function insert(index, task) {
-    tasks.splice(index, 0, task)
+    state.tasks.splice(index, 0, task)
 }
 
 export function setDone(index, value) {
-    tasks[index].done = value;
+    state.tasks[index].done = value;
 }
 
 export function setName(index, value) {
-    tasks[index].name = value;
+    state.tasks[index].name = value;
 }
 
 export function toggle(index) {
-    tasks[index].done = !tasks[index].done
+    state.tasks[index].done = !state.tasks[index].done
 }
 
 export function remove(index) {
-    tasks.splice(index, 1)
+    state.tasks.splice(index, 1)
 }

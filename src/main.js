@@ -1,7 +1,11 @@
 import './style.scss'
 import m from "mithril"
+import * as jsonpatch from 'fast-json-patch'
+
+window.jsonpatch = jsonpatch
 
 import * as actions from './actions/actions'
+import { state, eventHandlers, rollback } from './services/state'
 import App from './components/App'
 
 var root = document.getElementById('app')
@@ -11,18 +15,15 @@ const globalKeyHandlers = {
         e.preventDefault()
         e.stopPropagation()
         actions.jumpToPreviousTask()
-        return focusSelectedTaskInput
     },
     ArrowDown: (e) => {
         e.preventDefault()
         e.stopPropagation()
         actions.jumpToNextTask()
-        return focusSelectedTaskInput
     },
-    Escape: () => blurSelectedTaskInput(),
+    Escape: () => actions.setSelectedTaskIndex(null),
     Enter: () => {
         actions.insertTaskUnderSelectedTask()
-        return focusSelectedTaskInput
     },
     Backspace: (e) => {
         const selectedTask = actions.getSelectedTask()
@@ -30,13 +31,17 @@ const globalKeyHandlers = {
             e.preventDefault()
             e.stopPropagation()
             actions.removeSelectedTask()
-            return focusSelectedTaskInput
         }
     },
     Ctrl_Space: (e) => {
         e.preventDefault()
         e.stopPropagation()
         actions.toggleSelectedTask()
+    },
+    Ctrl_KeyZ: (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        rollback()
     },
     Tab: (e) => {
         e.preventDefault()
@@ -52,22 +57,19 @@ document.addEventListener('keydown', (e) => {
     ].filter(e => !!e).join('_')
     
     if (globalKeyHandlers[handlerName]) {
-        const cb = globalKeyHandlers[handlerName](e)
-        if (cb && (cb instanceof Function)) {
-            m.redraw.sync()
-            cb()
-        } else {
-            m.redraw()
-        }
+        globalKeyHandlers[handlerName](e)
+        m.redraw()
     }
 });
 
-function focusSelectedTaskInput() {
-    document.querySelector('.egin-task.is-selected input[type="text"]').focus()
-}
-
-function blurSelectedTaskInput() {
-    document.querySelector('.egin-task.is-selected input[type="text"]').blur()
+eventHandlers.selectedTaskIndexChanged = () => {
+    if (state.ui.selectedTaskIndex === null) {
+        const possibleFocus = document.querySelector(":focus")
+        possibleFocus && possibleFocus.blur()
+    } else {
+        m.redraw.sync()
+        document.querySelector('.egin-task.is-selected input[type="text"]').focus()
+    }
 }
 
 m.mount(root, App)
