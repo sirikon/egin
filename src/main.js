@@ -33,6 +33,11 @@ const globalKeyHandlers = {
             return focusSelectedTaskInput
         }
     },
+    Ctrl_Space: (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        actions.toggleSelectedTask()
+    },
     Tab: (e) => {
         e.preventDefault()
         e.stopPropagation()
@@ -40,10 +45,20 @@ const globalKeyHandlers = {
 }
 
 document.addEventListener('keydown', (e) => {
-    if (globalKeyHandlers[e.key]) {
-        const cb = globalKeyHandlers[e.key](e)
-        m.redraw.sync()
-        cb && (cb instanceof Function) && cb()
+    const handlerName = [
+        e.ctrlKey && 'Ctrl',
+        e.shiftKey && 'Shift',
+        e.code
+    ].filter(e => !!e).join('_')
+    
+    if (globalKeyHandlers[handlerName]) {
+        const cb = globalKeyHandlers[handlerName](e)
+        if (cb && (cb instanceof Function)) {
+            m.redraw.sync()
+            cb()
+        } else {
+            m.redraw()
+        }
     }
 });
 

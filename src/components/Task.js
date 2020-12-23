@@ -6,8 +6,10 @@ export default function Task(vnode) {
     const taskIndex = () => vnode.attrs.key
     const task = () => taskStore.get(taskIndex())
     const isSelected = () => taskIndex() === uiState.selectedTaskIndex
+    const isDone = () => task().done
     const classes = () => buildClasses({
-        'is-selected': isSelected()
+        'is-selected': isSelected(),
+        'is-done': isDone()
     })
 
     const setSelected = () => uiState.selectedTaskIndex = taskIndex()

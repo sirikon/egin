@@ -24,26 +24,31 @@ body {
     border: 1px solid #ccc;
     border-width: 1px 1px 0 1px;
     box-sizing: border-box;
-}
 
-.egin-task:last-child {
-    border-width: 1px;
-}
+    input[type='text'] {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background: transparent;
+        border: none;
+        display: block;
+        flex-grow: 1;
+    }
 
-.egin-task.is-selected, .egin-task:focus {
-    background-color: #ffffdb;
-}
+    input[type='checkbox'] {
+        flex-shrink: 0;
+    }
 
-.egin-task input[type='text'] {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background: transparent;
-    border: none;
-    display: block;
-    flex-grow: 1;
-}
+    &:last-child {
+        border-width: 1px;
+    }
 
-.egin-task input[type='checkbox'] {
-    flex-shrink: 0;
+    &.is-selected {
+        background-color: #ffffdb;
+    }
+
+    &.is-done input[type='text'] {
+        text-decoration: line-through;
+        color: rgba(0,0,0,0.5);
+    }
 }

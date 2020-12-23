@@ -5,6 +5,10 @@ export function getSelectedTask() {
     return taskStore.get(uiState.selectedTaskIndex)
 }
 
+export function toggleSelectedTask() {
+    taskStore.toggle(uiState.selectedTaskIndex)
+}
+
 export function removeTask(index) {
     taskStore.remove(index)
     if (uiState.selectedTaskIndex !== null && uiState.selectedTaskIndex >= index) {
