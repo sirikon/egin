@@ -1,5 +1,5 @@
 import m from 'mithril'
-import taskStore from '../services/taskStore'
+import * as taskStore from '../services/taskStore'
 import Task from './Task'
 
 export default function App() {

@@ -1,4 +1,4 @@
-import taskStore from '../services/taskStore'
+import * as taskStore from '../services/taskStore'
 import uiState from '../services/uiState'
 
 export function getSelectedTask() {
