@@ -35,6 +35,15 @@ const uiState = {
     selectedTaskIndex: null
 }
 
+function removeTask(index) {
+    taskStore.remove(index)
+    if (uiState.selectedTaskIndex !== null && uiState.selectedTaskIndex >= index) {
+        uiState.selectedTaskIndex > 0
+            ? (uiState.selectedTaskIndex--)
+            : (uiState.selectedTaskIndex = null)
+    }
+}
+
 function Task(vnode) {
     const taskIndex = () => vnode.attrs.key
     const task = () => taskStore.get(taskIndex())
@@ -45,6 +54,7 @@ function Task(vnode) {
 
     const setSelected = () => uiState.selectedTaskIndex = taskIndex()
     const removeSelected = () => isSelected() && (uiState.selectedTaskIndex = null)
+    const removeIfEmpty = () => task().name === '' && removeTask(taskIndex())
 
     const view = () => m('div.egin-task', {class: classes()}, [
         m('input', {
@@ -52,14 +62,14 @@ function Task(vnode) {
             checked: task().done,
             onchange: (e) => task().done = e.target.checked,
             onfocus: setSelected,
-            onblur: removeSelected
+            onblur: () => { removeSelected(); removeIfEmpty() }
         }),
         m('input', {
             type: 'text',
             value: task().name,
             oninput: (e) => task().name = e.target.value,
             onfocus: setSelected,
-            onblur: removeSelected
+            onblur: () => { removeSelected(); removeIfEmpty() }
         })
     ])
 
@@ -123,10 +133,7 @@ const globalKeyHandlers = {
         if (currentTask.name === '') {
             e.preventDefault()
             e.stopPropagation()
-            taskStore.remove(uiState.selectedTaskIndex)
-            uiState.selectedTaskIndex > 0
-                ? (uiState.selectedTaskIndex--)
-                : (uiState.selectedTaskIndex = null);
+            removeTask(uiState.selectedTaskIndex)
             return focusSelectedTaskInput
         }
     }
