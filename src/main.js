@@ -46,6 +46,12 @@ const globalKeyHandlers = {
     Tab: (e) => {
         e.preventDefault()
         e.stopPropagation()
+        actions.indentSelectedTask()
+    },
+    Shift_Tab: (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        actions.unindentSelectedTask()
     }
 }
 

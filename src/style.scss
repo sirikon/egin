@@ -22,7 +22,6 @@ body {
     display: flex;
     flex-direction: row;
     border: 1px solid #ccc;
-    border-width: 1px 1px 0 1px;
     box-sizing: border-box;
 
     input[type='text'] {
@@ -39,8 +38,8 @@ body {
         flex-shrink: 0;
     }
 
-    &:last-child {
-        border-width: 1px;
+    &:not(:last-child) {
+        margin-bottom: -1px;
     }
 
     &.is-selected {

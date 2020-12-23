@@ -62,7 +62,37 @@ export function insertTaskUnderSelectedTask() {
         return
     }
 
-    taskStore.insert(indexToInsert, {name: '', done: false})
+    taskStore.insert(indexToInsert, {name: '', done: false, level: 0})
     setSelectedTaskIndex(indexToInsert)
+    historify()
+}
+
+export function indentSelectedTask() {
+    if (state.ui.selectedTaskIndex === null) { return }
+    if (state.ui.selectedTaskIndex <= 0) { return }
+    const selectedTask = taskStore.get(state.ui.selectedTaskIndex)
+    const previousTask = taskStore.get(state.ui.selectedTaskIndex-1)
+    if (previousTask.level >= selectedTask.level) {
+        const taskIndexesToIndent = [state.ui.selectedTaskIndex]
+            .concat(taskStore.findDownwardTaskIndexesWithLevelUnder(state.ui.selectedTaskIndex, selectedTask.level))
+        historify()
+        taskIndexesToIndent.forEach(i => {
+            taskStore.addLevel(i, 1)
+        })
+        historify()
+    }
+}
+
+export function unindentSelectedTask() {
+    if (state.ui.selectedTaskIndex === null) { return }
+    if (state.ui.selectedTaskIndex <= 0) { return }
+    const selectedTask = taskStore.get(state.ui.selectedTaskIndex)
+    if (selectedTask.level <= 0) { return }
+    const taskIndexesToUnindent = [state.ui.selectedTaskIndex]
+        .concat(taskStore.findDownwardTaskIndexesWithLevelUnder(state.ui.selectedTaskIndex, selectedTask.level))
+    historify()
+    taskIndexesToUnindent.forEach(i => {
+        taskStore.addLevel(i, -1)
+    })
     historify()
 }

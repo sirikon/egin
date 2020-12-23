@@ -7,6 +7,7 @@ export default function Task(vnode) {
     const task = () => taskStore.get(taskIndex())
     const isSelected = () => taskIndex() === state.ui.selectedTaskIndex
     const isDone = () => task().done
+    const getLevel = () => task().level
     const classes = () => buildClasses({
         'is-selected': isSelected(),
         'is-done': isDone()
@@ -18,7 +19,10 @@ export default function Task(vnode) {
     const removeSelected = () => isSelected() && setSelectedTaskIndex(null)
     const removeTaskOnBlur = () => (state.ui.selectedTaskIndex === null) && removeTaskIfEmpty(taskIndex())
 
-    const view = () => m('div.egin-task', {class: classes()}, [
+    const view = () => m('div.egin-task', {
+            class: classes(),
+            style: `margin-left: ${getLevel() * 20}px;`
+        }, [
         m('input', {
             type: 'checkbox',
             checked: task().done,
