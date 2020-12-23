@@ -21,7 +21,10 @@ export default {
             { src: './src/index.html', dest: 'dist' },
             { src: `./node_modules/mithril/mithril${production ? '.min' : ''}.js`, dest: 'dist/vendor', rename: 'mithril.js' },
         ]}),
-        scss(),
+        scss({
+            sass: require('sass'),
+            outputStyle: production ? 'compressed' : 'expanded'
+        }),
         !production && serve('dist'),
     ]
 };
