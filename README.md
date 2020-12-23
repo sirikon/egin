@@ -1,5 +1,7 @@
 # Egin
 
 ```bash
-xdg-open src/index.html
+npm i
+npm start # For development
+npm run build # For production
 ```

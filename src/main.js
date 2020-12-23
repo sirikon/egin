@@ -1,5 +1,7 @@
+import './style.scss'
+import m from "mithril"
+
 var root = document.getElementById('app')
-var count = 0
 
 function TaskStore() {
     const tasks = [
