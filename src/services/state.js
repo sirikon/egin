@@ -1,7 +1,10 @@
 import * as jsonpatch from 'fast-json-patch'
 
 export const state = {
-    tasks: [],
+    tasks: [
+        {name: 'Easy task boi', done: false},
+        {name: 'Harder task boi', done: true}
+    ],
     ui: {
         selectedTaskIndex: null,
     }
