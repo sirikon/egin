@@ -1,24 +1,50 @@
 var root = document.getElementById('app')
 var count = 0
 
-const tasks = [
-    {name: 'Easy task boi', done: false},
-    {name: 'Harder task boi', done: true}
-]
+function TaskStore() {
+    const tasks = [
+        {name: 'Easy task boi', done: false},
+        {name: 'Harder task boi', done: true}
+    ]
+
+    function getAll() {
+        return tasks;
+    }
+
+    function get(index) {
+        return tasks[index];
+    }
+
+    function count() {
+        return tasks.length;
+    }
+
+    function insert(index, task) {
+        tasks.splice(index, 0, task)
+    }
+
+    function remove(index) {
+        tasks.splice(index, 1)
+    }
+
+    return { getAll, get, count, insert, remove }
+}
+const taskStore = TaskStore()
 
 const uiState = {
-    selectedTaskKey: null
+    selectedTaskIndex: null
 }
 
 function Task(vnode) {
-    const task = () => vnode.attrs.task
-    const isSelected = () => vnode.attrs.key === uiState.selectedTaskKey
+    const taskIndex = () => vnode.attrs.key
+    const task = () => taskStore.get(taskIndex())
+    const isSelected = () => taskIndex() === uiState.selectedTaskIndex
     const classes = () => buildClasses({
         'is-selected': isSelected()
     })
 
-    const setSelected = () => uiState.selectedTaskKey = vnode.attrs.key
-    const removeSelected = () => isSelected() && (uiState.selectedTaskKey = null)
+    const setSelected = () => uiState.selectedTaskIndex = taskIndex()
+    const removeSelected = () => isSelected() && (uiState.selectedTaskIndex = null)
 
     const view = () => m('div.egin-task', {class: classes()}, [
         m('input', {
@@ -42,7 +68,7 @@ function Task(vnode) {
 
 function App() {
     const view = () => [
-        m('div.egin-task-list', tasks.map((task, i) => m(Task, {key: i, task})))
+        m('div.egin-task-list', taskStore.getAll().map((_, i) => m(Task, {key: i})))
     ]
 
     return { view }
@@ -52,29 +78,66 @@ function buildClasses(obj) {
     return Object.keys(obj).filter(k => obj[k]).join(' ')
 }
 
+function focusSelectedTaskInput() {
+    document.querySelector('.egin-task.is-selected input[type="text"]').focus()
+}
+
+function blurSelectedTaskInput() {
+    document.querySelector('.egin-task.is-selected input[type="text"]').blur()
+}
+
 const globalKeyHandlers = {
-    ArrowUp: () => {
-        if (uiState.selectedTaskKey === null) { uiState.selectedTaskKey = 0 }
-        uiState.selectedTaskKey = uiState.selectedTaskKey > 0
-            ? uiState.selectedTaskKey - 1
+    ArrowUp: (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        if (uiState.selectedTaskIndex === null) { uiState.selectedTaskIndex = 0 }
+        uiState.selectedTaskIndex = uiState.selectedTaskIndex > 0
+            ? uiState.selectedTaskIndex - 1
             : 0
+        return focusSelectedTaskInput
     },
-    ArrowDown: () => {
-        if (uiState.selectedTaskKey === null) { uiState.selectedTaskKey = 0 }
-        uiState.selectedTaskKey = uiState.selectedTaskKey < tasks.length-1
-            ? uiState.selectedTaskKey + 1
-            : tasks.length-1
+    ArrowDown: (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        if (uiState.selectedTaskIndex === null) { uiState.selectedTaskIndex = 0 }
+        uiState.selectedTaskIndex = uiState.selectedTaskIndex < taskStore.count()-1
+            ? uiState.selectedTaskIndex + 1
+            : taskStore.count()-1
+        return focusSelectedTaskInput
     },
-    Escape: () => uiState.selectedTaskKey = null
+    Escape: () => blurSelectedTaskInput(),
+    Enter: () => {
+        const indexToInsert = uiState.selectedTaskIndex !== null
+            ? uiState.selectedTaskIndex + 1
+            : taskStore.count()
+        if (indexToInsert > 0 && taskStore.get(indexToInsert-1).name === '') {
+            return
+        }
+
+        taskStore.insert(indexToInsert, {name: '', done: false})
+        uiState.selectedTaskIndex = indexToInsert
+        return focusSelectedTaskInput
+    },
+    Backspace: (e) => {
+        const currentTask = taskStore.get(uiState.selectedTaskIndex)
+        if (currentTask.name === '') {
+            e.preventDefault()
+            e.stopPropagation()
+            taskStore.remove(uiState.selectedTaskIndex)
+            uiState.selectedTaskIndex > 0
+                ? (uiState.selectedTaskIndex--)
+                : (uiState.selectedTaskIndex = null);
+            return focusSelectedTaskInput
+        }
+    }
 }
 
 document.addEventListener('keydown', (e) => {
+    console.log(e.key);
     if (globalKeyHandlers[e.key]) {
-        e.preventDefault()
-        e.stopPropagation()
-        globalKeyHandlers[e.key](e)
+        const cb = globalKeyHandlers[e.key](e)
         m.redraw.sync()
-        document.querySelector('.egin-task.is-selected input[type="text"]').focus()
+        cb && (cb instanceof Function) && cb()
     }
 });
 
