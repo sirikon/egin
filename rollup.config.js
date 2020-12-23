@@ -18,10 +18,10 @@ export default {
     ],
     plugins: [
         copy({targets: [
-            { src: './src/index.html', dest: 'dist/index.html' },
-            { src: `./node_modules/mithril/mithril${production ? '.min' : ''}.js`, dest: 'dist/vendor/mithril.js' },
+            { src: './src/index.html', dest: 'dist' },
+            { src: `./node_modules/mithril/mithril${production ? '.min' : ''}.js`, dest: 'dist/vendor', rename: 'mithril.js' },
         ]}),
         scss(),
-        serve('dist')
+        !production && serve('dist'),
     ]
 };
