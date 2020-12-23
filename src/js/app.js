@@ -58,6 +58,7 @@ function Task(vnode) {
 
     const setSelected = () => uiState.selectedTaskIndex = taskIndex()
     const removeSelected = () => isSelected() && (uiState.selectedTaskIndex = null)
+    const removeTaskOnBlur = () => (uiState.selectedTaskIndex === null) && removeTaskIfEmpty(taskIndex())
 
     const view = () => m('div.egin-task', {class: classes()}, [
         m('input', {
@@ -65,14 +66,14 @@ function Task(vnode) {
             checked: task().done,
             onchange: (e) => task().done = e.target.checked,
             onfocus: setSelected,
-            onblur: removeSelected
+            onblur: () => { removeSelected(); removeTaskOnBlur() }
         }),
         m('input', {
             type: 'text',
             value: task().name,
             oninput: (e) => task().name = e.target.value,
             onfocus: setSelected,
-            onblur: removeSelected
+            onblur: () => { removeSelected(); removeTaskOnBlur() }
         })
     ])
 
@@ -144,10 +145,15 @@ const globalKeyHandlers = {
             removeTask(uiState.selectedTaskIndex)
             return focusSelectedTaskInput
         }
+    },
+    Tab: (e) => {
+        e.preventDefault()
+        e.stopPropagation()
     }
 }
 
 document.addEventListener('keydown', (e) => {
+    console.log(e.key);
     if (globalKeyHandlers[e.key]) {
         const cb = globalKeyHandlers[e.key](e)
         m.redraw.sync()
