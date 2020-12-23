@@ -1,10 +1,7 @@
 import * as jsonpatch from 'fast-json-patch'
 
 export const state = {
-    tasks: [
-        {name: 'Easy task boi', done: false},
-        {name: 'Harder task boi', done: true}
-    ],
+    tasks: [],
     ui: {
         selectedTaskIndex: null,
     }
@@ -20,6 +17,7 @@ let delayedHistorifyTimeout = null
 
 window.stateHistory = stateHistory
 
+loadStateFromLocalStorage()
 savePreviousState()
 
 export function rollback() {
@@ -44,6 +42,13 @@ export function historify() {
     if (patches.length === 0) { return }
     stateHistory.push(patches)
     savePreviousState()
+    saveStateToLocalStorage()
+}
+
+export function triggerAllEventHandlers() {
+    Object.keys(eventHandlers).forEach(k => {
+        eventHandlers[k]()
+    })
 }
 
 function cancelDelayedHistorify() {
@@ -53,12 +58,19 @@ function cancelDelayedHistorify() {
     }
 }
 
-function savePreviousState() {
-    previousState = jsonpatch.deepClone(state)
+function loadStateFromLocalStorage() {
+    const persistedStateData = localStorage.getItem("egin_state")
+    if (persistedStateData === null) { return; }
+    const persistedState = JSON.parse(persistedStateData)
+    Object.keys(persistedState).forEach(k => {
+        state[k] = persistedState[k]
+    })
 }
 
-function triggerAllEventHandlers() {
-    Object.keys(eventHandlers).forEach(k => {
-        eventHandlers[k]()
-    })
+function saveStateToLocalStorage() {
+    localStorage.setItem("egin_state", JSON.stringify(state))
+}
+
+function savePreviousState() {
+    previousState = jsonpatch.deepClone(state)
 }

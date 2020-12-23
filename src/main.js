@@ -5,7 +5,7 @@ import * as jsonpatch from 'fast-json-patch'
 window.jsonpatch = jsonpatch
 
 import * as actions from './actions/actions'
-import { state, eventHandlers, rollback } from './services/state'
+import { state, eventHandlers, rollback, historify, triggerAllEventHandlers } from './services/state'
 import App from './components/App'
 
 var root = document.getElementById('app')
@@ -62,6 +62,8 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+window.onbeforeunload = () => { historify() }
+
 eventHandlers.selectedTaskIndexChanged = () => {
     if (state.ui.selectedTaskIndex === null) {
         const possibleFocus = document.querySelector(":focus")
@@ -73,3 +75,4 @@ eventHandlers.selectedTaskIndexChanged = () => {
 }
 
 m.mount(root, App)
+triggerAllEventHandlers()
