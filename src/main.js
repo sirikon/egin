@@ -22,7 +22,7 @@ const globalKeyHandlers = {
     },
     Escape: () => actions.setSelectedTaskIndex(null),
     Enter: () => {
-        actions.insertTaskUnderSelectedTask()
+        actions.insertTask()
     },
     Backspace: (e) => {
         const selectedTask = actions.getSelectedTask()

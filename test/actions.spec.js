@@ -545,4 +545,116 @@ describe('Actions', () => {
         })
     })
 
+    describe('#insertTask', () => {
+        beforeEach(() => reset())
+
+        it('should insert the first task', () => {
+            givenTasks([])
+            givenSelectedTaskIndex(null)
+            actions.insertTask()
+            expectTasks([
+                ['', false]
+            ])
+            expectSelectedTaskIndex(0)
+        })
+
+        it('should not insert a new task if selected task is empty', () => {
+            givenTasks([
+                ['0', false],
+                ['', false],
+                ['2', false],
+            ])
+            givenSelectedTaskIndex(1)
+            actions.insertTask()
+            expectTasks([
+                ['0', false],
+                ['', false],
+                ['2', false],
+            ])
+            expectSelectedTaskIndex(1)
+        })
+
+        it('should insert a new task', () => {
+            givenTasks([
+                ['0', false],
+                ['1', false],
+                ['2', false],
+            ])
+            givenSelectedTaskIndex(1)
+            actions.insertTask()
+            expectTasks([
+                ['0', false],
+                ['1', false],
+                ['', false],
+                ['2', false],
+            ])
+            expectSelectedTaskIndex(2)
+        })
+
+        it('should insert a new task at the same level', () => {
+            givenTasks([
+                ['0', false],
+                ['1', false, [
+                    ['2', false],
+                    ['3', false],                    
+                ]],
+                ['2', false],
+            ])
+            givenSelectedTaskIndex(3)
+            actions.insertTask()
+            expectTasks([
+                ['0', false],
+                ['1', false, [
+                    ['2', false],
+                    ['3', false],
+                    ['', false],
+                ]],
+                ['2', false],
+            ])
+            expectSelectedTaskIndex(4)
+        })
+
+        it('should insert a new task at the end at level 0 if no task is selected', () => {
+            givenTasks([
+                ['0', false],
+                ['1', false, [
+                    ['2', false],
+                    ['3', false],
+                ]],
+            ])
+            givenSelectedTaskIndex(null)
+            actions.insertTask()
+            expectTasks([
+                ['0', false],
+                ['1', false, [
+                    ['2', false],
+                    ['3', false],
+                ]],
+                ['', false]
+            ])
+            expectSelectedTaskIndex(4)
+        })
+
+        it('when inserting a task, insert it after all the selected task subtasks', () => {
+            givenTasks([
+                ['0', false],
+                ['1', false, [
+                    ['2', false],
+                    ['3', false],
+                ]],
+            ])
+            givenSelectedTaskIndex(1)
+            actions.insertTask()
+            expectTasks([
+                ['0', false],
+                ['1', false, [
+                    ['2', false],
+                    ['3', false],
+                ]],
+                ['', false]
+            ])
+            expectSelectedTaskIndex(4)
+        })
+    })
+
 })

@@ -96,16 +96,21 @@ export function moveSelectedTaskDown() {
     historify()
 }
 
-export function insertTaskUnderSelectedTask() {
+export function insertTask() {
     historify()
     const indexToInsert = state.ui.selectedTaskIndex !== null
-        ? state.ui.selectedTaskIndex + 1
+        ? state.ui.selectedTaskIndex + taskStore.getSubtasks(state.ui.selectedTaskIndex).length + 1
         : taskStore.count()
-    if (indexToInsert > 0 && taskStore.get(indexToInsert-1) && taskStore.get(indexToInsert-1).name === '') {
+    const previousTask = taskStore.get(indexToInsert-1)
+    const newTaskLevel = state.ui.selectedTaskIndex !== null
+        ? taskStore.get(state.ui.selectedTaskIndex).level
+        : 0
+
+    if (indexToInsert > 0 && previousTask && previousTask.name === '') {
         return
     }
 
-    taskStore.insert(indexToInsert, {name: '', done: false, level: 0})
+    taskStore.insert(indexToInsert, {name: '', done: false, level: newTaskLevel})
     setSelectedTaskIndex(indexToInsert)
     historify()
 }
