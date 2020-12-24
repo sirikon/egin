@@ -74,19 +74,19 @@ export function jumpToNextTask() {
 
 export function moveSelectedTaskUp() {
     const selectedTask = taskStore.get(state.ui.selectedTaskIndex)
-    const targetTaskToMoveAbove = taskStore.findUpwardFirstTaskWithLevel(state.ui.selectedTaskIndex, selectedTask.level)
-    if (targetTaskToMoveAbove === null) { return }
-    taskStore.move(state.ui.selectedTaskIndex, targetTaskToMoveAbove - state.ui.selectedTaskIndex)
-    setSelectedTaskIndex(targetTaskToMoveAbove)
+    const targetPosition = taskStore.findUpwardFirstTaskWithLevel(state.ui.selectedTaskIndex, selectedTask.level)
+    if (targetPosition === null) { return }
+    taskStore.move(state.ui.selectedTaskIndex, targetPosition)
+    setSelectedTaskIndex(targetPosition)
     historify()
 }
 
 export function moveSelectedTaskDown() {
     const selectedTask = taskStore.get(state.ui.selectedTaskIndex)
-    const targetTaskToMoveAbove = taskStore.findDownwardFirstTaskWithLevel(state.ui.selectedTaskIndex, selectedTask.level)
-    if (targetTaskToMoveAbove === null) { return }
-    taskStore.move(state.ui.selectedTaskIndex, targetTaskToMoveAbove - state.ui.selectedTaskIndex)
-    setSelectedTaskIndex(targetTaskToMoveAbove)
+    const targetPosition = taskStore.findDownwardFirstTaskWithLevel(state.ui.selectedTaskIndex, selectedTask.level)
+    if (targetPosition === null) { return }
+    taskStore.move(state.ui.selectedTaskIndex, targetPosition)
+    setSelectedTaskIndex(targetPosition)
     historify()
 }
 
@@ -95,7 +95,7 @@ export function insertTaskUnderSelectedTask() {
     const indexToInsert = state.ui.selectedTaskIndex !== null
         ? state.ui.selectedTaskIndex + 1
         : taskStore.count()
-    if (indexToInsert > 0 && taskStore.get(indexToInsert-1).name === '') {
+    if (indexToInsert > 0 && taskStore.get(indexToInsert-1) && taskStore.get(indexToInsert-1).name === '') {
         return
     }
 

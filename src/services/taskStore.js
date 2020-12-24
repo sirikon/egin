@@ -26,14 +26,13 @@ export function findDownwardTaskIndexesWithLevelUnder(index, level) {
 }
 
 export function findUpwardFirstTaskWithLevel(index, level) {
-    const upwardTasks = state.tasks.slice(0, index)
     let matchingTaskIndex = null
-    let i = upwardTasks.length-1;
+    let i = index-1
     let stop = 0;
     while(i >= 0 && !stop) {
-        const task = upwardTasks[i]
+        const task = state.tasks[i]
         if (task.level === level) {
-            matchingTaskIndex = i + index + 1
+            matchingTaskIndex = i
             stop = true
             continue
         }
@@ -49,15 +48,20 @@ export function findUpwardFirstTaskWithLevel(index, level) {
 }
 
 export function findDownwardFirstTaskWithLevel(index, level) {
-    const downwardTasks = state.tasks.slice(index+1)
     let matchingTaskIndex = null
-    let i = 0;
+    let i = index+1;
     let stop = 0;
-    while(i < downwardTasks.length && !stop) {
-        const task = downwardTasks[i]
-        if (task.level === level) {
-            matchingTaskIndex = i + index + 1
-            stop = true
+    while(i < state.tasks.length && !stop) {
+        const task = state.tasks[i]
+        if (task.level === level && matchingTaskIndex === null) {
+            matchingTaskIndex = i
+            i++
+            continue
+        }
+
+        if (task.level > level) {
+            matchingTaskIndex = i
+            i++
             continue
         }
 
@@ -95,9 +99,9 @@ export function toggle(index) {
     state.tasks[index].done = !state.tasks[index].done
 }
 
-export function move(index, steps) {
+export function move(index, newIndex) {
     const task = state.tasks.splice(index, 1)[0]
-    state.tasks.splice(index+steps, 0, task)
+    state.tasks.splice(newIndex, 0, task)
 }
 
 export function remove(index) {

@@ -323,6 +323,182 @@ describe('Actions', () => {
         })
     })
 
+    describe('#moveSelectedTaskUp && #moveSelectedTaskDown', () => {
+        beforeEach(() => reset())
+
+        it('should not move the task up because it is the first one', () => {
+            givenTasks([
+                ['0', false],
+                ['1', false],
+                ['2', false]
+            ])
+            givenSelectedTaskIndex(0)
+            actions.moveSelectedTaskUp()
+            expectTasks([
+                ['0', false],
+                ['1', false],
+                ['2', false]
+            ])
+            expectSelectedTaskIndex(0)
+        })
+
+        it('should move the task up', () => {
+            givenTasks([
+                ['0', false],
+                ['1', false],
+                ['2', false]
+            ])
+            givenSelectedTaskIndex(2)
+            actions.moveSelectedTaskUp()
+            expectTasks([
+                ['0', false],
+                ['2', false],
+                ['1', false]
+            ])
+            expectSelectedTaskIndex(1)
+        })
+
+        it('should move the task up', () => {
+            givenTasks([
+                ['0', false],
+                ['1', false],
+                ['2', false]
+            ])
+            givenSelectedTaskIndex(1)
+            actions.moveSelectedTaskUp()
+            expectTasks([
+                ['1', false],
+                ['0', false],
+                ['2', false]
+            ])
+            expectSelectedTaskIndex(0)
+        })
+
+        it('should not move the task down because it is the last one', () => {
+            givenTasks([
+                ['0', false],
+                ['1', false],
+                ['2', false]
+            ])
+            givenSelectedTaskIndex(2)
+            actions.moveSelectedTaskDown()
+            expectTasks([
+                ['0', false],
+                ['1', false],
+                ['2', false]
+            ])
+            expectSelectedTaskIndex(2)
+        })
+
+        it('should move the task down', () => {
+            givenTasks([
+                ['0', false],
+                ['1', false],
+                ['2', false],
+            ])
+            givenSelectedTaskIndex(1)
+            actions.moveSelectedTaskDown()
+            expectTasks([
+                ['0', false],
+                ['2', false],
+                ['1', false],
+            ])
+            expectSelectedTaskIndex(2)
+        })
+
+        it('should move the task down', () => {
+            givenTasks([
+                ['0', false],
+                ['1', false],
+                ['2', false],
+            ])
+            givenSelectedTaskIndex(0)
+            actions.moveSelectedTaskDown()
+            expectTasks([
+                ['1', false],
+                ['0', false],
+                ['2', false],
+            ])
+            expectSelectedTaskIndex(1)
+        })
+
+        it('should not move the task up because it is the first on the same level', () => {
+            givenTasks([
+                ['0', false, [
+                    ['1', false],
+                    ['2', false]
+                ]],
+            ])
+            givenSelectedTaskIndex(1)
+            actions.moveSelectedTaskUp()
+            expectTasks([
+                ['0', false, [
+                    ['1', false],
+                    ['2', false]
+                ]],
+            ])
+            expectSelectedTaskIndex(1)
+        })
+
+        it('should not move the task down because it is the last on the same level', () => {
+            givenTasks([
+                ['0', false, [
+                    ['1', false],
+                    ['2', false]
+                ]],
+            ])
+            givenSelectedTaskIndex(2)
+            actions.moveSelectedTaskDown()
+            expectTasks([
+                ['0', false, [
+                    ['1', false],
+                    ['2', false]
+                ]],
+            ])
+            expectSelectedTaskIndex(2)
+        })
+
+        it('should move the task up skipping subtasks', () => {
+            givenTasks([
+                ['0', false, [
+                    ['1', false],
+                    ['2', false]
+                ]],
+                ['3', false]
+            ])
+            givenSelectedTaskIndex(3)
+            actions.moveSelectedTaskUp()
+            expectTasks([
+                ['3', false],
+                ['0', false, [
+                    ['1', false],
+                    ['2', false]
+                ]],
+            ])
+            expectSelectedTaskIndex(0)
+        })
+
+        it('should move the task down skipping subtasks', () => {
+            givenTasks([
+                ['0', false],
+                ['1', false, [
+                    ['2', false],
+                    ['3', false]
+                ]],
+            ])
+            givenSelectedTaskIndex(0)
+            actions.moveSelectedTaskDown()
+            expectTasks([
+                ['1', false, [
+                    ['2', false],
+                    ['3', false]
+                ]],
+                ['0', false]
+            ])
+            expectSelectedTaskIndex(3)
+        })
+    })
+
 })
 
 function givenTasks(mocks) {

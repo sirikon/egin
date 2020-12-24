@@ -1,2 +1,2 @@
-global.localstorage_disabled = true
-global.historification_disabled = true
+global.localstorage_enabled = false
+global.historification_enabled = false
