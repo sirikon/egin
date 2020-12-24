@@ -275,6 +275,54 @@ describe('Actions', () => {
         })
     })
 
+    describe('#jumpToPreviousTask && #jumpToNextTask', () => {
+        beforeEach(() => reset())
+
+        it('should not jump to the previous task because it is the first one', () => {
+            givenTasks([
+                ['foo', false],
+                ['bar', true],
+                ['baz', true]
+            ])
+            givenSelectedTaskIndex(0)
+            actions.jumpToPreviousTask()
+            expectSelectedTaskIndex(0)
+        })
+
+        it('should jump to the previous task', () => {
+            givenTasks([
+                ['foo', false],
+                ['bar', true],
+                ['baz', true]
+            ])
+            givenSelectedTaskIndex(2)
+            actions.jumpToPreviousTask()
+            expectSelectedTaskIndex(1)
+        })
+
+        it('should not jump to the next task because it is the last one', () => {
+            givenTasks([
+                ['foo', false],
+                ['bar', true],
+                ['baz', true]
+            ])
+            givenSelectedTaskIndex(2)
+            actions.jumpToNextTask()
+            expectSelectedTaskIndex(2)
+        })
+
+        it('should not jump to the next task', () => {
+            givenTasks([
+                ['foo', false],
+                ['bar', true],
+                ['baz', true]
+            ])
+            givenSelectedTaskIndex(0)
+            actions.jumpToNextTask()
+            expectSelectedTaskIndex(1)
+        })
+    })
+
 })
 
 function givenTasks(mocks) {
