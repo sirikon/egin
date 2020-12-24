@@ -15,9 +15,6 @@ let previousState = null
 const stateHistory = []
 let delayedHistorifyTimeout = null
 
-window.state = state
-window.stateHistory = stateHistory
-
 loadStateFromLocalStorage()
 savePreviousState()
 

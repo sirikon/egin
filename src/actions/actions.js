@@ -19,12 +19,29 @@ export function toggleSelectedTask() {
 }
 
 export function removeTask(index) {
-    taskStore.remove(index)
-    if (state.ui.selectedTaskIndex !== null && state.ui.selectedTaskIndex >= index) {
-        state.ui.selectedTaskIndex > 0
-            ? (setSelectedTaskIndex(state.ui.selectedTaskIndex-1))
-            : (setSelectedTaskIndex(null))
-    }
+    (() => {
+        const task = taskStore.get(index)
+        const taskIndexesToRemove = [index]
+            .concat(taskStore.findDownwardTaskIndexesWithLevelUnder(index, task.level))
+            .sort((a, b) => b - a)
+        taskIndexesToRemove.forEach(i => {
+            taskStore.remove(i)
+        })
+
+        if (state.ui.selectedTaskIndex === null) { return }
+        if (state.ui.selectedTaskIndex < index) { return }
+
+        // If selected task index is lower or equal to
+        // the highest index of removed tasks...
+        if (state.ui.selectedTaskIndex <= taskIndexesToRemove[0]) {
+            setSelectedTaskIndex(index-1)
+            return
+        }
+
+        if (state.ui.selectedTaskIndex > taskIndexesToRemove[0]) {
+            setSelectedTaskIndex(state.ui.selectedTaskIndex - taskIndexesToRemove.length)
+        }
+    })();
     historify()
 }
 

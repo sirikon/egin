@@ -1,8 +1,6 @@
 import './style.scss'
+import './services/debug'
 import m from "mithril"
-import * as jsonpatch from 'fast-json-patch'
-
-window.jsonpatch = jsonpatch
 
 import * as actions from './actions/actions'
 import { state, eventHandlers, rollback, historify, triggerAllEventHandlers } from './services/state'
@@ -72,12 +70,26 @@ window.onbeforeunload = () => { historify() }
 
 eventHandlers.selectedTaskIndexChanged = () => {
     if (state.ui.selectedTaskIndex === null) {
-        const possibleFocus = document.querySelector(":focus")
-        possibleFocus && possibleFocus.blur()
-    } else {
-        m.redraw.sync()
-        document.querySelector('.egin-task.is-selected input[type="text"]').focus()
+        removeFocus()
+        return
     }
+
+    m.redraw.sync()
+    focusSelected() || removeFocus()
+}
+
+function removeFocus() {
+    const focusedElement = document.querySelector(":focus")
+    focusedElement && focusedElement.blur()
+}
+
+function focusSelected() {
+    const selectedInput = document.querySelector('.egin-task.is-selected input[type="text"]')
+    if (!selectedInput) {
+        return false;
+    }
+    selectedInput.focus()
+    return true;
 }
 
 m.mount(root, App)
