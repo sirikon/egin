@@ -99,9 +99,13 @@ export function toggle(index) {
     state.tasks[index].done = !state.tasks[index].done
 }
 
-export function move(index, newIndex) {
-    const task = state.tasks.splice(index, 1)[0]
-    state.tasks.splice(newIndex, 0, task)
+export function move(index, size, newIndex) {
+    if (index === newIndex) { return }
+    const finalIndex = newIndex > index
+        ? newIndex - (size-1)
+        : newIndex
+    const tasks = state.tasks.splice(index, size)
+    Array.prototype.splice.apply(state.tasks, [finalIndex, 0].concat(tasks))
 }
 
 export function remove(index) {

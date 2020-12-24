@@ -76,7 +76,7 @@ export function moveSelectedTaskUp() {
     const selectedTask = taskStore.get(state.ui.selectedTaskIndex)
     const targetPosition = taskStore.findUpwardFirstTaskWithLevel(state.ui.selectedTaskIndex, selectedTask.level)
     if (targetPosition === null) { return }
-    taskStore.move(state.ui.selectedTaskIndex, targetPosition)
+    taskStore.move(state.ui.selectedTaskIndex, 1, targetPosition)
     setSelectedTaskIndex(targetPosition)
     historify()
 }
@@ -85,7 +85,12 @@ export function moveSelectedTaskDown() {
     const selectedTask = taskStore.get(state.ui.selectedTaskIndex)
     const targetPosition = taskStore.findDownwardFirstTaskWithLevel(state.ui.selectedTaskIndex, selectedTask.level)
     if (targetPosition === null) { return }
-    taskStore.move(state.ui.selectedTaskIndex, targetPosition)
+
+    const taskIndexesToMove = [state.ui.selectedTaskIndex]
+        .concat(taskStore.findDownwardTaskIndexesWithLevelUnder(state.ui.selectedTaskIndex, selectedTask.level))
+        .length
+
+    taskStore.move(state.ui.selectedTaskIndex, taskIndexesToMove, targetPosition)
     setSelectedTaskIndex(targetPosition)
     historify()
 }

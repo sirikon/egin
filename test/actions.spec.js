@@ -1,8 +1,14 @@
-import assert from 'assert'
 import chai from 'chai'
 const expect = chai.expect
 
-import './config.js'
+import {
+    givenTasks,
+    givenSelectedTaskIndex,
+    expectSelectedTask,
+    expectSelectedTaskIndex,
+    expectTasks,
+    reset
+} from './base.js'
 import * as actions from '../src/actions/actions.js'
 import * as state from '../src/services/state.js'
 
@@ -497,43 +503,26 @@ describe('Actions', () => {
             ])
             expectSelectedTaskIndex(3)
         })
+
+        it('should move the task down moving subtasks too', () => {
+            givenTasks([
+                ['0', false, [
+                    ['1', false],
+                    ['2', false]
+                ]],
+                ['3', false]
+            ])
+            givenSelectedTaskIndex(0)
+            actions.moveSelectedTaskDown()
+            expectTasks([
+                ['3', false],
+                ['0', false, [
+                    ['1', false],
+                    ['2', false]
+                ]],
+            ])
+            expectSelectedTaskIndex(1)
+        })
     })
 
 })
-
-function givenTasks(mocks) {
-    state.state.tasks = mocksToTasks(mocks)
-}
-
-function givenSelectedTaskIndex(index) {
-    state.state.ui.selectedTaskIndex = index
-}
-
-function expectTasks(mocks) {
-    expect(state.state.tasks).to.deep.equal(mocksToTasks(mocks))
-}
-
-function expectSelectedTask(mock) {
-    expect(actions.getSelectedTask()).to.deep.equal(mocksToTasks([mock])[0])
-}
-
-function expectSelectedTaskIndex(index) {
-    expect(state.state.ui.selectedTaskIndex).to.equal(index)
-}
-
-function mocksToTasks(mocks, level) {
-    const result = []
-    mocks.forEach(m => {
-        result.push({ name: m[0], done: m[1], level: level || 0 })
-        if (m[2]) {
-            Array.prototype.push.apply(result, mocksToTasks(m[2], (level || 0)+1))
-        }
-    })
-    return result
-}
-
-function reset() {
-    state.state.tasks = []
-    state.state.ui = { selectedTaskIndex: null }
-    state.eventHandlers.selectedTaskIndexChanged = () => {}
-}
