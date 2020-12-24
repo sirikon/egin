@@ -1,5 +1,5 @@
 import * as taskStore from '../services/taskStore.js'
-import { state, eventHandlers, historify } from '../services/state.js'
+import { state, volatileState, eventHandlers, historify } from '../services/state.js'
 
 export function getSelectedTask() {
     if (state.ui.selectedTaskIndex === null) { return null; }
@@ -148,4 +148,8 @@ export function unindentSelectedTask() {
         taskStore.addLevel(i, -1)
     })
     historify()
+}
+
+export function toggleHelp() {
+    volatileState.helpMenuVisible = !volatileState.helpMenuVisible
 }

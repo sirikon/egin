@@ -1,5 +1,6 @@
 body {
     background-color: whitesmoke;
+    font-family: sans-serif;
     margin: 0;
     position: absolute;
     top: 0;
@@ -49,5 +50,62 @@ body {
     &.is-done input[type='text'] {
         text-decoration: line-through;
         color: rgba(0,0,0,0.5);
+    }
+}
+
+.egin-help {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+
+    h1 {
+        text-align: center;
+        margin: 0 0 .5em 0;
+    }
+
+    > div {
+        background-color: whitesmoke;
+        padding: 2em;
+    }
+
+    &-key {
+        border: 1px solid #0000001f;
+        background-color: rgba(0,0,0,0.05);
+        margin-right: 15px;
+        line-height: 1em;
+        border-radius: 3px;
+        padding: 0 .2em;
+        position: relative;
+
+        &:not(:last-child)::after {
+            content: '+';
+            color: black;
+            font-size: .7em;
+            position: absolute;
+            top: 0;
+            right: -13px;
+        }
+    }
+
+    &-keylist {
+        display: flex;
+        flex-direction: row;
+    }
+
+    &-bind-column {
+        text-align: right;
+    }
+
+    &-bind-column, &-name-column {
+        > div {
+            line-height: 1.5em;
+        }
     }
 }

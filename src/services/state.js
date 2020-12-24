@@ -7,6 +7,10 @@ export const state = {
     }
 }
 
+export const volatileState = {
+    helpMenuVisible: false,
+}
+
 export const eventHandlers = {
     selectedTaskIndexChanged: () => {}
 }
