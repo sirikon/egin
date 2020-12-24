@@ -33,6 +33,11 @@ export function removeTask(index) {
         if (state.ui.selectedTaskIndex === null) { return }
         if (state.ui.selectedTaskIndex < index) { return }
 
+        if (taskStore.count() === 0) {
+            setSelectedTaskIndex(null)
+            return
+        }
+
         // If selected task index is lower or equal to
         // the highest index of removed tasks...
         if (state.ui.selectedTaskIndex <= taskIndexesToRemove[0]) {
@@ -102,7 +107,7 @@ export function insertTask() {
         ? state.ui.selectedTaskIndex + taskStore.getSubtasks(state.ui.selectedTaskIndex).length + 1
         : taskStore.count()
     const previousTask = taskStore.get(indexToInsert-1)
-    const newTaskLevel = state.ui.selectedTaskIndex !== null
+    const newTaskLevel = (state.ui.selectedTaskIndex !== null && indexToInsert > 0)
         ? taskStore.get(state.ui.selectedTaskIndex).level
         : 0
 

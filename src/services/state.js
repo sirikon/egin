@@ -24,6 +24,7 @@ export function rollback() {
     jsonpatch.applyPatch(state, stateHistory.pop())
     savePreviousState()
     triggerAllEventHandlers()
+    historify()
 }
 
 export function delayedHistorify() {
