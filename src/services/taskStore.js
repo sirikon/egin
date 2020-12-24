@@ -8,14 +8,15 @@ export function get(index) {
     return state.tasks[index];
 }
 
-export function findDownwardTaskIndexesWithLevelUnder(index, level) {
+export function getSubtasks(index) {
+    const parentTask = get(index)
     const downwardTasks = state.tasks.slice(index+1)
     const matchingTaskIndexes = []
     let i = 0;
     let stop = 0;
     while(i < downwardTasks.length && !stop) {
         const task = downwardTasks[i]
-        if (task.level > level) {
+        if (task.level > parentTask.level) {
             matchingTaskIndexes.push(i + index + 1)
         } else {
             stop = true
@@ -25,19 +26,20 @@ export function findDownwardTaskIndexesWithLevelUnder(index, level) {
     return matchingTaskIndexes
 }
 
-export function findUpwardFirstTaskWithLevel(index, level) {
+export function getPossiblePreviousPosition(index) {
+    const initialTask = get(index)
     let matchingTaskIndex = null
     let i = index-1
     let stop = 0;
     while(i >= 0 && !stop) {
         const task = state.tasks[i]
-        if (task.level === level) {
+        if (task.level === initialTask.level) {
             matchingTaskIndex = i
             stop = true
             continue
         }
 
-        if (task.level < level) {
+        if (task.level < initialTask.level) {
             stop = true
             continue
         }
@@ -47,32 +49,29 @@ export function findUpwardFirstTaskWithLevel(index, level) {
     return matchingTaskIndex
 }
 
-export function findDownwardFirstTaskWithLevel(index, level) {
-    let matchingTaskIndex = null
+export function getPossibleNextPosition(index) {
+    const baseLevel = get(index).level
+
+    let result = null
     let i = index+1;
-    let stop = 0;
-    while(i < state.tasks.length && !stop) {
+    let stop = false
+    while(i < state.tasks.length && !stop && !result) {
         const task = state.tasks[i]
-        if (task.level === level && matchingTaskIndex === null) {
-            matchingTaskIndex = i
-            i++
+
+        if (task.level === baseLevel) {
+            result = i+getSubtasks(i).length+1
             continue
         }
 
-        if (task.level > level) {
-            matchingTaskIndex = i
-            i++
-            continue
-        }
-
-        if (task.level < level) {
+        if (task.level < baseLevel) {
             stop = true
             continue
         }
 
         i++
     }
-    return matchingTaskIndex
+
+    return result
 }
 
 export function count() {
@@ -102,10 +101,11 @@ export function toggle(index) {
 export function move(index, size, newIndex) {
     if (index === newIndex) { return }
     const finalIndex = newIndex > index
-        ? newIndex - (size-1)
+        ? newIndex - size
         : newIndex
     const tasks = state.tasks.splice(index, size)
     Array.prototype.splice.apply(state.tasks, [finalIndex, 0].concat(tasks))
+    return finalIndex
 }
 
 export function remove(index) {

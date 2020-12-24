@@ -24,7 +24,7 @@ export function removeTask(index) {
     (() => {
         const task = taskStore.get(index)
         const taskIndexesToRemove = [index]
-            .concat(taskStore.findDownwardTaskIndexesWithLevelUnder(index, task.level))
+            .concat(taskStore.getSubtasks(index))
             .sort((a, b) => b - a)
         taskIndexesToRemove.forEach(i => {
             taskStore.remove(i)
@@ -73,25 +73,26 @@ export function jumpToNextTask() {
 }
 
 export function moveSelectedTaskUp() {
-    const selectedTask = taskStore.get(state.ui.selectedTaskIndex)
-    const targetPosition = taskStore.findUpwardFirstTaskWithLevel(state.ui.selectedTaskIndex, selectedTask.level)
+    const targetPosition = taskStore.getPossiblePreviousPosition(state.ui.selectedTaskIndex)
     if (targetPosition === null) { return }
-    taskStore.move(state.ui.selectedTaskIndex, 1, targetPosition)
-    setSelectedTaskIndex(targetPosition)
+
+    const taskIndexesToMove = [state.ui.selectedTaskIndex]
+        .concat(taskStore.getSubtasks(state.ui.selectedTaskIndex))
+        .length
+
+    setSelectedTaskIndex(taskStore.move(state.ui.selectedTaskIndex, taskIndexesToMove, targetPosition))
     historify()
 }
 
 export function moveSelectedTaskDown() {
-    const selectedTask = taskStore.get(state.ui.selectedTaskIndex)
-    const targetPosition = taskStore.findDownwardFirstTaskWithLevel(state.ui.selectedTaskIndex, selectedTask.level)
+    const targetPosition = taskStore.getPossibleNextPosition(state.ui.selectedTaskIndex)
     if (targetPosition === null) { return }
 
     const taskIndexesToMove = [state.ui.selectedTaskIndex]
-        .concat(taskStore.findDownwardTaskIndexesWithLevelUnder(state.ui.selectedTaskIndex, selectedTask.level))
+        .concat(taskStore.getSubtasks(state.ui.selectedTaskIndex))
         .length
 
-    taskStore.move(state.ui.selectedTaskIndex, taskIndexesToMove, targetPosition)
-    setSelectedTaskIndex(targetPosition)
+    setSelectedTaskIndex(taskStore.move(state.ui.selectedTaskIndex, taskIndexesToMove, targetPosition))
     historify()
 }
 
@@ -116,7 +117,7 @@ export function indentSelectedTask() {
     const previousTask = taskStore.get(state.ui.selectedTaskIndex-1)
     if (previousTask.level >= selectedTask.level) {
         const taskIndexesToIndent = [state.ui.selectedTaskIndex]
-            .concat(taskStore.findDownwardTaskIndexesWithLevelUnder(state.ui.selectedTaskIndex, selectedTask.level))
+            .concat(taskStore.getSubtasks(state.ui.selectedTaskIndex))
         historify()
         taskIndexesToIndent.forEach(i => {
             taskStore.addLevel(i, 1)
@@ -131,7 +132,7 @@ export function unindentSelectedTask() {
     const selectedTask = taskStore.get(state.ui.selectedTaskIndex)
     if (selectedTask.level <= 0) { return }
     const taskIndexesToUnindent = [state.ui.selectedTaskIndex]
-        .concat(taskStore.findDownwardTaskIndexesWithLevelUnder(state.ui.selectedTaskIndex, selectedTask.level))
+        .concat(taskStore.getSubtasks(state.ui.selectedTaskIndex))
     historify()
     taskIndexesToUnindent.forEach(i => {
         taskStore.addLevel(i, -1)

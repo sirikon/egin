@@ -523,6 +523,26 @@ describe('Actions', () => {
             ])
             expectSelectedTaskIndex(1)
         })
+
+        it('should move the task up moving subtasks too', () => {
+            givenTasks([
+                ['0', false],
+                ['1', false, [
+                    ['2', false],
+                    ['3', false]
+                ]],
+            ])
+            givenSelectedTaskIndex(1)
+            actions.moveSelectedTaskUp()
+            expectTasks([
+                ['1', false, [
+                    ['2', false],
+                    ['3', false]
+                ]],
+                ['0', false],
+            ])
+            expectSelectedTaskIndex(0)
+        })
     })
 
 })
