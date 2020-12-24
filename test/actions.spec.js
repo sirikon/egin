@@ -2,7 +2,7 @@ import assert from 'assert'
 import chai from 'chai'
 const expect = chai.expect
 
-import './init.js'
+import './config.js'
 import * as actions from '../src/actions/actions.js'
 import * as state from '../src/services/state.js'
 
