@@ -27,6 +27,7 @@ export function rollback() {
 }
 
 export function delayedHistorify() {
+    if (historification_disabled) { return }
     cancelDelayedHistorify()
     delayedHistorifyTimeout = setTimeout(() => {
         delayedHistorifyTimeout = null;
@@ -35,6 +36,7 @@ export function delayedHistorify() {
 }
 
 export function historify() {
+    if (historification_disabled) { return }
     cancelDelayedHistorify()
     const patches = jsonpatch.compare(state, previousState)
     if (patches.length === 0) { return }
@@ -50,13 +52,20 @@ export function triggerAllEventHandlers() {
 }
 
 function cancelDelayedHistorify() {
+    if (historification_disabled) { return }
     if (delayedHistorifyTimeout !== null) {
         clearTimeout(delayedHistorifyTimeout);
         delayedHistorifyTimeout = null;
     }
 }
 
+function savePreviousState() {
+    if (historification_disabled) { return }
+    previousState = jsonpatch.deepClone(state)
+}
+
 function loadStateFromLocalStorage() {
+    if (localstorage_disabled) { return }
     const persistedStateData = localStorage.getItem("egin_state")
     if (persistedStateData === null) { return; }
     const persistedState = JSON.parse(persistedStateData)
@@ -66,9 +75,6 @@ function loadStateFromLocalStorage() {
 }
 
 function saveStateToLocalStorage() {
+    if (localstorage_disabled) { return }
     localStorage.setItem("egin_state", JSON.stringify(state))
-}
-
-function savePreviousState() {
-    previousState = jsonpatch.deepClone(state)
 }

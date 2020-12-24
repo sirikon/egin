@@ -1,7 +1,8 @@
-import * as taskStore from '../services/taskStore'
-import { state, eventHandlers, historify } from '../services/state'
+import * as taskStore from '../services/taskStore.js'
+import { state, eventHandlers, historify } from '../services/state.js'
 
 export function getSelectedTask() {
+    if (state.ui.selectedTaskIndex === null) { return null; }
     return taskStore.get(state.ui.selectedTaskIndex)
 }
 
@@ -14,6 +15,7 @@ export function setSelectedTaskIndex(index) {
 }
 
 export function toggleSelectedTask() {
+    if (state.ui.selectedTaskIndex === null) { return }
     taskStore.toggle(state.ui.selectedTaskIndex)
     historify()
 }
@@ -68,6 +70,24 @@ export function jumpToNextTask() {
         ? state.ui.selectedTaskIndex + 1
         : taskStore.count()-1)
     if (previousTaskIndex !== null) { removeTaskIfEmpty(previousTaskIndex) }
+}
+
+export function moveSelectedTaskUp() {
+    const selectedTask = taskStore.get(state.ui.selectedTaskIndex)
+    const targetTaskToMoveAbove = taskStore.findUpwardFirstTaskWithLevel(state.ui.selectedTaskIndex, selectedTask.level)
+    if (targetTaskToMoveAbove === null) { return }
+    taskStore.move(state.ui.selectedTaskIndex, targetTaskToMoveAbove - state.ui.selectedTaskIndex)
+    setSelectedTaskIndex(targetTaskToMoveAbove)
+    historify()
+}
+
+export function moveSelectedTaskDown() {
+    const selectedTask = taskStore.get(state.ui.selectedTaskIndex)
+    const targetTaskToMoveAbove = taskStore.findDownwardFirstTaskWithLevel(state.ui.selectedTaskIndex, selectedTask.level)
+    if (targetTaskToMoveAbove === null) { return }
+    taskStore.move(state.ui.selectedTaskIndex, targetTaskToMoveAbove - state.ui.selectedTaskIndex)
+    setSelectedTaskIndex(targetTaskToMoveAbove)
+    historify()
 }
 
 export function insertTaskUnderSelectedTask() {

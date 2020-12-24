@@ -50,6 +50,16 @@ const globalKeyHandlers = {
         e.preventDefault()
         e.stopPropagation()
         actions.unindentSelectedTask()
+    },
+    Ctrl_ArrowUp: (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        actions.moveSelectedTaskUp()
+    },
+    Ctrl_ArrowDown: (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        actions.moveSelectedTaskDown()
     }
 }
 
