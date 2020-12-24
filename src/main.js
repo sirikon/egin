@@ -61,6 +61,16 @@ const globalKeyHandlers = {
         e.preventDefault()
         e.stopPropagation()
         actions.moveSelectedTaskDown()
+    },
+    Ctrl_Alt_KeyH: (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        alert("Help!")
+    },
+    Ctrl_Alt_KeyM: (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        alert("Menu!")
     }
 }
 
@@ -68,6 +78,7 @@ document.addEventListener('keydown', (e) => {
     const handlerName = [
         e.ctrlKey && 'Ctrl',
         e.shiftKey && 'Shift',
+        e.altKey && 'Alt',
         e.code
     ].filter(e => !!e).join('_')
     
