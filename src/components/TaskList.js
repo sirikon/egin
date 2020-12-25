@@ -2,7 +2,7 @@ import m from 'mithril'
 
 import * as taskStore from '../core/taskStore'
 import hotkeys from '../services/hotkeys'
-import * as history from '../core/history'
+import { load, save } from '../services/localStorage'
 
 import Task from './Task'
 import Help from './Help'
@@ -23,9 +23,10 @@ export default function TaskList() {
         }
     }
 
-    const beforeunloadListener = () => history.commit()
+    const beforeunloadListener = () => save()
 
     const oninit = () => {
+        load()
         document.addEventListener('keydown', keydownListener)
         window.onbeforeunload = beforeunloadListener
     }
