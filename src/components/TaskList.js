@@ -7,7 +7,7 @@ import { historify } from '../services/state'
 import Task from './Task'
 import Help from './Help'
 
-export default function App() {
+export default function TaskList() {
 
     const keydownListener = (e) => {
         const handlerName = [
