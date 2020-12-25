@@ -19,6 +19,16 @@ export default function Task(vnode) {
     const removeSelected = () => isSelected() && setSelectedTaskIndex(null)
     const removeTaskOnBlur = () => (state.ui.selectedTaskIndex === null) && removeTaskIfEmpty(taskIndex())
 
+    const updateFocus = () => {
+        const textInput = vnode.dom.querySelector('input[type="text"]')
+        isSelected()
+            ? textInput.focus()
+            : textInput.blur()
+    }
+
+    const oncreate = () => updateFocus()
+    const onupdate = () => updateFocus()
+
     const view = () => m('div.egin-task', {
             class: classes(),
             style: `margin-left: ${getLevel() * 20}px;`
@@ -39,7 +49,7 @@ export default function Task(vnode) {
         })
     ])
 
-    return { view }
+    return { view, oncreate, onupdate }
 }
 
 function buildClasses(obj) {

@@ -28,7 +28,6 @@ export function expectSelectedTaskIndex(index) {
 export function reset() {
     state.state.tasks = []
     state.state.ui = { selectedTaskIndex: null }
-    state.eventHandlers.selectedTaskIndexChanged = () => {}
 }
 
 export function mocksToTasks(mocks, level) {

@@ -17,7 +17,6 @@ export default function Help() {
                     return m('div', hotkey.name)
                 }))
             ])
-            
         ])
     ])
     return { view }

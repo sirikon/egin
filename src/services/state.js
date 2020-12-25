@@ -11,10 +11,6 @@ export const volatileState = {
     helpMenuVisible: false,
 }
 
-export const eventHandlers = {
-    selectedTaskIndexChanged: () => {}
-}
-
 let previousState = null
 const stateHistory = []
 let delayedHistorifyTimeout = null
@@ -48,12 +44,6 @@ export function historify() {
     stateHistory.push(patches)
     savePreviousState()
     saveStateToLocalStorage()
-}
-
-export function triggerAllEventHandlers() {
-    Object.keys(eventHandlers).forEach(k => {
-        eventHandlers[k]()
-    })
 }
 
 function cancelDelayedHistorify() {

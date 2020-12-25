@@ -31,19 +31,10 @@ describe('Actions', () => {
 
     describe('#setSelectedTaskIndex', () => {
         beforeEach(() => reset())
-        it('should change selected task index and not call event handler when it is the same', () => {
-            state.eventHandlers.selectedTaskIndexChanged =
-                () => { throw new Error("This event should not trigger") }
-            givenSelectedTaskIndex(1)
-            actions.setSelectedTaskIndex(1)
-        })
-        it('should change selected task index and call event handler when it is different', () => {
-            let called = false
-            state.eventHandlers.selectedTaskIndexChanged =
-                () => { called = true }
+        it('should change selected task index', () => {
             givenSelectedTaskIndex(1)
             actions.setSelectedTaskIndex(2)
-            expect(called).to.equal(true)
+            expectSelectedTaskIndex(2)
         })
     })
 

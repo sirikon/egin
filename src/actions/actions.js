@@ -1,5 +1,5 @@
 import * as taskStore from '../services/taskStore.js'
-import { state, volatileState, eventHandlers, historify } from '../services/state.js'
+import { state, volatileState, historify } from '../services/state.js'
 
 export function getSelectedTask() {
     if (state.ui.selectedTaskIndex === null) { return null; }
@@ -7,11 +7,7 @@ export function getSelectedTask() {
 }
 
 export function setSelectedTaskIndex(index) {
-    const previousIndex = state.ui.selectedTaskIndex
     state.ui.selectedTaskIndex = index
-    if (previousIndex !== index) {
-        eventHandlers.selectedTaskIndexChanged()
-    }
 }
 
 export function toggleSelectedTask() {
