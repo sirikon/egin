@@ -1,5 +1,5 @@
-import * as actions from './actions'
-import * as history from './history'
+import * as actions from '../core/actions'
+import * as history from '../core/history'
 
 const hotkeys = {
     ArrowUp: {

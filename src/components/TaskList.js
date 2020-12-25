@@ -1,7 +1,7 @@
 import m from 'mithril'
 
 import * as taskStore from '../core/taskStore'
-import hotkeys from '../core/hotkeys'
+import hotkeys from '../services/hotkeys'
 import * as history from '../core/history'
 
 import Task from './Task'
