@@ -1,4 +1,3 @@
-import { deepClone } from 'fast-json-patch'
 import { state } from '../core/state'
 import * as history from '../core/history'
 
