@@ -1,5 +1,6 @@
-import * as taskStore from '../services/taskStore.js'
-import { state, volatileState, historify } from '../services/state.js'
+import * as taskStore from './taskStore.js'
+import { state, volatileState } from './state.js'
+import * as history from './history.js'
 
 export function getSelectedTask() {
     if (state.ui.selectedTaskIndex === null) { return null; }
@@ -13,12 +14,11 @@ export function setSelectedTaskIndex(index) {
 export function toggleSelectedTask() {
     if (state.ui.selectedTaskIndex === null) { return }
     taskStore.toggle(state.ui.selectedTaskIndex)
-    historify()
+    history.commit()
 }
 
 export function removeTask(index) {
     (() => {
-        const task = taskStore.get(index)
         const taskIndexesToRemove = [index]
             .concat(taskStore.getSubtasks(index))
             .sort((a, b) => b - a)
@@ -45,7 +45,7 @@ export function removeTask(index) {
             setSelectedTaskIndex(state.ui.selectedTaskIndex - taskIndexesToRemove.length)
         }
     })();
-    historify()
+    history.commit()
 }
 
 export function removeTaskIfEmpty(index) {
@@ -82,7 +82,7 @@ export function moveSelectedTaskUp() {
         .length
 
     setSelectedTaskIndex(taskStore.move(state.ui.selectedTaskIndex, taskIndexesToMove, targetPosition))
-    historify()
+    history.commit()
 }
 
 export function moveSelectedTaskDown() {
@@ -94,11 +94,11 @@ export function moveSelectedTaskDown() {
         .length
 
     setSelectedTaskIndex(taskStore.move(state.ui.selectedTaskIndex, taskIndexesToMove, targetPosition))
-    historify()
+    history.commit()
 }
 
 export function insertTask() {
-    historify()
+    history.commit()
     const indexToInsert = state.ui.selectedTaskIndex !== null
         ? state.ui.selectedTaskIndex + taskStore.getSubtasks(state.ui.selectedTaskIndex).length + 1
         : taskStore.count()
@@ -113,7 +113,7 @@ export function insertTask() {
 
     taskStore.insert(indexToInsert, {name: '', done: false, level: newTaskLevel})
     setSelectedTaskIndex(indexToInsert)
-    historify()
+    history.commit()
 }
 
 export function indentSelectedTask() {
@@ -123,12 +123,12 @@ export function indentSelectedTask() {
     const previousTask = taskStore.get(state.ui.selectedTaskIndex-1)
     if (previousTask.level >= selectedTask.level) {
         const taskIndexesToIndent = [state.ui.selectedTaskIndex]
-            .concat(taskStore.getSubtasks(state.ui.selectedTaskIndex))
-        historify()
+            .concat(taskStore.getSubtasks(state.ui.selectedTaskIndex));
+        history.commit()
         taskIndexesToIndent.forEach(i => {
             taskStore.addLevel(i, 1)
         })
-        historify()
+        history.commit()
     }
 }
 
@@ -139,11 +139,11 @@ export function unindentSelectedTask() {
     if (selectedTask.level <= 0) { return }
     const taskIndexesToUnindent = [state.ui.selectedTaskIndex]
         .concat(taskStore.getSubtasks(state.ui.selectedTaskIndex))
-    historify()
+    history.commit()
     taskIndexesToUnindent.forEach(i => {
         taskStore.addLevel(i, -1)
     })
-    historify()
+    history.commit()
 }
 
 export function toggleHelp() {

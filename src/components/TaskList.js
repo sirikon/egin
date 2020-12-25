@@ -1,8 +1,8 @@
 import m from 'mithril'
 
-import * as taskStore from '../services/taskStore'
-import hotkeys from '../actions/hotkeys'
-import { historify } from '../services/state'
+import * as taskStore from '../core/taskStore'
+import hotkeys from '../core/hotkeys'
+import * as history from '../core/history'
 
 import Task from './Task'
 import Help from './Help'
@@ -23,7 +23,7 @@ export default function TaskList() {
         }
     }
 
-    const beforeunloadListener = () => historify()
+    const beforeunloadListener = () => history.commit()
 
     const oninit = () => {
         document.addEventListener('keydown', keydownListener)

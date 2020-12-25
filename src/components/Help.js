@@ -1,7 +1,7 @@
 import m from 'mithril'
 
-import { volatileState } from '../services/state'
-import hotkeys from '../actions/hotkeys'
+import { volatileState } from '../core/state'
+import hotkeys from '../core/hotkeys'
 
 export default function Help() {
     const isVisible = () => volatileState.helpMenuVisible

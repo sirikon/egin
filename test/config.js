@@ -1,2 +1,1 @@
-global.localstorage_enabled = false
-global.historification_enabled = false
+global.HISTORIFICATION_ENABLED = false

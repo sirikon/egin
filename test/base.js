@@ -2,8 +2,8 @@ import './config.js'
 import chai from 'chai'
 const expect = chai.expect
 
-import * as actions from '../src/actions/actions.js'
-import * as state from '../src/services/state.js'
+import * as actions from '../src/core/actions.js'
+import * as state from '../src/core/state.js'
 
 export function givenTasks(mocks) {
     state.state.tasks = mocksToTasks(mocks)

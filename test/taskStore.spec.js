@@ -7,8 +7,7 @@ import {
     expectTasks,
     mocksToTasks
 } from './base.js'
-import * as taskStore from '../src/services/taskStore.js'
-import * as state from '../src/services/state.js'
+import * as taskStore from '../src/core/taskStore.js'
 
 describe('TaskStore', () => {
     

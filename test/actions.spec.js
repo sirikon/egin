@@ -9,8 +9,7 @@ import {
     expectTasks,
     reset
 } from './base.js'
-import * as actions from '../src/actions/actions.js'
-import * as state from '../src/services/state.js'
+import * as actions from '../src/core/actions.js'
 
 describe('Actions', () => {
 

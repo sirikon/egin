@@ -1,5 +1,5 @@
-import * as actions from '../actions/actions'
-import * as state from '../services/state'
+import * as actions from '../core/actions'
+import * as state from '../core/state'
 
 window.egin = {
     actions,

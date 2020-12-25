@@ -1,5 +1,5 @@
 import * as actions from './actions'
-import { rollback } from '../services/state'
+import * as history from './history'
 
 const hotkeys = {
     ArrowUp: {
@@ -52,7 +52,7 @@ const hotkeys = {
         action: (e) => {
             e.preventDefault()
             e.stopPropagation()
-            rollback()
+            history.rollback()
         }
     },
     Tab: {

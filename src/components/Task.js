@@ -1,6 +1,7 @@
-import * as taskStore from '../services/taskStore'
-import { state, historify, delayedHistorify } from '../services/state'
-import { removeTaskIfEmpty, setSelectedTaskIndex } from '../actions/actions'
+import * as taskStore from '../core/taskStore'
+import { state } from '../core/state'
+import * as history from '../core/history'
+import { removeTaskIfEmpty, setSelectedTaskIndex } from '../core/actions'
 
 export default function Task(vnode) {
     const taskIndex = () => vnode.attrs.key
@@ -13,8 +14,8 @@ export default function Task(vnode) {
         'is-done': isDone()
     })
 
-    const setDone = (value) => { taskStore.setDone(taskIndex(), value); historify() }
-    const setName = (value) => { taskStore.setName(taskIndex(), value); delayedHistorify() }
+    const setDone = (value) => { taskStore.setDone(taskIndex(), value); history.commit() }
+    const setName = (value) => { taskStore.setName(taskIndex(), value); history.delayedCommit() }
     const setSelected = () => setSelectedTaskIndex(taskIndex())
     const removeSelected = () => isSelected() && setSelectedTaskIndex(null)
     const removeTaskOnBlur = () => (state.ui.selectedTaskIndex === null) && removeTaskIfEmpty(taskIndex())
