@@ -2,7 +2,6 @@ import m from 'mithril'
 
 import * as taskStore from '../core/taskStore'
 import hotkeys from '../services/hotkeys'
-import { load, save } from '../services/localStorage'
 
 import Task from './Task'
 import Help from './Help'
@@ -23,17 +22,12 @@ export default function TaskList() {
         }
     }
 
-    const beforeunloadListener = () => save()
-
     const oninit = () => {
-        load()
         document.addEventListener('keydown', keydownListener)
-        window.onbeforeunload = beforeunloadListener
     }
 
     const onremove = () => {
         document.removeEventListener('keydown', keydownListener)
-        window.onbeforeunload = () => {}
     }
 
     const view = () => [

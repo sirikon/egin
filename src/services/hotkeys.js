@@ -1,5 +1,6 @@
 import * as actions from '../core/actions'
 import * as history from '../core/history'
+import * as dropbox from './dropbox'
 
 const hotkeys = {
     ArrowUp: {
@@ -45,6 +46,14 @@ const hotkeys = {
             e.preventDefault()
             e.stopPropagation()
             actions.toggleSelectedTask()
+        }
+    },
+    Ctrl_KeyS: {
+        name: 'Save',
+        action: (e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            dropbox.save().then(() => console.log('Done'))
         }
     },
     Ctrl_KeyZ: {
