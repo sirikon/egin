@@ -8,10 +8,12 @@ export default function Task(vnode) {
     const task = () => taskStore.get(taskIndex())
     const isSelected = () => taskIndex() === state.ui.selectedTaskIndex
     const isDone = () => task().done
+    const isHeader = () => task().header
     const getLevel = () => task().level
     const classes = () => buildClasses({
         'is-selected': isSelected(),
-        'is-done': isDone()
+        'is-done': isDone(),
+        'is-header': isHeader(),
     })
 
     const setDone = (value) => { taskStore.setDone(taskIndex(), value); history.commit() }

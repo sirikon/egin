@@ -48,6 +48,14 @@ const hotkeys = {
             actions.toggleSelectedTask()
         }
     },
+    Ctrl_KeyH: {
+        name: 'Turn task into Header and viceversa',
+        action: (e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            actions.toggleSelectedTaskHeaderState()
+        }
+    },
     Ctrl_KeyS: {
         name: 'Save',
         action: (e) => {

@@ -17,6 +17,12 @@ export function toggleSelectedTask() {
     history.commit()
 }
 
+export function toggleSelectedTaskHeaderState() {
+    if (state.ui.selectedTaskIndex === null) { return }
+    taskStore.toggleHeader(state.ui.selectedTaskIndex)
+    history.commit()
+}
+
 export function removeTask(index) {
     (() => {
         const taskIndexesToRemove = [index]

@@ -98,6 +98,10 @@ export function toggle(index) {
     state.tasks[index].done = !state.tasks[index].done
 }
 
+export function toggleHeader(index) {
+    state.tasks[index].header = !state.tasks[index].header
+}
+
 export function move(index, size, newIndex) {
     if (index === newIndex) { return }
     const finalIndex = newIndex > index
