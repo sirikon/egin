@@ -8,6 +8,7 @@
     "dependencies": {
         "dropbox": "^8.2.0",
         "fast-json-patch": "^3.0.0-1",
+        "hyperactiv": "^0.8.4",
         "mithril": "^2.0.4",
         "rollup": "^2.35.1",
         "rollup-plugin-copy": "^3.3.0",

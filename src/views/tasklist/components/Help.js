@@ -1,19 +1,15 @@
 import m from 'mithril'
 
-import { volatileState } from '../core/state'
-import hotkeys from '../services/hotkeys'
-
-export default function Help() {
-    const isVisible = () => volatileState.helpMenuVisible
-
-    const view = () => isVisible() && m('div.egin-help', [
+export default function Help(vnode) {
+    const hotkeys = () => vnode.attrs.hotkeys
+    const view = () => m('div.egin-help', [
         m('div', [
             m('h1', 'Help'),
             m('div.egin-help-keylist', [
-                m('div.egin-help-bind-column', Object.entries(hotkeys).map(([bind, _]) => {
+                m('div.egin-help-bind-column', Object.entries(hotkeys()).map(([bind, _]) => {
                     return m('div', extractKeys(bind).map(key => m('span.egin-help-key', key)))
                 })),
-                m('div.egin-help-name-column', Object.entries(hotkeys).map(([_, hotkey]) => {
+                m('div.egin-help-name-column', Object.entries(hotkeys()).map(([_, hotkey]) => {
                     return m('div', hotkey.name)
                 }))
             ])

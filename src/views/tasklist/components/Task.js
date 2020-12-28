@@ -1,12 +1,12 @@
-import * as taskStore from '../core/taskStore'
-import { state } from '../core/state'
-import * as history from '../core/history'
-import { removeTaskIfEmpty, setSelectedTaskIndex } from '../core/actions'
+import * as history from '../../../core/history'
 
 export default function Task(vnode) {
+    const taskStore = () => vnode.attrs.taskStore
+    const actions = () => vnode.attrs.actions
     const taskIndex = () => vnode.attrs.key
-    const task = () => taskStore.get(taskIndex())
-    const isSelected = () => taskIndex() === state.ui.selectedTaskIndex
+
+    const task = () => taskStore().get(taskIndex())
+    const isSelected = () => taskIndex() === actions().getSelectedTaskIndex()
     const isDone = () => task().done
     const isHeader = () => task().header
     const getLevel = () => task().level
@@ -16,11 +16,11 @@ export default function Task(vnode) {
         'is-header': isHeader(),
     })
 
-    const setDone = (value) => { taskStore.setDone(taskIndex(), value); history.commit() }
-    const setName = (value) => { taskStore.setName(taskIndex(), value); history.delayedCommit() }
-    const setSelected = () => setSelectedTaskIndex(taskIndex())
-    const removeSelected = () => isSelected() && setSelectedTaskIndex(null)
-    const removeTaskOnBlur = () => (state.ui.selectedTaskIndex === null) && removeTaskIfEmpty(taskIndex())
+    const setDone = (value) => { taskStore().setDone(taskIndex(), value); history.commit() }
+    const setName = (value) => { taskStore().setName(taskIndex(), value); history.delayedCommit() }
+    const setSelected = () => actions().setSelectedTaskIndex(taskIndex())
+    const removeSelected = () => isSelected() && actions().setSelectedTaskIndex(null)
+    const removeTaskOnBlur = () => (actions().getSelectedTaskIndex() === null) && actions().removeTaskIfEmpty(taskIndex())
 
     const updateFocus = () => {
         const textInput = vnode.dom.querySelector('input[type="text"]')

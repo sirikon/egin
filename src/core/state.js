@@ -1,10 +1,14 @@
-export const state = {
-    tasks: [],
-    ui: {
-        selectedTaskIndex: null,
-    }
-}
+import hyperactiv from 'hyperactiv'
+const { observe } = hyperactiv
 
-export const volatileState = {
-    helpMenuVisible: false,
-}
+export const state = observe({
+    taskLists: {
+        // 'localStorage/main': {
+        //     tasks: [],
+        //     selectedTaskIndex: null,
+        // },
+    },
+    storageStatus: {
+        // 'localStorage/main': 'saved'
+    }
+})
