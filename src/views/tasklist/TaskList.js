@@ -46,13 +46,13 @@ export default function TaskList(vnode) {
         }
     }
 
-    const oninit = () => {
-        document.addEventListener('keydown', keydownListener)
+    const oncreate = () => {
+        document.addEventListener('keydown', keydownListener, true)
         storage.load(taskListId()).then(() => m.redraw())
     }
 
-    const onbeforeremove = () => {
-        document.removeEventListener('keydown', keydownListener)
+    const onremove = () => {
+        document.removeEventListener('keydown', keydownListener, true)
     }
 
     const view = () => [
@@ -62,5 +62,5 @@ export default function TaskList(vnode) {
         isHelpVisible() && m(Help, { hotkeys: hotkeys() })
     ]
 
-    return { view, oninit, onbeforeremove }
+    return { view, oncreate, onremove }
 }
