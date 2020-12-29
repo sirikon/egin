@@ -5,9 +5,10 @@ import {
     reset,
     givenTasks,
     expectTasks,
-    mocksToTasks
+    mocksToTasks,
+    getTaskStore
 } from './base.js'
-import * as taskStore from '../src/core/taskStore.js'
+const taskStore = getTaskStore()
 
 describe('TaskStore', () => {
     

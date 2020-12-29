@@ -2,19 +2,31 @@ import './config.js'
 import chai from 'chai'
 const expect = chai.expect
 
-import * as actions from '../src/core/actions.js'
-import * as state from '../src/core/state.js'
+import Actions from '../src/core/Actions.js'
+import { state } from '../src/core/state.js'
+import TaskStore from '../src/core/TaskStore.js'
+
+const taskListId = 'test/test'
+const actions = getActions()
+
+export function getTaskStore() {
+    return new TaskStore(taskListId)
+}
+
+export function getActions() {
+    return new Actions(taskListId)
+}
 
 export function givenTasks(mocks) {
-    state.state.tasks = mocksToTasks(mocks)
+    state.taskLists[taskListId].tasks = mocksToTasks(mocks)
 }
 
 export function givenSelectedTaskIndex(index) {
-    state.state.ui.selectedTaskIndex = index
+    state.taskLists[taskListId].selectedTaskIndex = index
 }
 
 export function expectTasks(mocks) {
-    expect(state.state.tasks).to.deep.equal(mocksToTasks(mocks))
+    expect(state.taskLists[taskListId].tasks).to.deep.equal(mocksToTasks(mocks))
 }
 
 export function expectSelectedTask(mock) {
@@ -22,12 +34,14 @@ export function expectSelectedTask(mock) {
 }
 
 export function expectSelectedTaskIndex(index) {
-    expect(state.state.ui.selectedTaskIndex).to.equal(index)
+    expect(state.taskLists[taskListId].selectedTaskIndex).to.equal(index)
 }
 
 export function reset() {
-    state.state.tasks = []
-    state.state.ui = { selectedTaskIndex: null }
+    state.taskLists[taskListId] = {
+        tasks: [],
+        selectedTaskIndex: null
+    }
 }
 
 export function mocksToTasks(mocks, level) {

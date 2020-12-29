@@ -2,6 +2,7 @@ import chai from 'chai'
 const expect = chai.expect
 
 import {
+    getActions,
     givenTasks,
     givenSelectedTaskIndex,
     expectSelectedTask,
@@ -9,7 +10,7 @@ import {
     expectTasks,
     reset
 } from './base.js'
-import * as actions from '../src/core/actions.js'
+const actions = getActions()
 
 describe('Actions', () => {
 
