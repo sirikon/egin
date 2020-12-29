@@ -118,7 +118,7 @@ export function buildHotkeys(taskListId, taskListState, actions) {
             action: (e) => {
                 e.preventDefault()
                 e.stopPropagation()
-                alert("Menu!")
+                location.href = '#/'
             }
         }
     }
