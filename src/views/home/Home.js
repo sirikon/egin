@@ -23,7 +23,7 @@ export default function Home() {
         })
     }
 
-    const view = () => m('div', [
+    const view = () => m('div.egin-home', [
         m('h1', 'Egin'),
         !dropbox.isAuthenticated() && m('a', {href: dropbox.getAuthUrl()}, 'Login with Dropbox'),
         m('ul', Object.keys(backends).map(backend => {
