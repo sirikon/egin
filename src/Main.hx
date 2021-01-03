@@ -15,25 +15,25 @@ class TodoComponent implements Mithril
             m("h1", "To do"),
             m("table", todos.map(function(todo) {
                 m("tr", [
-                    m("td", m("input[type=checkbox]", { 
-                        onclick: function(e) todo.done = e.target.checked,
+                    m("td", m("input[type=checkbox]", {
+                        onclick: (e) -> todo.done = e.target.checked,
                         checked: todo.done
                     })),
                     m("td", todo.description)
                 ]);
             }))
         ]);
-    }    
+    }
 }
 
-class Todo
-{
-    public var done : Bool = false;
-    public var description : String;
+typedef Todo = {
+    var done : Bool;
+    var description : String;
+}
 
-    public function new(description, ?done) {
-        this.description = description;
-        if(done != null) this.done = done;
+class TodoF {
+    public static function create(description: String, ?done:Bool): Todo {
+        return { description: description, done: done != null ? done : false }
     }
 }
 
@@ -42,9 +42,9 @@ class Main
     // Program entry point
     static function main() {
         var todos = [
-            new Todo("Learn Haxe"),
-            new Todo("??"),
-            new Todo("Profit!")
+            TodoF.create('Learn Haxe', true),
+            TodoF.create('??'),
+            TodoF.create('Profit!')
         ];
         
         M.mount(js.Browser.document.body, new TodoComponent(todos));
