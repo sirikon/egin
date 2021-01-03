@@ -1,2 +1,3 @@
-/node_modules
-/dist
+# Distribution files
+/dist/**/*
+!/dist/index.html
