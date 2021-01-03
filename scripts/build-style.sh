@@ -2,5 +2,5 @@
 set -euo pipefail
 
 sass \
-    --watch --no-source-map \
+    "${@}" --no-source-map \
     src/style.scss dist/style.css
