@@ -37,138 +37,109 @@ class Actions {
     }
 
     public function removeTask(index: Int) {
-        
+        final taskIndexesToRemove = [index]
+            .concat(taskStore.getSubtasks(index));
+        taskIndexesToRemove.sort((a, b) -> b - a);
+        for (i in taskIndexesToRemove) taskStore.remove(i);
+
+        if (getSelectedTaskIndex() == null || getSelectedTaskIndex() < index) { return; }
+        if (taskStore.count() == 0) {
+            setSelectedTaskIndex(null);
+            return;
+        }
+
+        // If selected task index is lower or equal to
+        // the highest index of removed tasks...
+        if (getSelectedTaskIndex() <= taskIndexesToRemove[0]) {
+            setSelectedTaskIndex(index-1);
+            return;
+        }
+
+        if (getSelectedTaskIndex() > taskIndexesToRemove[0]) {
+            setSelectedTaskIndex(getSelectedTaskIndex() - taskIndexesToRemove.length);
+        }
     }
 
-    /**
+    public function removeTaskIfEmpty(index: Int) {
+        final task = taskStore.get(index);
+        if (task != null && task.name == '') removeTask(index);
+    }
+
+    public function removeSelectedTask() {
+        removeTask(getSelectedTaskIndex());
+    }
+
+    public function jumpToPreviousTask() {
+        final previousTaskIndex = getSelectedTaskIndex();
+        final currentTaskIndex = getSelectedTaskIndex() != null ? getSelectedTaskIndex() : 0;
+        setSelectedTaskIndex(currentTaskIndex > 0 ? currentTaskIndex - 1 : 0);
+        if (previousTaskIndex != null) removeTaskIfEmpty(previousTaskIndex);
+    }
+
+    public function jumpToNextTask() {
+        final previousTaskIndex = getSelectedTaskIndex();
+        final currentTaskIndex = getSelectedTaskIndex() != null ? getSelectedTaskIndex() : 0;
+        setSelectedTaskIndex(currentTaskIndex < taskStore.count()-1
+            ? currentTaskIndex+1
+            : taskStore.count()-1);
+        if (previousTaskIndex != null) removeTaskIfEmpty(previousTaskIndex);
+    }
+
+    public function moveSelectedTaskUp() {
+        final targetPosition = taskStore.getPossiblePreviousPosition(getSelectedTaskIndex());
+        if (targetPosition == null) return;
+
+        final taskIndexesToMove = [getSelectedTaskIndex()]
+            .concat(taskStore.getSubtasks(getSelectedTaskIndex()))
+            .length;
+
+        setSelectedTaskIndex(taskStore.move(getSelectedTaskIndex(), taskIndexesToMove, targetPosition));
+    }
+
+    public function moveSelectedTaskDown() {
+        final targetPosition = taskStore.getPossibleNextPosition(getSelectedTaskIndex());
+        if (targetPosition == null) return;
+
+        final taskIndexesToMove = [getSelectedTaskIndex()]
+            .concat(taskStore.getSubtasks(getSelectedTaskIndex()))
+            .length;
+
+        setSelectedTaskIndex(taskStore.move(getSelectedTaskIndex(), taskIndexesToMove, targetPosition));
+    }
+
+    public function insertTask() {
+        final indexToInsert = getSelectedTaskIndex() != null
+            ? getSelectedTaskIndex() + taskStore.getSubtasks(getSelectedTaskIndex()).length + 1
+            : taskStore.count();
+        final previousTask = taskStore.get(indexToInsert-1);
+        final newTaskLevel = (getSelectedTaskIndex() != null && indexToInsert > 0)
+            ? taskStore.get(getSelectedTaskIndex()).level
+            : 0;
         
-        removeTask(index) {
-            (() => {
-                const taskIndexesToRemove = [index]
-                    .concat(this.taskStore.getSubtasks(index))
-                    .sort((a, b) => b - a)
-                taskIndexesToRemove.forEach(i => {
-                    this.taskStore.remove(i)
-                })
-        
-                if (this.getSelectedTaskIndex() === null) { return }
-                if (this.getSelectedTaskIndex() < index) { return }
-        
-                if (this.taskStore.count() === 0) {
-                    setSelectedTaskIndex(null)
-                    return
-                }
-        
-                // If selected task index is lower or equal to
-                // the highest index of removed tasks...
-                if (this.getSelectedTaskIndex() <= taskIndexesToRemove[0]) {
-                    this.setSelectedTaskIndex(index-1)
-                    return
-                }
-        
-                if (this.getSelectedTaskIndex() > taskIndexesToRemove[0]) {
-                    this.setSelectedTaskIndex(this.getSelectedTaskIndex() - taskIndexesToRemove.length)
-                }
-            })();
-            history.commit()
+        if (indexToInsert > 0 && previousTask != null && previousTask.name == '') return;
+        taskStore.insert(indexToInsert, { name: '', done: false, level: newTaskLevel, header: false });
+        setSelectedTaskIndex(indexToInsert);
+    }
+
+    public function indentSelectedTask() {
+        if (getSelectedTaskIndex() == null) return;
+        if (getSelectedTaskIndex() <= 0) return;
+        final selectedTask = taskStore.get(getSelectedTaskIndex());
+        final previousTask = taskStore.get(getSelectedTaskIndex()-1);
+        if (previousTask.level >= selectedTask.level) {
+            final taskIndexesToIndent = [getSelectedTaskIndex()]
+                .concat(taskStore.getSubtasks(getSelectedTaskIndex()));
+            for (i in taskIndexesToIndent) taskStore.addLevel(i, 1);
         }
-        
-        removeTaskIfEmpty(index) {
-            const task = this.taskStore.get(index)
-            if (task && task.name === '') { this.removeTask(index) }
-        }
-        
-        removeSelectedTask() {
-            this.removeTask(this.getSelectedTaskIndex())
-        }
-        
-        jumpToPreviousTask() {
-            const previousTaskIndex = this.getSelectedTaskIndex()
-            this.setSelectedTaskIndex((this.getSelectedTaskIndex() || 0) > 0
-                ? this.getSelectedTaskIndex() - 1
-                : 0)
-            if (previousTaskIndex !== null) { this.removeTaskIfEmpty(previousTaskIndex) }
-        }
-        
-        jumpToNextTask() {
-            const previousTaskIndex = this.getSelectedTaskIndex()
-            this.setSelectedTaskIndex((this.getSelectedTaskIndex() || 0) < this.taskStore.count()-1
-                ? this.getSelectedTaskIndex() + 1
-                : this.taskStore.count()-1)
-            if (previousTaskIndex !== null) { this.removeTaskIfEmpty(previousTaskIndex) }
-        }
-        
-        moveSelectedTaskUp() {
-            const targetPosition = this.taskStore.getPossiblePreviousPosition(this.getSelectedTaskIndex())
-            if (targetPosition === null) { return }
-        
-            const taskIndexesToMove = [this.getSelectedTaskIndex()]
-                .concat(this.taskStore.getSubtasks(this.getSelectedTaskIndex()))
-                .length
-        
-            this.setSelectedTaskIndex(this.taskStore.move(this.getSelectedTaskIndex(), taskIndexesToMove, targetPosition))
-            history.commit()
-        }
-        
-        moveSelectedTaskDown() {
-            const targetPosition = this.taskStore.getPossibleNextPosition(this.getSelectedTaskIndex())
-            if (targetPosition === null) { return }
-        
-            const taskIndexesToMove = [this.getSelectedTaskIndex()]
-                .concat(this.taskStore.getSubtasks(this.getSelectedTaskIndex()))
-                .length
-        
-            this.setSelectedTaskIndex(this.taskStore.move(this.getSelectedTaskIndex(), taskIndexesToMove, targetPosition))
-            history.commit()
-        }
-        
-        insertTask() {
-            history.commit()
-            const indexToInsert = this.getSelectedTaskIndex() !== null
-                ? this.getSelectedTaskIndex() + this.taskStore.getSubtasks(this.getSelectedTaskIndex()).length + 1
-                : this.taskStore.count()
-            const previousTask = this.taskStore.get(indexToInsert-1)
-            const newTaskLevel = (this.getSelectedTaskIndex() !== null && indexToInsert > 0)
-                ? this.taskStore.get(this.getSelectedTaskIndex()).level
-                : 0
-        
-            if (indexToInsert > 0 && previousTask && previousTask.name === '') {
-                return
-            }
-        
-            this.taskStore.insert(indexToInsert, {name: '', done: false, level: newTaskLevel})
-            this.setSelectedTaskIndex(indexToInsert)
-            history.commit()
-        }
-        
-        indentSelectedTask() {
-            if (this.getSelectedTaskIndex() === null) { return }
-            if (this.getSelectedTaskIndex() <= 0) { return }
-            const selectedTask = this.taskStore.get(this.getSelectedTaskIndex())
-            const previousTask = this.taskStore.get(this.getSelectedTaskIndex()-1)
-            if (previousTask.level >= selectedTask.level) {
-                const taskIndexesToIndent = [this.getSelectedTaskIndex()]
-                    .concat(this.taskStore.getSubtasks(this.getSelectedTaskIndex()));
-                history.commit()
-                taskIndexesToIndent.forEach(i => {
-                    this.taskStore.addLevel(i, 1)
-                })
-                history.commit()
-            }
-        }
-        
-        unindentSelectedTask() {
-            if (this.getSelectedTaskIndex() === null) { return }
-            if (this.getSelectedTaskIndex() <= 0) { return }
-            const selectedTask = this.taskStore.get(this.getSelectedTaskIndex())
-            if (selectedTask.level <= 0) { return }
-            const taskIndexesToUnindent = [this.getSelectedTaskIndex()]
-                .concat(this.taskStore.getSubtasks(this.getSelectedTaskIndex()))
-            history.commit()
-            taskIndexesToUnindent.forEach(i => {
-                this.taskStore.addLevel(i, -1)
-            })
-            history.commit()
-        }
-    **/
+    }
+
+    public function unindentSelectedTask() {
+        if (getSelectedTaskIndex() == null) return;
+        if (getSelectedTaskIndex() <= 0) return;
+        final selectedTask = taskStore.get(getSelectedTaskIndex());
+        if (selectedTask.level <= 0) return;
+        final taskIndexesToUnindent = [getSelectedTaskIndex()]
+            .concat(taskStore.getSubtasks(getSelectedTaskIndex()));
+        for (i in taskIndexesToUnindent) taskStore.addLevel(i, -1);
+    }
 }
