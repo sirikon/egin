@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "postinstall": "./copy-deps.sh"
+        "postinstall": "./postinstall.sh"
     },
     "dependencies": {
         "dropbox": "^8.2.0",

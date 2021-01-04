@@ -6,9 +6,12 @@ class TaskStore {
     var taskListId: String;
     var store: Store;
 
-    public function new(taskListId: String) {
+    public function create(taskListId: String) {
+        return new TaskStore(taskListId, Store.instance);
+    }
+    public function new(taskListId: String, store: Store) {
         this.taskListId = taskListId;
-        this.store = Store.instance;
+        this.store = store;
     }
 
     public function getAll(): Array<Task> {
@@ -75,7 +78,7 @@ class TaskStore {
         var i = index + 1;
         var stop = false;
 
-        while (i < all.length && !stop && result != null) {
+        while (i < all.length && !stop && result == null) {
             final task = all[i];
 
             if (task.level == baseLevel) {
@@ -132,7 +135,7 @@ class TaskStore {
             : newIndex;
         final tasks = all.splice(index, size);
         for (index => task in tasks) {
-            tasks.insert(finalIndex+index, task);
+            all.insert(finalIndex+index, task);
         }
         return finalIndex;
     }

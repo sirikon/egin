@@ -1,3 +1,5 @@
 # Distribution files
 /dist/**/*
 !/dist/index.html
+/test/out/**/*
+!/test/out/index.html

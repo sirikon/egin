@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Jasmine Spec Runner v3.6.0</title>
+
+  <link rel="shortcut icon" type="image/png" href="vendor/jasmine_favicon.png">
+  <link rel="stylesheet" href="vendor/jasmine.css">
+
+  <script src="vendor/jasmine.js"></script>
+  <script src="vendor/jasmine-html.js"></script>
+  <script src="vendor/boot.js"></script>
+
+  <script src="spec.js"></script>
+
+  <script type="text/javascript">
+    const testClasses = test.Spec.testClasses;
+
+    testClasses.forEach(testClass => {
+      describe(getClassName(testClass), () => {
+        const methods = getMethods(testClass);
+        methods.forEach(method => {
+          it(method, () => {
+            const testInstance = new testClass();
+            testInstance.beforeEach && testInstance.beforeEach();
+            testInstance[method]();
+          });
+        });
+      });
+    });
+
+    function getClassName(clazz) {
+      const classPath = clazz.__name__.split('.');
+      return classPath[classPath.length-1];
+    }
+
+    function getMethods(clazz) {
+      const exceptions = ['__class__', 'beforeEach'];
+      return Object.keys(clazz.prototype)
+        .filter(k => typeof clazz.prototype[k] === 'function')
+        .filter(k => exceptions.indexOf(k) === -1)
+    }
+  </script>
+
+</head>
+
+<body>
+</body>
+</html>

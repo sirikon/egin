@@ -1,5 +1,13 @@
---class-path src
---main Main
 --library mithril:2.2.1
+--class-path src
+--each
+
+--main Main
 --dce full
 --js dist/main.js
+
+--next
+--class-path test
+--main test.Spec
+--dce no
+--js test/out/spec.js
