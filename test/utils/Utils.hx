@@ -39,6 +39,13 @@ class Utils {
         store.state.taskLists[taskListId].tasks = mocksToTasks(mocks);
     }
 
+    public function givenSelectedTaskIndex(index: Int) {
+        if (store.state.taskLists[taskListId] == null) {
+            store.state.taskLists[taskListId] = { tasks: [], selectedTaskIndex: null }
+        }
+        store.state.taskLists[taskListId].selectedTaskIndex = index;
+    }
+
     public function expectTasks(mocks: Array<MockTask>) {
         expect(store.state.taskLists[taskListId].tasks).toEqual(mocksToTasks(mocks));
     }

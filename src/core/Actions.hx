@@ -13,6 +13,7 @@ class Actions {
     }
 
     public function getSelectedTaskIndex(): Null<Int> {
+        if (store.state.taskLists[taskListId] == null) return null;
         final value = store.state.taskLists[taskListId].selectedTaskIndex;
         return value != null ? value : null;
     }
