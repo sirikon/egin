@@ -67,6 +67,7 @@ class Actions {
     }
 
     public function removeSelectedTask() {
+        if (getSelectedTaskIndex() == null) return;
         removeTask(getSelectedTaskIndex());
     }
 
