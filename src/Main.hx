@@ -1,4 +1,6 @@
+import js.html.Console;
 import mithril.M;
+import mithril.M.m;
 
 class TodoComponent implements Mithril
 {
@@ -13,17 +15,25 @@ class TodoComponent implements Mithril
     public function view() {
         m("div", [
             m("h1", "To do"),
-            m("table", todos.map(function(todo) {
-                m("tr", [
-                    m("td", m("input[type=checkbox]", {
-                        onclick: (e) -> todo.done = e.target.checked,
-                        checked: todo.done
-                    })),
-                    m("td", todo.description)
-                ]);
-            }))
+            m("table", todos.map((todo) -> m(TodoItemComponent, { todo: todo })))
         ]);
     }
+}
+
+class TodoItemComponent {
+    public static function view(vnode: Vnode<Any>) {
+        var todo = getTodo(vnode);
+        return m("tr", [
+            m("td", m("input[type=checkbox]", {
+                onclick: (e) -> todo.done = e.target.checked,
+                checked: todo.done
+            })),
+            m("td", todo.description)
+        ]);
+    }
+
+    static function getTodo(vnode: Vnode<Any>): Todo
+        return vnode.attrs.get('todo');
 }
 
 typedef Todo = {
@@ -37,16 +47,16 @@ class TodoF {
     }
 }
 
+@:expose
 class Main
 {
     // Program entry point
+    static final todos = [
+        TodoF.create('Learn Haxe', true),
+        TodoF.create('??'),
+        TodoF.create('Profit!')
+    ];
     static function main() {
-        var todos = [
-            TodoF.create('Learn Haxe', true),
-            TodoF.create('??'),
-            TodoF.create('Profit!')
-        ];
-        
         M.mount(js.Browser.document.body, new TodoComponent(todos));
     }
 }
