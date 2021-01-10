@@ -1,6 +1,5 @@
 import views.tasklist.TaskListView;
 import js.Browser;
-import js.html.Console;
 import mithril.M;
 import mithril.M.m;
 

@@ -1,6 +1,5 @@
 package views.tasklist;
 
-import mithril.M.Mithril;
 import views.tasklist.components.TaskComponent;
 import core.Actions;
 import core.TaskStore;
@@ -13,7 +12,7 @@ typedef TaskListViewState = {
     var helpMenuVisible: Bool;
 }
 
-class TaskListView implements Mithril {
+class TaskListView {
     static function taskListId(vnode: Vnode<Any>): String return vnode.attrs.get("taskListId");
     static function taskStore(vnode: Vnode<Any>) return new TaskStore(taskListId(vnode), Store.instance);
     static function actions(vnode: Vnode<Any>): Actions return new Actions(taskListId(vnode), Store.instance, taskStore(vnode));
