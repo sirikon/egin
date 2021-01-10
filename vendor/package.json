@@ -1,11 +1,18 @@
 {
     "scripts": {
-        "postinstall": "./postinstall.sh"
+        "postinstall": "./postinstall.sh && npm run libs",
+        "libs": "rollup -c"
     },
     "dependencies": {
         "dropbox": "^8.2.0",
         "fast-json-patch": "^3.0.0-1",
         "hyperactiv": "^0.8.4",
         "mithril": "^2.0.4"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^17.0.0",
+        "@rollup/plugin-node-resolve": "^11.0.1",
+        "rollup": "^2.36.1",
+        "rollup-plugin-terser": "^7.0.2"
     }
 }

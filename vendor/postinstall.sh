@@ -2,7 +2,6 @@
 set -euo pipefail
 
 function main {
-    copy-deps
     download-jasmine
 }
 
@@ -26,23 +25,6 @@ function download-jasmine {
         
         rm -rf ./ziparchive
     )
-}
-
-function copy-deps {
-    mkdir -p ../dist/vendor
-    (cd ../dist/vendor && rm -rf *)
-    copy-dep "mithril" "mithril.min.js" "mithril.js"
-    copy-dep "fast-json-patch" "dist/fast-json-patch.min.js" "fast-json-patch.js"
-    copy-dep "hyperactiv" "dist/index.js" "hyperactiv.js"
-    copy-dep "dropbox" "dist/Dropbox-sdk.min.js" "dropbox-sdk.js"
-}
-
-function copy-dep {
-    package="${1}"
-    path="${2}"
-    dest="${3}"
-
-    cp "./node_modules/${package}/${path}" "../dist/vendor/${dest}"
 }
 
 main
