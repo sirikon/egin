@@ -1,7 +1,7 @@
 {
     "scripts": {
-        "postinstall": "./postinstall.sh && npm run libs",
-        "libs": "rollup -c"
+        "postinstall": "./postinstall.sh && npm run build-base",
+        "build-base": "rollup -c"
     },
     "dependencies": {
         "dropbox": "^8.2.0",
