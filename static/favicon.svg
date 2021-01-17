@@ -5,9 +5,9 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   version="1.1"
+   id="emoji"
    viewBox="0 0 72 72"
-   id="emoji">
+   version="1.1">
   <metadata
      id="metadata3775">
     <rdf:RDF>
@@ -23,20 +23,21 @@
   <defs
      id="defs3773" />
   <g
-     transform="matrix(1.3584927,0,0,1.3584927,-12.905736,-13.243218)"
-     id="color">
+     style="fill:#ff7f2a"
+     id="color"
+     transform="matrix(1.3584927,0,0,1.3584927,-12.905736,-13.243218)">
     <path
-       style="fill:#b1cc33"
+       d="m 61.5,23.3 -8.013,-8.013 -25.71,25.71 -9.26,-9.26 -8.013,8.013 17.42,17.44 z"
        id="path3764"
-       d="m 61.5,23.3 -8.013,-8.013 -25.71,25.71 -9.26,-9.26 -8.013,8.013 17.42,17.44 z" />
+       style="fill:#ff7f2a" />
   </g>
   <g
-     transform="matrix(1.3584927,0,0,1.3584927,-12.905736,-13.243218)"
-     id="line">
+     id="line"
+     transform="matrix(1.3584927,0,0,1.3584927,-12.905736,-13.243218)">
     <path
-       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10"
-       id="path3767"
+       stroke-miterlimit="10"
        d="M 10.5,39.76 27.92,57.2 61.5,23.31 l -8.013,-8.013 -25.71,25.71 -9.26,-9.26 z"
-       stroke-miterlimit="10" />
+       id="path3767"
+       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10" />
   </g>
 </svg>

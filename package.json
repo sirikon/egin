@@ -1,8 +1,7 @@
 {
     "type": "module",
     "scripts": {
-        "start:int": "stmux -M -- [ -t 'tsc type check' -s 4/5 'npm run -s type-check-app' : [ -t 'style builder' 'npm run -s build-style-watch' .. -t 'app builder' 'npm run -s build-app-watch' .. -t 'static serve' 'npm run -s serve-static' ] ]",
-        "start": "concurrently -c magenta,cyan,yellow -n style,app,static \"npm run -s build-style-watch\" \"npm run -s build-app-watch\" \"npm run -s serve-static\"",
+        "start": "stmux -M -- [ -t 'tsc type check' -s 4/5 'npm run -s type-check-app' : [ -t 'style builder' 'npm run -s build-style-watch' .. -t 'app builder' 'npm run -s build-app-watch' .. -t 'static serve' 'npm run -s serve-static' ] ]",
         "build": "npm run build-style && npm run copy-static && npm run build-app",
 
         "type-check-app": "tsc src/main.ts --watch --noEmit",
