@@ -3,6 +3,7 @@ import * as history from './history'
 
 import * as local from '../storageBackends/localStorage'
 import * as dropbox from '../storageBackends/dropbox'
+import { TaskListState } from './models'
 
 const backends = {
     local,
@@ -44,9 +45,9 @@ function getTaskListState(taskListId) {
     return state.taskLists[taskListId]
 }
 
-function setTaskListState(taskListId, newState) {
+function setTaskListState(taskListId: string, newState: TaskListState) {
     if (!state.taskLists[taskListId]) {
-        state.taskLists[taskListId] = {}
+        (state.taskLists[taskListId] as any) = {}
     }
     Object.keys(newState).forEach(k => {
         state.taskLists[taskListId][k] = newState[k]

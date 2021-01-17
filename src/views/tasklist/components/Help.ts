@@ -1,7 +1,9 @@
 import m from 'mithril'
 
+import { HotkeyMap } from '../hotkeys'
+
 export default function Help(vnode) {
-    const hotkeys = () => vnode.attrs.hotkeys
+    const hotkeys = (): HotkeyMap => vnode.attrs.hotkeys
     const view = () => m('div.egin-help', [
         m('div', [
             m('h1', 'Help'),

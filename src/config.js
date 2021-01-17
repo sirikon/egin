@@ -1,1 +1,0 @@
-window.HISTORIFICATION_ENABLED = true

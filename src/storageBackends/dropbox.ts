@@ -7,7 +7,7 @@ export function get(taskListId) {
     return getAuthenticatedClient()
         .filesDownload({path: filePath(taskListId)})
         .then(response => {
-            return response.result.fileBlob.text()
+            return (response.result as any).fileBlob.text() as Promise<string>
         })
         .then(text => {
             return JSON.parse(text)
@@ -24,7 +24,7 @@ export function save(taskListId, taskListState) {
             path: filePath(taskListId),
             contents: JSON.stringify(taskListState),
             mode: 'overwrite'
-        })
+        } as any)
 }
 
 export function list() {
@@ -41,7 +41,7 @@ export function list() {
 
 export function getAuthUrl() {
     var dbx = new Dropbox({ clientId: CLIENT_ID });
-    return dbx.auth.getAuthenticationUrl(`${location.protocol}//${location.host}/dropbox-callback.html`);
+    return (dbx as any).auth.getAuthenticationUrl(`${location.protocol}//${location.host}/dropbox-callback.html`) as Promise<string>;
 }
 
 export function isAuthenticated() {

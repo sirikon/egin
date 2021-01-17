@@ -1,25 +1,24 @@
-import { state } from './state.js'
+import { Task } from './models';
+import { state } from './state'
 
 export default class TaskStore {
-    constructor(taskListId) {
-        this.taskListId = taskListId
-    }
+    constructor(private taskListId: string) {}
 
-    getAll() {
+    getAll(): Task[] {
         if (!state.taskLists[this.taskListId]) { return [] }
         return state.taskLists[this.taskListId].tasks;
     }
 
-    get(index) {
+    get(index: number): Task {
         return this.getAll()[index];
     }
 
-    getSubtasks(index) {
+    getSubtasks(index: number): number[] {
         const parentTask = this.get(index)
         const downwardTasks = this.getAll().slice(index+1)
-        const matchingTaskIndexes = []
+        const matchingTaskIndexes: number[] = [];
         let i = 0;
-        let stop = 0;
+        let stop = false;
         while(i < downwardTasks.length && !stop) {
             const task = downwardTasks[i]
             if (task.level > parentTask.level) {
@@ -32,11 +31,11 @@ export default class TaskStore {
         return matchingTaskIndexes
     }
 
-    getPossiblePreviousPosition(index) {
+    getPossiblePreviousPosition(index: number): number | null {
         const initialTask = this.get(index)
         let matchingTaskIndex = null
         let i = index-1
-        let stop = 0;
+        let stop = false;
         while(i >= 0 && !stop) {
             const task = this.getAll()[i]
             if (task.level === initialTask.level) {
@@ -55,7 +54,7 @@ export default class TaskStore {
         return matchingTaskIndex
     }
 
-    getPossibleNextPosition(index) {
+    getPossibleNextPosition(index: number): number | null {
         const baseLevel = this.get(index).level
 
         let result = null
@@ -80,45 +79,45 @@ export default class TaskStore {
         return result
     }
 
-    count() {
+    count(): number {
         return this.getAll().length;
     }
 
-    insert(index, task) {
+    insert(index: number, task: Task) {
         this.getAll().splice(index, 0, task)
     }
 
-    setDone(index, value) {
+    setDone(index: number, value: Boolean) {
         this.getAll()[index].done = value;
     }
 
-    setName(index, value) {
+    setName(index: number, value: string) {
         this.getAll()[index].name = value;
     }
 
-    addLevel(index, value) {
+    addLevel(index: number, value: number) {
         this.getAll()[index].level = this.getAll()[index].level + value;
     }
 
-    toggle(index) {
+    toggle(index: number) {
         this.getAll()[index].done = !this.getAll()[index].done
     }
 
-    toggleHeader(index) {
+    toggleHeader(index: number) {
         this.getAll()[index].header = !this.getAll()[index].header
     }
 
-    move(index, size, newIndex) {
+    move(index: number, size: number, newIndex: number) {
         if (index === newIndex) { return }
         const finalIndex = newIndex > index
             ? newIndex - size
             : newIndex
         const tasks = this.getAll().splice(index, size)
-        Array.prototype.splice.apply(this.getAll(), [finalIndex, 0].concat(tasks))
+        Array.prototype.splice.apply(this.getAll(), ([finalIndex, 0] as any[]).concat(tasks))
         return finalIndex
     }
 
-    remove(index) {
+    remove(index: number) {
         this.getAll().splice(index, 1)
     }
 }

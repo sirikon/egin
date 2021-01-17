@@ -1,23 +1,24 @@
-import TaskStore from './TaskStore.js'
-import { state } from './state.js'
-import * as history from './history.js'
+import TaskStore from './TaskStore'
+import { state } from './state'
+import * as history from './history'
+import { Task } from './models';
 
 export default class Actions {
-    constructor(taskListId) {
-        this.taskListId = taskListId
+    private taskStore: TaskStore;
+    constructor(private taskListId: string) {
         this.taskStore = new TaskStore(taskListId)
     }
 
-    getSelectedTaskIndex() {
+    getSelectedTaskIndex(): number {
         const value = state.taskLists[this.taskListId].selectedTaskIndex
         return value !== undefined ? value : null
     }
-    
-    setSelectedTaskIndex(index) {
+
+    setSelectedTaskIndex(index: number) {
         state.taskLists[this.taskListId].selectedTaskIndex = index
     }
 
-    getSelectedTask() {
+    getSelectedTask(): Task {
         if (this.getSelectedTaskIndex() === null) { return null; }
         return this.taskStore.get(this.getSelectedTaskIndex())
     }
@@ -47,7 +48,7 @@ export default class Actions {
             if (this.getSelectedTaskIndex() < index) { return }
     
             if (this.taskStore.count() === 0) {
-                setSelectedTaskIndex(null)
+                this.setSelectedTaskIndex(null)
                 return
             }
     
@@ -128,7 +129,7 @@ export default class Actions {
             return
         }
     
-        this.taskStore.insert(indexToInsert, {name: '', done: false, level: newTaskLevel})
+        this.taskStore.insert(indexToInsert, { name: '', done: false, level: newTaskLevel, header: false })
         this.setSelectedTaskIndex(indexToInsert)
         history.commit()
     }

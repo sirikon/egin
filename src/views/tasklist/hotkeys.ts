@@ -1,7 +1,14 @@
 import * as history from '../../core/history'
 import * as storage from '../../core/storage'
 
-export function buildHotkeys(taskListId, taskListState, actions) {
+export interface Hotkey {
+    name: string;
+    action: (e: Event) => void;
+}
+
+export type HotkeyMap = { [key:string]: Hotkey }
+
+export function buildHotkeys(taskListId, taskListState, actions): HotkeyMap {
     return {
         ArrowUp: {
             name: 'Jump to task above',
