@@ -58,7 +58,6 @@ class TaskListView {
     }
 
     @:keep public function oncreate(vnode: Vnode<Dynamic>) {
-        Console.log("Heyo oncreate");
         keydownListener = keydownListenerBuilder(hotkeys(vnode, state));
         Browser.document.addEventListener('keydown', keydownListener, true);
     }
@@ -68,7 +67,6 @@ class TaskListView {
     }
 
     public function view(vnode: Vnode<Dynamic>): Vnodes {
-        Console.log("Heyo view");
         return [
             m('div.egin-task-list', mapEachTask(vnode,
                 (i) -> m(TaskComponent, { key: i, taskStore: taskStore(vnode), actions: actions(vnode) }))),

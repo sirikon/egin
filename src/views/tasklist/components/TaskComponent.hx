@@ -46,9 +46,9 @@ class TaskComponent {
             : textInput.blur();
     }
 
-    public static function oncreate(vnode: Vnode<Any>) updateFocus(vnode);
-    public static function onupdate(vnode: Vnode<Any>) updateFocus(vnode);
-    
+    @:keep public static function oncreate(vnode: Vnode<Any>) updateFocus(vnode);
+    @:keep public static function onupdate(vnode: Vnode<Any>) updateFocus(vnode);
+
     public static function view(vnode: Vnode<Any>) {
         return m('div.egin-task', { 'class': classes(vnode), style: style(vnode) }, [
             m('input', {
