@@ -1,3 +1,4 @@
+import m from 'mithril'
 import * as history from '../../../core/history'
 
 export default function Task(vnode) {

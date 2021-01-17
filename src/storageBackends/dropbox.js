@@ -1,4 +1,4 @@
-import Dropbox from 'dropbox'
+import { Dropbox } from 'dropbox'
 
 const CLIENT_ID = 'qf4qj6a6oodfh1m'
 
@@ -40,7 +40,7 @@ export function list() {
 }
 
 export function getAuthUrl() {
-    var dbx = new Dropbox.Dropbox({ clientId: CLIENT_ID });
+    var dbx = new Dropbox({ clientId: CLIENT_ID });
     return dbx.auth.getAuthenticationUrl(`${location.protocol}//${location.host}/dropbox-callback.html`);
 }
 
@@ -57,7 +57,7 @@ function getAccessToken() {
 function getAuthenticatedClient() {
     const accessToken = getAccessToken();
     if (!accessToken) { throw new Error("You are not authenticated") }
-    return new Dropbox.Dropbox({ accessToken });
+    return new Dropbox({ accessToken });
 }
 
 // function stateFileExists() {

@@ -1,5 +1,4 @@
 import './config'
-import './style.scss'
 
 import m from "mithril"
 import Home from './views/home/Home'
