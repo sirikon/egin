@@ -2,6 +2,7 @@ package core;
 
 import core.Models;
 
+@:expose
 class Store {
     public static final instance = new Store();
 

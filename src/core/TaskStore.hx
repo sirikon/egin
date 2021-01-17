@@ -14,8 +14,13 @@ class TaskStore {
         this.store = store;
     }
 
+    public function ensureExists() {
+        if (store.state.taskLists.exists(taskListId)) return;
+        store.state.taskLists.set(taskListId, { tasks: [], selectedTaskIndex: null });
+    }
+
     public function getAll(): Array<Task> {
-        if (!store.state.taskLists.exists(taskListId)) { return []; }
+        ensureExists();
         return store.state.taskLists.get(taskListId).tasks;
     }
 

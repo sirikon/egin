@@ -19,6 +19,7 @@ class Actions {
     }
 
     public function setSelectedTaskIndex(index: Int) {
+        taskStore.ensureExists();
         store.state.taskLists[taskListId].selectedTaskIndex = index;
     }
 
