@@ -1,11 +1,14 @@
 {
     "type": "module",
     "scripts": {
+        "start:int": "stmux -M -- [ -t 'tsc type check' -s 4/5 'npm run -s type-check-app' : [ -t 'style builder' 'npm run -s build-style-watch' .. -t 'app builder' 'npm run -s build-app-watch' .. -t 'static serve' 'npm run -s serve-static' ] ]",
         "start": "concurrently -c magenta,cyan,yellow -n style,app,static \"npm run -s build-style-watch\" \"npm run -s build-app-watch\" \"npm run -s serve-static\"",
         "build": "npm run build-style && npm run copy-static && npm run build-app",
 
-        "build-app":       "esbuild src/main.js --bundle --external:crypto --minify --outfile=dist/main.js",
-        "build-app-watch": "esbuild src/main.js --bundle --external:crypto --serve=127.0.0.1:8001",
+        "type-check-app": "tsc src/main.ts --watch --noEmit",
+
+        "build-app":       "esbuild src/main.ts --bundle --external:crypto --minify --outfile=dist/main.js",
+        "build-app-watch": "esbuild src/main.ts --bundle --external:crypto --serve=127.0.0.1:8001",
 
         "build-style":       "sass src/style.scss:dist/style.css --no-source-map --style=compressed",
         "build-style-watch": "sass src/style.scss:static/style.css --no-source-map --watch",
@@ -21,11 +24,13 @@
         "mithril": "^2.0.4"
     },
     "devDependencies": {
+        "chai": "^4.2.0",
+        "concurrently": "^5.3.0",
         "esbuild": "^0.8.32",
         "http-server": "^0.12.3",
-        "concurrently": "^5.3.0",
-        "chai": "^4.2.0",
         "mocha": "^8.2.1",
-        "sass": "^1.30.0"
+        "sass": "^1.30.0",
+        "stmux": "^1.8.1",
+        "typescript": "^4.1.3"
     }
 }
