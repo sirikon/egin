@@ -24,26 +24,28 @@ export default function Home() {
             fetchBackendTaskLists(backend));
     }
 
-    const view = () => m('div.egin-home', [
-        m('div.egin-home-content', [
-            m('h1.egin-home-header', [
-                m('img', { src: '/icon.svg' }),
-                m('span', 'Egin')
-            ]),
-            !dropbox.isAuthenticated() && m('a', {href: dropbox.getAuthUrl()}, 'Login with Dropbox'),
-            m('div', backendsKeys.map(backend => m('div', [
-                m('h3.egin-home-backend-title', [
-                    m('span', backends[backend].displayName),
-                    m('button.egin-home-create-tasklist', {type: 'button', onclick: () => createTaskList(backend)}, '+')
+    const view = () =>
+        m('div.egin-home', [
+            m('div.egin-home-content', [
+                m('h1.egin-home-header', [
+                    m('img', { src: '/icon.svg' }),
+                    m('span', 'Egin')
                 ]),
-                taskListsPerBackend[backend] === undefined
-                    ? m('span.egin-home-tasklist-loading', '...')
-                    : m('div', (taskListsPerBackend[backend] || []).map(taskListKey => m('div', [
-                        m('a.egin-home-tasklist-link', {href: `#/${backend}/${taskListKey}`}, taskListKey)
+                !dropbox.isAuthenticated() && m('a', {href: dropbox.getAuthUrl()}, 'Login with Dropbox'),
+                m('div', backendsKeys.map(backend => 
+                    m('div', [
+                        m('h3.egin-home-backend-title', [
+                            m('span', backends[backend].displayName),
+                            m('button.egin-home-create-tasklist', {type: 'button', onclick: () => createTaskList(backend)}, '+')
+                        ]),
+                        taskListsPerBackend[backend] === undefined
+                            ? m('span.egin-home-tasklist-loading', '...')
+                            : m('div', (taskListsPerBackend[backend] || []).map(taskListKey => m('div', [
+                                m('a.egin-home-tasklist-link', {href: `#/${backend}/${taskListKey}`}, taskListKey)
+                            ])))
                     ])))
-            ])))
-        ])
-    ]);
+            ])
+        ]);
 
     return { view, oncreate }
 }
