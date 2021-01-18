@@ -34,8 +34,8 @@ export default class Actions {
         this.taskStore.toggleHeader(this.getSelectedTaskIndex())
         history.commit()
     }
-    
-    removeTask(index) {
+
+    removeTask(index: number) {
         (() => {
             const taskIndexesToRemove = [index]
                 .concat(this.taskStore.getSubtasks(index))
@@ -66,7 +66,7 @@ export default class Actions {
         history.commit()
     }
     
-    removeTaskIfEmpty(index) {
+    removeTaskIfEmpty(index: number) {
         const task = this.taskStore.get(index)
         if (task && task.name === '') { this.removeTask(index) }
     }
