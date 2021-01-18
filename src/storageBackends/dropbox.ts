@@ -1,9 +1,10 @@
 import { Dropbox } from 'dropbox'
-import { StorageBackend, TaskListState } from '../core/models'
+import { StorageBackend, StorageBackendInfo, TaskListState } from '../core/models'
 
 const CLIENT_ID = 'qf4qj6a6oodfh1m'
 
 export class DropboxBackend implements StorageBackend {
+    readonly displayName = 'Dropbox'
 
     async get(taskListId: string): Promise<TaskListState | null> {
         if (!isAuthenticated()) { return null }
@@ -23,7 +24,7 @@ export class DropboxBackend implements StorageBackend {
             } as any);
     }
 
-    async list(): Promise<String[]> {
+    async list(): Promise<string[]> {
         if (!isAuthenticated()) { return []; }
         const response = await getAuthenticatedClient()
             .filesListFolder({path: ''});

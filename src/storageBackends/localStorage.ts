@@ -1,6 +1,7 @@
 import { StorageBackend, TaskListState } from "../core/models";
 
 export class LocalStorageBackend implements StorageBackend {
+    readonly displayName = 'Local'
 
     async get(taskListId: string): Promise<TaskListState | null> {
         const data = localStorage.getItem(this.storageKey(taskListId))
@@ -13,7 +14,7 @@ export class LocalStorageBackend implements StorageBackend {
         localStorage.setItem(this.storageKey(taskListId), JSON.stringify(taskListState));
     }
 
-    async list(): Promise<String[]> {
+    async list(): Promise<string[]> {
         return Object.keys(localStorage)
             .filter(k => k.indexOf("egin_tasklist_") === 0)
             .map(k => k.substr("egin_tasklist_".length));

@@ -15,8 +15,12 @@ export interface State {
     storageStatus: { [taskListId: string]: string };
 }
 
-export interface StorageBackend {
+export interface StorageBackendInfo {
+    readonly displayName: string;
+}
+
+export interface StorageBackend extends StorageBackendInfo {
     get(taskListId: string): Promise<TaskListState | null>;
     save(taskListId: string, taskListState: TaskListState): Promise<void>;
-    list(): Promise<String[]>;
+    list(): Promise<string[]>;
 }

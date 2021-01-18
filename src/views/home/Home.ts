@@ -4,43 +4,46 @@ import * as dropbox from '../../storageBackends/dropbox'
 
 export default function Home() {
 
-    let backends = storage.getBackends()
-        .reduce((map, backend) => (map[backend]=[], map), {})
+    const backends = storage.getBackends();
+    const backendsKeys = Object.keys(backends);
+    const taskListsPerBackend: { [backend:string]: string[] } = {};
 
-    const createTaskList = (backend) => {
-        const taskListName = prompt('Task list name')
+    const createTaskList = (backend: string) => {
+        const taskListName = prompt('Task list name');
         if (taskListName === null) { return }
         location.hash = `#/${backend}/${taskListName}`
     }
 
-    const oninit = () => {
-        Object.keys(backends).forEach((backend) => {
-            storage.list(backend)
-                .then(taskLists => {
-                    backends[backend] = taskLists;
-                    m.redraw()
-                })
-        })
+    const fetchBackendTaskLists = async (backend: string) => {
+        taskListsPerBackend[backend] = await storage.list(backend);
+        m.redraw();
+    }
+
+    const oncreate = () => {
+        Object.keys(backends).forEach((backend) =>
+            fetchBackendTaskLists(backend));
     }
 
     const view = () => m('div.egin-home', [
-        m('h1', 'Egin'),
-        !dropbox.isAuthenticated() && m('a', {href: dropbox.getAuthUrl()}, 'Login with Dropbox'),
-        m('ul', Object.keys(backends).map(backend => {
-            return m('li', [
-                m('div', [
-                    m('span', backend),
-                    " ",
-                    m('button', {type: 'button', onclick: () => createTaskList(backend)}, 'New')
+        m('div.egin-home-content', [
+            m('h1.egin-home-header', [
+                m('img', { src: '/icon.svg' }),
+                m('span', 'Egin')
+            ]),
+            !dropbox.isAuthenticated() && m('a', {href: dropbox.getAuthUrl()}, 'Login with Dropbox'),
+            m('div', backendsKeys.map(backend => m('div', [
+                m('h3.egin-home-backend-title', [
+                    m('span', backends[backend].displayName),
+                    m('button.egin-home-create-tasklist', {type: 'button', onclick: () => createTaskList(backend)}, '+')
                 ]),
-                m('ul', backends[backend].map(taskListKey => {
-                    return m('li', [
-                        m('a', {href: `#/${backend}/${taskListKey}`}, taskListKey)
-                    ])
-                }))
-            ])
-        }))
+                taskListsPerBackend[backend] === undefined
+                    ? m('span.egin-home-tasklist-loading', '...')
+                    : m('div', (taskListsPerBackend[backend] || []).map(taskListKey => m('div', [
+                        m('a.egin-home-tasklist-link', {href: `#/${backend}/${taskListKey}`}, taskListKey)
+                    ])))
+            ])))
+        ])
     ]);
 
-    return { view, oninit }
+    return { view, oncreate }
 }

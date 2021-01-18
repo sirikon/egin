@@ -3,11 +3,11 @@ import * as history from './history'
 
 import { LocalStorageBackend } from '../storageBackends/localStorage'
 import { DropboxBackend } from '../storageBackends/dropbox'
-import { StorageBackend, TaskListState } from './models'
+import { StorageBackend, StorageBackendInfo, TaskListState } from './models'
 
 const backends: { [key: string]: StorageBackend } = {
     local: new LocalStorageBackend(),
-    dropbox: new DropboxBackend()
+    dropbox: new DropboxBackend(),
 }
 
 const lastSavedTaskListStates = {}
@@ -33,8 +33,9 @@ export function list(backend) {
     return backends[backend].list()
 }
 
-export function getBackends() {
+export function getBackends(): { [backendKey: string]: StorageBackendInfo } {
     return Object.keys(backends)
+        .reduce((map, backend) => (map[backend]=backends[backend], map), {})
 }
 
 function getBackend(taskListId) {
