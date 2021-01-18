@@ -14,3 +14,9 @@ export interface State {
     taskLists: { [taskListId: string]: TaskListState };
     storageStatus: { [taskListId: string]: string };
 }
+
+export interface StorageBackend {
+    get(taskListId: string): Promise<TaskListState | null>;
+    save(taskListId: string, taskListState: TaskListState): Promise<void>;
+    list(): Promise<String[]>;
+}

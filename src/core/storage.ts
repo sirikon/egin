@@ -1,23 +1,23 @@
 import { state } from './state'
 import * as history from './history'
 
-import * as local from '../storageBackends/localStorage'
-import * as dropbox from '../storageBackends/dropbox'
-import { TaskListState } from './models'
+import { LocalStorageBackend } from '../storageBackends/localStorage'
+import { DropboxBackend } from '../storageBackends/dropbox'
+import { StorageBackend, TaskListState } from './models'
 
-const backends = {
-    local,
-    dropbox
+const backends: { [key: string]: StorageBackend } = {
+    local: new LocalStorageBackend(),
+    dropbox: new DropboxBackend()
 }
 
 const lastSavedTaskListStates = {}
 
-export function load(taskListId) {
+export function load(taskListId: string) {
     setStorageStatus(taskListId, 'loading')
     const backend = getBackend(taskListId)
     return backend.get(taskListId.split('/')[1])
         .then((taskListState) => {
-            setTaskListState(taskListId, taskListState || {tasks:[]})
+            setTaskListState(taskListId, taskListState || { tasks:[], selectedTaskIndex: null })
             setStorageStatus(taskListId, 'pristine')
         })
 }

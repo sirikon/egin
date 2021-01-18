@@ -1,42 +1,39 @@
 import { Dropbox } from 'dropbox'
+import { StorageBackend, TaskListState } from '../core/models'
 
 const CLIENT_ID = 'qf4qj6a6oodfh1m'
 
-export function get(taskListId) {
-    if (!isAuthenticated()) { return Promise.resolve(null) }
-    return getAuthenticatedClient()
-        .filesDownload({path: filePath(taskListId)})
-        .then(response => {
-            return (response.result as any).fileBlob.text() as Promise<string>
-        })
-        .then(text => {
-            return JSON.parse(text)
-        }, (err) => {
-            console.log('Tasklist not found', err)
-            return null;
-        })
-}
+export class DropboxBackend implements StorageBackend {
 
-export function save(taskListId, taskListState) {
-    if (!isAuthenticated()) { return Promise.resolve() }
-    return getAuthenticatedClient()
-        .filesUpload({
-            path: filePath(taskListId),
-            contents: JSON.stringify(taskListState),
-            mode: 'overwrite'
-        } as any)
-}
+    async get(taskListId: string): Promise<TaskListState | null> {
+        if (!isAuthenticated()) { return null }
+        const response = await getAuthenticatedClient()
+            .filesDownload({path: filePath(taskListId)});
+        const textResponse = await ((response.result as any).fileBlob.text() as Promise<string>);
+        return JSON.parse(textResponse);
+    }
 
-export function list() {
-    if (!isAuthenticated()) { return Promise.resolve([]) }
-    return getAuthenticatedClient()
-        .filesListFolder({path: ''})
-        .then(response => {
-            return response.result.entries
-                .map(e => e.path_lower.match(/\/(.+)\.json/))
-                .filter(e => !!e)
-                .map(e => e[1])
-        });
+    async save(taskListId: string, taskListState: TaskListState): Promise<void> {
+        if (!isAuthenticated()) { return }
+        await getAuthenticatedClient()
+            .filesUpload({
+                path: filePath(taskListId),
+                contents: JSON.stringify(taskListState),
+                mode: 'overwrite'
+            } as any);
+    }
+
+    async list(): Promise<String[]> {
+        if (!isAuthenticated()) { return []; }
+        const response = await getAuthenticatedClient()
+            .filesListFolder({path: ''});
+
+        return response.result.entries
+            .map(e => e.path_lower.match(/\/(.+)\.json/))
+            .filter(e => !!e)
+            .map(e => e[1]);
+    }
+
 }
 
 export function getAuthUrl() {
