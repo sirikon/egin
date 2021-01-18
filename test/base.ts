@@ -1,10 +1,9 @@
-import './config.js'
-import chai from 'chai'
-const expect = chai.expect
+import './config'
+import { expect } from 'chai'
 
-import Actions from '../src/core/Actions.js'
-import { state } from '../src/core/state.js'
-import TaskStore from '../src/core/TaskStore.js'
+import Actions from '../src/core/Actions'
+import { state } from '../src/core/state'
+import TaskStore from '../src/core/TaskStore'
 
 const taskListId = 'test/test'
 const actions = getActions()
@@ -44,10 +43,10 @@ export function reset() {
     }
 }
 
-export function mocksToTasks(mocks, level) {
+export function mocksToTasks(mocks, level?) {
     const result = []
     mocks.forEach(m => {
-        result.push({ name: m[0], done: m[1], level: level || 0 })
+        result.push({ name: m[0], done: m[1], level: level || 0, header: false })
         if (m[2]) {
             Array.prototype.push.apply(result, mocksToTasks(m[2], (level || 0)+1))
         }

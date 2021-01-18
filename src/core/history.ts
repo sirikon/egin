@@ -6,10 +6,10 @@ let previousState = null
 const stateHistory = []
 let delayedCommitTimeout = null
 
-const historificationEnabled = (window as any).HISTORIFICATION_ENABLED as Boolean;
+declare var HISTORIFICATION_ENABLED: boolean;
 
 export function commit() {
-    if(!historificationEnabled) { return }
+    if(!HISTORIFICATION_ENABLED) { return }
 
     cancelDelayedCommit()
     const patches = jsonpatch.compare(state, previousState)
@@ -19,7 +19,7 @@ export function commit() {
 }
 
 export function rollback() {
-    if(!historificationEnabled) { return }
+    if(!HISTORIFICATION_ENABLED) { return }
 
     commit()
     if (stateHistory.length === 0) { return }
@@ -29,7 +29,7 @@ export function rollback() {
 }
 
 export function delayedCommit() {
-    if(!historificationEnabled) { return }
+    if(!HISTORIFICATION_ENABLED) { return }
 
     cancelDelayedCommit()
     delayedCommitTimeout = setTimeout(() => {

@@ -1,5 +1,4 @@
-import chai from 'chai'
-const expect = chai.expect
+import { expect } from 'chai';
 
 import {
     reset,
@@ -7,7 +6,7 @@ import {
     expectTasks,
     mocksToTasks,
     getTaskStore
-} from './base.js'
+} from './base'
 const taskStore = getTaskStore()
 
 describe('TaskStore', () => {

@@ -1,0 +1,7 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "lib": ["ES2017"],
+    },
+    "include": ["./**/*.ts", "../src/**/*.ts"]
+}
