@@ -6,8 +6,15 @@ const CLIENT_ID = 'qf4qj6a6oodfh1m'
 export class DropboxBackend implements StorageBackend {
     readonly displayName = 'Dropbox'
 
+    isAuthenticated() { return !!getAccessToken(); }
+    getAuthenticationUrl() {
+        var dbx = new Dropbox({ clientId: CLIENT_ID });
+        return (dbx as any).auth
+            .getAuthenticationUrl(`${location.protocol}//${location.host}/dropbox-callback.html`) as string;
+    }
+
     async get(taskListId: string): Promise<TaskListState | null> {
-        if (!isAuthenticated()) { return null }
+        if (!this.isAuthenticated()) { return null }
         const response = await getAuthenticatedClient()
             .filesDownload({path: filePath(taskListId)});
         const textResponse = await ((response.result as any).fileBlob.text() as Promise<string>);
@@ -15,7 +22,7 @@ export class DropboxBackend implements StorageBackend {
     }
 
     async save(taskListId: string, taskListState: TaskListState): Promise<void> {
-        if (!isAuthenticated()) { return }
+        if (!this.isAuthenticated()) { return }
         await getAuthenticatedClient()
             .filesUpload({
                 path: filePath(taskListId),
@@ -25,7 +32,7 @@ export class DropboxBackend implements StorageBackend {
     }
 
     async list(): Promise<string[]> {
-        if (!isAuthenticated()) { return []; }
+        if (!this.isAuthenticated()) { return []; }
         const response = await getAuthenticatedClient()
             .filesListFolder({path: ''});
 
@@ -38,15 +45,6 @@ export class DropboxBackend implements StorageBackend {
             .map(e => e[1]);
     }
 
-}
-
-export function getAuthUrl() {
-    var dbx = new Dropbox({ clientId: CLIENT_ID });
-    return (dbx as any).auth.getAuthenticationUrl(`${location.protocol}//${location.host}/dropbox-callback.html`) as Promise<string>;
-}
-
-export function isAuthenticated() {
-    return !!getAccessToken();
 }
 
 const filePath = (taskListId: string) => `/${taskListId}.json`;

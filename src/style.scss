@@ -104,6 +104,11 @@ body {
                 background-color: #eee;
             }
 
+            &.is-login {
+                font-size: .8em;
+                padding: 0 .5em .1em .5em;
+            }
+
             > img {
                 height: .8em;
             }

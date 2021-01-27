@@ -38,6 +38,14 @@ export function getBackends(): { [backendKey: string]: StorageBackendInfo } {
         .reduce((map, backend) => (map[backend]=backends[backend], map), {} as { [backendKey: string]: StorageBackendInfo })
 }
 
+export function isAuthenticated(backend: string) {
+    return backends[backend].isAuthenticated()
+}
+
+export function getAuthenticationUrl(backend: string) {
+    return backends[backend].getAuthenticationUrl()
+}
+
 function getBackend(taskListId: string) {
     return backends[taskListId.split('/')[0]]
 }

@@ -3,6 +3,9 @@ import { StorageBackend, TaskListState } from "../core/models";
 export class LocalStorageBackend implements StorageBackend {
     readonly displayName = 'Local'
 
+    isAuthenticated() { return true; }
+    getAuthenticationUrl() { return ''; }
+
     async get(taskListId: string): Promise<TaskListState | null> {
         const data = localStorage.getItem(this.storageKey(taskListId))
         return data !== null

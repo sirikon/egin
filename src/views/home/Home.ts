@@ -1,6 +1,5 @@
 import m from 'mithril'
 import * as storage from '../../core/storage'
-import * as dropbox from '../../storageBackends/dropbox'
 
 export default function Home() {
 
@@ -12,6 +11,10 @@ export default function Home() {
         const taskListName = prompt('Task list name');
         if (taskListName === null) { return }
         location.hash = `#/${backend}/${taskListName}`
+    }
+
+    const login = (backend: string) => {
+        location.href = storage.getAuthenticationUrl(backend);
     }
 
     const fetchBackendTaskLists = async (backend: string) => {
@@ -31,15 +34,18 @@ export default function Home() {
                     m('img', { src: '/icon.svg' }),
                     m('span', 'Egin')
                 ]),
-                !dropbox.isAuthenticated() && m('a', {href: dropbox.getAuthUrl()}, 'Login with Dropbox'),
                 m('div', backendsKeys.map(backend => 
                     m('div', [
                         m('h3.egin-home-backend-title', [
                             m('img', { src: `/storageBackends/${backend}.svg` }),
                             m('span', backends[backend].displayName),
-                            m('button', {type: 'button', onclick: () => createTaskList(backend)}, [
-                                m('span', '+')
-                            ])
+                            storage.isAuthenticated(backend)
+                                ?  m('button', {type: 'button', onclick: () => createTaskList(backend)}, [
+                                    m('span', '+')
+                                ])
+                                : m('button.is-login', {type: 'button', onclick: () => login(backend)}, [
+                                    m('span', 'Login')
+                                ])
                         ]),
                         taskListsPerBackend[backend] === undefined
                             ? m('span.egin-home-tasklist-loading', '...')
