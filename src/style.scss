@@ -1,12 +1,26 @@
+@font-face {
+    font-family: 'Open Sans';
+    font-weight: normal;
+    font-style: normal;
+    src: url('/fonts/OpenSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    font-weight: bold;
+    font-style: normal;
+    src: url('/fonts/OpenSans-Bold.ttf') format('truetype');
+}
+
 body {
     background-color: whitesmoke;
-    font-family: sans-serif;
     margin: 0;
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
+    font-family: 'Open Sans', sans-serif;
 }
 
 #app {
@@ -120,6 +134,10 @@ body {
     box-sizing: border-box;
 
     input[type='text'] {
+        font-family: 'Open Sans', sans-serif;
+        line-height: 1em;
+        font-size: .9em;
+        padding-bottom: .14em;
         appearance: none;
         -webkit-appearance: none;
         -moz-appearance: none;
