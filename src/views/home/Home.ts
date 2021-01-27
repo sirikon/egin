@@ -37,7 +37,9 @@ export default function Home() {
                         m('h3.egin-home-backend-title', [
                             m('img', { src: `/storageBackends/${backend}.svg` }),
                             m('span', backends[backend].displayName),
-                            m('button.egin-home-create-tasklist', {type: 'button', onclick: () => createTaskList(backend)}, '+')
+                            m('button', {type: 'button', onclick: () => createTaskList(backend)}, [
+                                m('span', '+')
+                            ])
                         ]),
                         taskListsPerBackend[backend] === undefined
                             ? m('span.egin-home-tasklist-loading', '...')

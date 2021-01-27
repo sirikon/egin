@@ -68,21 +68,46 @@ body {
         margin-bottom: 0;
         border-bottom: 1px solid #0000001c;
         padding: 0 8px .2em 6px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-        img {
+        > img {
             width: 1.3em;
             height: 1.3em;
             vertical-align: bottom;
             margin-right: .2em;
         }
-    }
 
-    &-create-tasklist {
-        float: right;
-        margin: 0;
-        padding: 0;
-        line-height: 1em;
-        cursor: pointer;
+        > span {
+            flex-grow: 1;
+        }
+
+        > button {
+            appearance: none;
+            -webkit-appearance: none;
+            border: none;
+            margin: 0;
+            padding: 0 .4em .1em .4em;
+            font-size: 1em;
+            float: right;
+            line-height: 1em;
+            align-self: stretch;
+            color: black;
+            background-color: whitesmoke;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &:hover {
+                background-color: #eee;
+            }
+
+            > img {
+                height: .8em;
+            }
+        }
     }
 
     &-tasklist-link {
