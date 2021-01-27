@@ -1,4 +1,4 @@
-import { Dropbox } from 'dropbox'
+import { Dropbox, files } from 'dropbox'
 import { StorageBackend, StorageBackendInfo, TaskListState } from '../core/models'
 
 const CLIENT_ID = 'qf4qj6a6oodfh1m'
@@ -30,6 +30,9 @@ export class DropboxBackend implements StorageBackend {
             .filesListFolder({path: ''});
 
         return response.result.entries
+            .filter(e => e['.tag'] === 'file')
+            .map(e => e as files.FileMetadataReference)
+            .sort((a, b) => new Date(a.server_modified) < new Date(b.server_modified) ? 1 : -1)
             .map(e => e.path_lower.match(/\/(.+)\.json/))
             .filter(e => !!e)
             .map(e => e[1]);
