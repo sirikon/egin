@@ -35,6 +35,7 @@ export default function Home() {
                 m('div', backendsKeys.map(backend => 
                     m('div', [
                         m('h3.egin-home-backend-title', [
+                            m('img', { src: `/storageBackends/${backend}.svg` }),
                             m('span', backends[backend].displayName),
                             m('button.egin-home-create-tasklist', {type: 'button', onclick: () => createTaskList(backend)}, '+')
                         ]),
@@ -43,7 +44,13 @@ export default function Home() {
                             : m('div', (taskListsPerBackend[backend] || []).map(taskListKey => m('div', [
                                 m('a.egin-home-tasklist-link', {href: `#/${backend}/${taskListKey}`}, taskListKey)
                             ])))
-                    ])))
+                    ]))),
+                m('div.egin-home-footer', [
+                    m('span', 'Made with ❤️ by '),
+                    m('a', { href: 'https://sirikon.me', target: '_blank' }, 'Sirikon'),
+                    m('span', ' | '),
+                    m('a', { href: 'https://github.com/sirikon/egin/', target: '_blank' }, 'Source Code')
+                ])
             ])
         ]);
 
