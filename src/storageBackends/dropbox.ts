@@ -49,7 +49,7 @@ export function isAuthenticated() {
     return !!getAccessToken();
 }
 
-const filePath = (taskListId) => `/${taskListId}.json`;
+const filePath = (taskListId: string) => `/${taskListId}.json`;
 
 function getAccessToken() {
     return localStorage.getItem('egin_dropbox_access_token')

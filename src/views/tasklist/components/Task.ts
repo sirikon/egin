@@ -3,7 +3,13 @@ import Actions from '../../../core/Actions'
 import * as history from '../../../core/history'
 import TaskStore from '../../../core/TaskStore'
 
-export default function Task(vnode) {
+interface TaskAttrs {
+    taskStore: TaskStore;
+    actions: Actions;
+    key: number;
+}
+
+export default function Task(vnode: m.VnodeDOM<TaskAttrs>) {
     const taskStore = (): TaskStore => vnode.attrs.taskStore
     const actions = (): Actions => vnode.attrs.actions
     const taskIndex = (): number => vnode.attrs.key
@@ -42,14 +48,14 @@ export default function Task(vnode) {
         m('input', {
             type: 'checkbox',
             checked: task().done,
-            onchange: (e) => setDone(e.target.checked),
+            onchange: (e: InputEvent) => setDone((e.target as HTMLInputElement).checked),
             onfocus: setSelected,
             onblur: () => { removeSelected(); removeTaskOnBlur() }
         }),
         m('input', {
             type: 'text',
             value: task().name,
-            oninput: (e) => setName(e.target.value),
+            oninput: (e: InputEvent) => setName((e.target as HTMLInputElement).value),
             onfocus: setSelected,
             onblur: () => { removeSelected(); removeTaskOnBlur() }
         })

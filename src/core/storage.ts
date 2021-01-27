@@ -3,14 +3,14 @@ import * as history from './history'
 
 import { LocalStorageBackend } from '../storageBackends/localStorage'
 import { DropboxBackend } from '../storageBackends/dropbox'
-import { StorageBackend, StorageBackendInfo, TaskListState } from './models'
+import { StorageBackend, StorageBackendInfo, StorageStatus, TaskListState } from './models'
 
 const backends: { [key: string]: StorageBackend } = {
     local: new LocalStorageBackend(),
     dropbox: new DropboxBackend(),
 }
 
-const lastSavedTaskListStates = {}
+const lastSavedTaskListStates: { [key: string]: string } = {}
 
 export function load(taskListId: string) {
     setStorageStatus(taskListId, 'loading')
@@ -22,27 +22,27 @@ export function load(taskListId: string) {
         })
 }
 
-export function save(taskListId) {
+export function save(taskListId: string) {
     setStorageStatus(taskListId, 'saving')
     const backend = getBackend(taskListId)
     return backend.save(taskListId.split('/')[1], getTaskListState(taskListId))
         .then(() => setStorageStatus(taskListId, 'pristine'))
 }
 
-export function list(backend) {
+export function list(backend: string) {
     return backends[backend].list()
 }
 
 export function getBackends(): { [backendKey: string]: StorageBackendInfo } {
     return Object.keys(backends)
-        .reduce((map, backend) => (map[backend]=backends[backend], map), {})
+        .reduce((map, backend) => (map[backend]=backends[backend], map), {} as { [backendKey: string]: StorageBackendInfo })
 }
 
-function getBackend(taskListId) {
+function getBackend(taskListId: string) {
     return backends[taskListId.split('/')[0]]
 }
 
-function getTaskListState(taskListId) {
+function getTaskListState(taskListId: string) {
     return state.taskLists[taskListId]
 }
 
@@ -51,12 +51,12 @@ function setTaskListState(taskListId: string, newState: TaskListState) {
         (state.taskLists[taskListId] as any) = {}
     }
     Object.keys(newState).forEach(k => {
-        state.taskLists[taskListId][k] = newState[k]
+        (state.taskLists[taskListId] as any)[k] = (newState as any)[k]
     })
     lastSavedTaskListStates[taskListId] = JSON.stringify(state.taskLists[taskListId])
     history.reset()
 }
 
-function setStorageStatus(taskListId, status) {
+function setStorageStatus(taskListId: string, status: StorageStatus) {
     state.storageStatus[taskListId] = status
 }

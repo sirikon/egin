@@ -1,10 +1,10 @@
 import * as jsonpatch from 'fast-json-patch'
-
+import { State } from './models'
 import { state } from './state'
 
-let previousState = null
-const stateHistory = []
-let delayedCommitTimeout = null
+let previousState: State = null
+const stateHistory: jsonpatch.Operation[][] = []
+let delayedCommitTimeout: NodeJS.Timeout = null
 
 declare var HISTORIFICATION_ENABLED: boolean;
 

@@ -1,6 +1,9 @@
 {
     "compilerOptions": {
+        "esModuleInterop": true,
+        "noImplicitAny": true,
         "lib": ["ES2017", "DOM"],
     },
-    "include": ["src/**/*.ts"]
+    "include": ["src/**/*.ts"],
+    "exclude": ["node_modules/**/*.ts"]
 }

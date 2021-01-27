@@ -24,8 +24,10 @@
     },
     "devDependencies": {
         "@types/chai": "^4.2.14",
+        "@types/mithril": "^2.0.6",
         "@types/mocha": "^8.2.0",
         "@types/node": "^14.14.22",
+        "@types/node-fetch": "^2.5.8",
         "chai": "^4.2.0",
         "concurrently": "^5.3.0",
         "esbuild": "^0.8.36",

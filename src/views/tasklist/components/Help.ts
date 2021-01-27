@@ -2,8 +2,12 @@ import m from 'mithril'
 
 import { HotkeyMap } from '../hotkeys'
 
-export default function Help(vnode) {
-    const hotkeys = (): HotkeyMap => vnode.attrs.hotkeys
+interface HelpAttrs {
+    hotkeys: HotkeyMap
+}
+
+export default function Help(vnode: m.VnodeDOM<HelpAttrs>) {
+    const hotkeys = () => vnode.attrs.hotkeys
     const view = () => m('div.egin-help', [
         m('div', [
             m('h1', 'Help'),
@@ -20,7 +24,7 @@ export default function Help(vnode) {
     return { view }
 }
 
-function extractKeys(bind) {
+function extractKeys(bind: string) {
     return bind.split('_').map(k => {
         if (k.indexOf('Key') === 0) {
             return k.substr(3)

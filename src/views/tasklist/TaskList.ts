@@ -10,12 +10,18 @@ import { state } from '../../core/state'
 import { buildHotkeys } from './hotkeys'
 import Task from './components/Task'
 import Help from './components/Help'
+import { TaskListComponentState } from './models'
+import { StorageStatus } from '../../core/models'
 
-export default function TaskList(vnode) {
-    const taskListState = {
+interface TaskListAttrs {
+    taskListId: string
+}
+
+export default function TaskList(vnode: m.VnodeDOM<TaskListAttrs>) {
+    const taskListState: TaskListComponentState = {
         helpMenuVisible: false
     }
-    
+
     const taskListId = () => vnode.attrs.taskListId
 
     const taskStore = () => new TaskStore(taskListId())
@@ -24,13 +30,13 @@ export default function TaskList(vnode) {
     
     const isHelpVisible = () => taskListState.helpMenuVisible
 
-    let storageStatus = null;
+    let storageStatus:StorageStatus = null;
     computed(() => {
         storageStatus = state.storageStatus[taskListId()]
         m.redraw()
     })
 
-    const keydownListener = (e) => {
+    const keydownListener = (e: KeyboardEvent) => {
         const handlerName = [
             e.ctrlKey && 'Ctrl',
             e.shiftKey && 'Shift',
