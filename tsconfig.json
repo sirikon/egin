@@ -2,6 +2,11 @@
     "compilerOptions": {
         "esModuleInterop": true,
         "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "strictNullChecks": true,
+        "strictBindCallApply": true,
+        "strictPropertyInitialization": true,
         "lib": ["ES2017", "DOM"],
     },
     "include": ["src/**/*.ts"],
