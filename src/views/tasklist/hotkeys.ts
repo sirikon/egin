@@ -42,6 +42,7 @@ export function buildHotkeys(taskListId: string, taskListState: TaskListComponen
             name: 'Remove task (if the name is empty)',
             action: (e) => {
                 const selectedTask = actions.getSelectedTask()
+                if (selectedTask === null) { return; }
                 if (selectedTask.name === '') {
                     e.preventDefault()
                     e.stopPropagation()

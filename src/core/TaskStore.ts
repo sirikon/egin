@@ -107,8 +107,8 @@ export default class TaskStore {
         this.getAll()[index].header = !this.getAll()[index].header
     }
 
-    move(index: number, size: number, newIndex: number) {
-        if (index === newIndex) { return }
+    move(index: number, size: number, newIndex: number): number {
+        if (index === newIndex) { return index; }
         const finalIndex = newIndex > index
             ? newIndex - size
             : newIndex

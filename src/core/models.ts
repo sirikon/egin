@@ -7,7 +7,7 @@ export interface Task {
 
 export interface TaskListState {
     tasks: Task[];
-    selectedTaskIndex: number;
+    selectedTaskIndex: number | null;
 }
 
 export interface State {

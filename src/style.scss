@@ -181,6 +181,10 @@ body {
         flex-shrink: 0;
     }
 
+    input:focus-visible {
+        outline: none;
+    }
+
     &:not(:last-child):not(.is-header) {
         margin-bottom: -1px;
     }

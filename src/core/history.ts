@@ -2,9 +2,9 @@ import * as jsonpatch from 'fast-json-patch'
 import { State } from './models'
 import { state } from './state'
 
-let previousState: State = null
+let previousState: State = jsonpatch.deepClone(state)
 const stateHistory: jsonpatch.Operation[][] = []
-let delayedCommitTimeout: NodeJS.Timeout = null
+let delayedCommitTimeout: NodeJS.Timeout | null = null
 
 declare var HISTORIFICATION_ENABLED: boolean;
 
@@ -22,8 +22,9 @@ export function rollback() {
     if(!HISTORIFICATION_ENABLED) { return }
 
     commit()
-    if (stateHistory.length === 0) { return }
-    jsonpatch.applyPatch(state, stateHistory.pop())
+    const lastPatch = stateHistory.pop()
+    if (lastPatch === undefined) { return }
+    jsonpatch.applyPatch(state, lastPatch)
     savePreviousState()
     commit()
 }
@@ -54,5 +55,3 @@ function cancelDelayedCommit() {
 function savePreviousState() {
     previousState = jsonpatch.deepClone(state)
 }
-
-savePreviousState();

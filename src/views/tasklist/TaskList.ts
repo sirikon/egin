@@ -30,7 +30,7 @@ export default function TaskList(vnode: m.VnodeDOM<TaskListAttrs>) {
     
     const isHelpVisible = () => taskListState.helpMenuVisible
 
-    let storageStatus:StorageStatus = null;
+    let storageStatus:StorageStatus | null = null;
     computed(() => {
         storageStatus = state.storageStatus[taskListId()]
         m.redraw()

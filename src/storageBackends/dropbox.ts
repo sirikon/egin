@@ -40,9 +40,9 @@ export class DropboxBackend implements StorageBackend {
             .filter(e => e['.tag'] === 'file')
             .map(e => e as files.FileMetadataReference)
             .sort((a, b) => new Date(a.server_modified) < new Date(b.server_modified) ? 1 : -1)
-            .map(e => e.path_lower.match(/\/(.+)\.json/))
-            .filter(e => !!e)
-            .map(e => e[1]);
+            .map(e => e.path_lower ? e.path_lower.match(/\/(.+)\.json/) : null)
+            .filter((e) => (e !== null))
+            .map(e => e ? e[1] : '');
     }
 
 }

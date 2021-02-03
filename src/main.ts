@@ -5,7 +5,7 @@ import Home from './views/home/Home'
 import TaskList from './views/tasklist/TaskList'
 
 const root = document.getElementById('app')
-m.route(root, '/', {
+root && m.route(root, '/', {
     '/': { view: () => m(Home) },
     '/:backend/:key': (vnode) => {
         return {
