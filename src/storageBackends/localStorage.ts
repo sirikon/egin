@@ -4,7 +4,7 @@ export class LocalStorageBackend implements StorageBackend {
     readonly displayName = 'Local'
 
     isAuthenticated() { return true; }
-    getAuthenticationUrl() { return ''; }
+    async getAuthenticationUrl() { return ''; }
 
     async get(taskListId: string): Promise<TaskListState | null> {
         const data = localStorage.getItem(this.storageKey(taskListId))

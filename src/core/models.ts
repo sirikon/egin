@@ -23,7 +23,7 @@ export interface StorageBackendInfo {
 
 export interface StorageBackend extends StorageBackendInfo {
     isAuthenticated(): boolean;
-    getAuthenticationUrl(): string;
+    getAuthenticationUrl(): Promise<string>;
     get(taskListId: string): Promise<TaskListState | null>;
     save(taskListId: string, taskListState: TaskListState): Promise<void>;
     list(): Promise<string[]>;

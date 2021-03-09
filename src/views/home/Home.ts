@@ -14,7 +14,8 @@ export default function Home() {
     }
 
     const login = (backend: string) => {
-        location.href = storage.getAuthenticationUrl(backend);
+        storage.getAuthenticationUrl(backend)
+            .then(url => location.href = url);
     }
 
     const fetchBackendTaskLists = async (backend: string) => {

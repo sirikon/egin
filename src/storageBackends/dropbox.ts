@@ -7,10 +7,10 @@ export class DropboxBackend implements StorageBackend {
     readonly displayName = 'Dropbox'
 
     isAuthenticated() { return !!getAccessToken(); }
-    getAuthenticationUrl() {
-        var dbx = new Dropbox({ clientId: CLIENT_ID });
-        return (dbx as any).auth
-            .getAuthenticationUrl(`${location.protocol}//${location.host}/dropbox-callback.html`) as string;
+    async getAuthenticationUrl() {
+        const dbx = new Dropbox({ clientId: CLIENT_ID });
+        return await ((dbx as any).auth
+            .getAuthenticationUrl(`${location.protocol}//${location.host}/dropbox-callback.html`) as Promise<string>);
     }
 
     async get(taskListId: string): Promise<TaskListState | null> {
