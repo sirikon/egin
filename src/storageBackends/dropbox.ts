@@ -1,14 +1,13 @@
+import config from '../config'
 import { Dropbox, files } from 'dropbox'
 import { StorageBackend, StorageBackendInfo, TaskListState } from '../core/models'
-
-const CLIENT_ID = 'qf4qj6a6oodfh1m'
 
 export class DropboxBackend implements StorageBackend {
     readonly displayName = 'Dropbox'
 
     isAuthenticated() { return !!getAccessToken(); }
     async getAuthenticationUrl() {
-        const dbx = new Dropbox({ clientId: CLIENT_ID });
+        const dbx = new Dropbox({ clientId: config.dropboxClientID });
         return await ((dbx as any).auth
             .getAuthenticationUrl(`${location.protocol}//${location.host}/dropbox-callback.html`) as Promise<string>);
     }
@@ -58,10 +57,3 @@ function getAuthenticatedClient() {
     if (!accessToken) { throw new Error("You are not authenticated") }
     return new Dropbox({ accessToken });
 }
-
-// function stateFileExists() {
-//     return getAuthenticatedClient().filesListFolder({path: ''})
-//         .then(response => {
-//             return response.result.entries.filter(e => e.path_lower === '/state.json').length > 0
-//         });
-// }
