@@ -6,7 +6,7 @@
 
         "type-check-app": "tsc --watch --noEmit --project .",
 
-        "build-app":       "esbuild src/main.ts --bundle --external:crypto --external:util --target=es2016 --minify --outfile=dist/main.js",
+        "build-app":       "esbuild src/main.ts --bundle --external:crypto --external:util --target=es2016 --sourcemap --minify --outfile=dist/main.js",
         "build-app-watch": "esbuild src/main.ts --bundle --external:crypto --external:util --target=es2016 --serve=127.0.0.1:8001",
 
         "build-style":       "sass src/style.scss:dist/style.css --no-source-map --style=compressed",
@@ -17,6 +17,8 @@
         "test": "cd test && mocha --require ts-node/register ./**/*.spec.ts"
     },
     "dependencies": {
+        "@sentry/browser": "^6.2.1",
+        "@sentry/tracing": "^6.2.1",
         "dropbox": "^9.2.0",
         "fast-json-patch": "^3.0.0-1",
         "hyperactiv": "^0.8.6",
