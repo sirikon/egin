@@ -1,9 +1,9 @@
-import './config'
 import { expect } from 'chai'
 
-import Actions from '../src/core/Actions'
-import { state } from '../src/core/state'
-import TaskStore from '../src/core/TaskStore'
+import { Actions } from '../src/core/Actions'
+import { History } from '../src/core/history'
+import { TaskStore } from '../src/core/TaskStore'
+import state from '../src/core/state'
 
 const taskListId = 'test/test'
 const actions = getActions()
@@ -13,7 +13,7 @@ export function getTaskStore() {
 }
 
 export function getActions() {
-    return new Actions(taskListId)
+    return new Actions(taskListId, getTaskStore(), new History(false));
 }
 
 export function givenTasks(mocks) {

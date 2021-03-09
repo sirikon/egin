@@ -1,5 +1,5 @@
-import { state } from './state'
-import * as history from './history'
+import state from './state'
+import history from './history'
 
 import { LocalStorageBackend } from '../storageBackends/localStorage'
 import { DropboxBackend } from '../storageBackends/dropbox'

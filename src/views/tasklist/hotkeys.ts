@@ -1,5 +1,5 @@
-import Actions from '../../core/Actions'
-import * as history from '../../core/history'
+import { Actions } from '../../core/Actions'
+import history from '../../core/history'
 import * as storage from '../../core/storage'
 import { TaskListComponentState } from './models'
 

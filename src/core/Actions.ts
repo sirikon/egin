@@ -1,13 +1,13 @@
-import TaskStore from './TaskStore'
-import { state } from './state'
-import * as history from './history'
+import { TaskStore } from './TaskStore'
 import { Task } from './models';
+import state from './state'
+import history, { History } from './history'
 
-export default class Actions {
-    private taskStore: TaskStore;
-    constructor(private taskListId: string) {
-        this.taskStore = new TaskStore(taskListId)
-    }
+export class Actions {
+    constructor(
+        private taskListId: string,
+        private taskStore: TaskStore,
+        private history: History) {}
 
     getSelectedTaskIndex(): number | null {
         const value = state.taskLists[this.taskListId].selectedTaskIndex
@@ -28,14 +28,14 @@ export default class Actions {
         const selectedTaskIndex = this.getSelectedTaskIndex()
         if (selectedTaskIndex === null) { return }
         this.taskStore.toggle(selectedTaskIndex)
-        history.commit()
+        this.history.commit()
     }
     
     toggleSelectedTaskHeaderState() {
         const selectedTaskIndex = this.getSelectedTaskIndex()
         if (selectedTaskIndex === null) { return }
         this.taskStore.toggleHeader(selectedTaskIndex)
-        history.commit()
+        this.history.commit()
     }
 
     removeTask(index: number) {
@@ -68,7 +68,7 @@ export default class Actions {
                 this.setSelectedTaskIndex(selectedTaskIndex - taskIndexesToRemove.length)
             }
         })();
-        history.commit()
+        this.history.commit()
     }
     
     removeTaskIfEmpty(index: number) {
@@ -112,7 +112,7 @@ export default class Actions {
             .length
     
         this.setSelectedTaskIndex(this.taskStore.move(selectedTaskIndex, taskIndexesToMove, targetPosition))
-        history.commit()
+        this.history.commit()
     }
     
     moveSelectedTaskDown() {
@@ -127,11 +127,11 @@ export default class Actions {
             .length
     
         this.setSelectedTaskIndex(this.taskStore.move(selectedTaskIndex, taskIndexesToMove, targetPosition))
-        history.commit()
+        this.history.commit()
     }
 
     insertTask() {
-        history.commit()
+        this.history.commit()
         const selectedTaskIndex = this.getSelectedTaskIndex()
         const indexToInsert = selectedTaskIndex !== null
             ? selectedTaskIndex + this.taskStore.getSubtasks(selectedTaskIndex).length + 1
@@ -147,7 +147,7 @@ export default class Actions {
     
         this.taskStore.insert(indexToInsert, { name: '', done: false, level: newTaskLevel, header: false })
         this.setSelectedTaskIndex(indexToInsert)
-        history.commit()
+        this.history.commit()
     }
     
     indentSelectedTask() {
@@ -159,11 +159,11 @@ export default class Actions {
         if (previousTask.level >= selectedTask.level) {
             const taskIndexesToIndent = [selectedTaskIndex]
                 .concat(this.taskStore.getSubtasks(selectedTaskIndex));
-            history.commit()
+                this.history.commit()
             taskIndexesToIndent.forEach(i => {
                 this.taskStore.addLevel(i, 1)
             })
-            history.commit()
+            this.history.commit()
         }
     }
     
@@ -175,10 +175,17 @@ export default class Actions {
         if (selectedTask.level <= 0) { return }
         const taskIndexesToUnindent = [selectedTaskIndex]
             .concat(this.taskStore.getSubtasks(selectedTaskIndex))
-        history.commit()
+            this.history.commit()
         taskIndexesToUnindent.forEach(i => {
             this.taskStore.addLevel(i, -1)
         })
-        history.commit()
+        this.history.commit()
     }
+}
+
+export function buildActions(taskListId: string) {
+    return new Actions(
+        taskListId,
+        new TaskStore(taskListId),
+        history);
 }

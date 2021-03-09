@@ -1,7 +1,7 @@
 import { Task } from './models';
-import { state } from './state'
+import state from './state'
 
-export default class TaskStore {
+export class TaskStore {
     constructor(private taskListId: string) {}
 
     getAll(): Task[] {

@@ -1,7 +1,7 @@
 import m from 'mithril'
-import Actions from '../../../core/Actions'
-import * as history from '../../../core/history'
-import TaskStore from '../../../core/TaskStore'
+import { Actions } from '../../../core/Actions'
+import history from '../../../core/history'
+import { TaskStore } from '../../../core/TaskStore'
 
 interface TaskAttrs {
     taskStore: TaskStore;

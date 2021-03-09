@@ -3,7 +3,8 @@ const { observe } = hyperactiv
 
 import { State } from './models';
 
-export const state: State = observe({
+const state: State = observe({
     taskLists: {},
     storageStatus: {}
 } as State)
+export default state;

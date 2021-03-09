@@ -1,57 +1,61 @@
 import * as jsonpatch from 'fast-json-patch'
 import { State } from './models'
-import { state } from './state'
+import state from './state'
 
-let previousState: State = jsonpatch.deepClone(state)
-const stateHistory: jsonpatch.Operation[][] = []
-let delayedCommitTimeout: NodeJS.Timeout | null = null
+export class History {
+    private previousState: State = jsonpatch.deepClone(state);
+    private readonly stateHistory : jsonpatch.Operation[][] = [];
+    private delayedCommitTimeout: NodeJS.Timeout | null = null;
+    constructor(
+        private enabled : boolean){}
 
-declare var HISTORIFICATION_ENABLED: boolean;
+    commit() {
+        if(!this.enabled) { return }
+    
+        this.cancelDelayedCommit()
+        const patches = jsonpatch.compare(state, this.previousState)
+        if (patches.length === 0) { return }
+        this.stateHistory.push(patches)
+        this.savePreviousState()
+    }
 
-export function commit() {
-    if(!HISTORIFICATION_ENABLED) { return }
+    rollback() {
+        if(!this.enabled) { return }
+    
+        this.commit()
+        const lastPatch = this.stateHistory.pop()
+        if (lastPatch === undefined) { return }
+        jsonpatch.applyPatch(state, lastPatch)
+        this.savePreviousState()
+        this.commit()
+    }
 
-    cancelDelayedCommit()
-    const patches = jsonpatch.compare(state, previousState)
-    if (patches.length === 0) { return }
-    stateHistory.push(patches)
-    savePreviousState()
-}
+    delayedCommit() {
+        if(!this.enabled) { return }
+    
+        this.cancelDelayedCommit()
+        this.delayedCommitTimeout = setTimeout(() => {
+            this.delayedCommitTimeout = null;
+            this.commit();
+        }, 1000)
+    }
 
-export function rollback() {
-    if(!HISTORIFICATION_ENABLED) { return }
+    reset() {
+        this.cancelDelayedCommit();
+        this.savePreviousState();
+        this.stateHistory.splice(0, this.stateHistory.length);
+    }
 
-    commit()
-    const lastPatch = stateHistory.pop()
-    if (lastPatch === undefined) { return }
-    jsonpatch.applyPatch(state, lastPatch)
-    savePreviousState()
-    commit()
-}
+    private cancelDelayedCommit() {
+        if (this.delayedCommitTimeout !== null) {
+            clearTimeout(this.delayedCommitTimeout);
+            this.delayedCommitTimeout = null;
+        }
+    }
 
-export function delayedCommit() {
-    if(!HISTORIFICATION_ENABLED) { return }
-
-    cancelDelayedCommit()
-    delayedCommitTimeout = setTimeout(() => {
-        delayedCommitTimeout = null;
-        commit();
-    }, 1000)
-}
-
-export function reset() {
-    cancelDelayedCommit();
-    savePreviousState();
-    stateHistory.splice(0, stateHistory.length);
-}
-
-function cancelDelayedCommit() {
-    if (delayedCommitTimeout !== null) {
-        clearTimeout(delayedCommitTimeout);
-        delayedCommitTimeout = null;
+    private savePreviousState() {
+        this.previousState = jsonpatch.deepClone(state)
     }
 }
 
-function savePreviousState() {
-    previousState = jsonpatch.deepClone(state)
-}
+export default new History(true);

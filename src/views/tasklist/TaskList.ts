@@ -2,10 +2,10 @@ import m from 'mithril'
 import hyperactiv from 'hyperactiv'
 const { computed } = hyperactiv
 
-import TaskStore from '../../core/TaskStore'
-import Actions from '../../core/Actions'
+import { TaskStore } from '../../core/TaskStore'
+import { buildActions } from '../../core/Actions'
 import * as storage from '../../core/storage'
-import { state } from '../../core/state'
+import state from '../../core/state'
 
 import { buildHotkeys } from './hotkeys'
 import Task from './components/Task'
@@ -25,7 +25,7 @@ export default function TaskList(vnode: m.VnodeDOM<TaskListAttrs>) {
     const taskListId = () => vnode.attrs.taskListId
 
     const taskStore = () => new TaskStore(taskListId())
-    const actions = () => new Actions(taskListId())
+    const actions = () => buildActions(taskListId())
     const hotkeys = () => buildHotkeys(taskListId(), taskListState, actions())
     
     const isHelpVisible = () => taskListState.helpMenuVisible
