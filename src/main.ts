@@ -13,8 +13,6 @@ Sentry.init({
     tracesSampleRate: 1.0,
 });
 
-Sentry.captureException(new Error('Testing sentry'));
-
 const root = document.getElementById('app')
 root && m.route(root, '/', {
     '/': { view: () => m(Home) },
