@@ -1,11 +1,27 @@
 import m from 'mithril'
+import { BehaviorSubject, combineLatest, from } from 'rxjs'
+import { map, startWith } from "rxjs/operators";
 import * as storage from '../../core/storage'
 
 export default function Home() {
 
     const backends = storage.getBackends();
     const backendsKeys = Object.keys(backends);
-    const taskListsPerBackend: { [backend:string]: string[] } = {};
+    const taskListsPerBackend = new BehaviorSubject<{ [backend:string]: string[] }>({});
+    taskListsPerBackend.subscribe(() => m.redraw());
+
+    const fetchBackendsTaskLists = async () => {
+        combineLatest(getBackendsTaskLists())
+            .pipe(map(Object.fromEntries))
+            .subscribe(taskListsPerBackend)
+    }
+
+    function getBackendsTaskLists() {
+        return Object.keys(storage.getBackends())
+            .map(backend => from(storage.list(backend)).pipe(
+                startWith([]),
+                map(list => [backend, list])));
+    }
 
     const createTaskList = (backend: string) => {
         const taskListName = prompt('Task list name');
@@ -18,15 +34,7 @@ export default function Home() {
             .then(url => location.href = url);
     }
 
-    const fetchBackendTaskLists = async (backend: string) => {
-        taskListsPerBackend[backend] = await storage.list(backend);
-        m.redraw();
-    }
-
-    const oncreate = () => {
-        Object.keys(backends).forEach((backend) =>
-            fetchBackendTaskLists(backend));
-    }
+    const oncreate = () => fetchBackendsTaskLists();
 
     const view = () =>
         m('div.egin-home', [
@@ -48,9 +56,9 @@ export default function Home() {
                                     m('span', 'Login')
                                 ])
                         ]),
-                        taskListsPerBackend[backend] === undefined
+                        (taskListsPerBackend.value[backend] || []).length === 0
                             ? m('span.egin-home-tasklist-loading', '...')
-                            : m('div', (taskListsPerBackend[backend] || []).map(taskListKey => m('div', [
+                            : m('div', taskListsPerBackend.value[backend].map(taskListKey => m('div', [
                                 m('a.egin-home-tasklist-link', {href: `#/${backend}/${taskListKey}`}, taskListKey)
                             ])))
                     ]))),
