@@ -72,7 +72,6 @@ export function buildHotkeys(taskListId: string, taskListState: TaskListComponen
                 e.preventDefault()
                 e.stopPropagation()
                 storage.save(taskListId)
-                    .then(() => console.log('Done'))
             }
         },
         Ctrl_KeyZ: {
