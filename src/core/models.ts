@@ -11,8 +11,7 @@ export interface TaskListState {
 }
 
 export interface State {
-    taskLists: { [taskListId: string]: TaskListState };
-    storageStatus: { [taskListId: string]: StorageStatus };
+    taskLists: { [taskListId: string]: TaskListState }
 }
 
 export type StorageStatus = 'loading' | 'saving' | 'pristine';

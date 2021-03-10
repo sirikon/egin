@@ -3,14 +3,12 @@ import m from 'mithril'
 import { TaskStore } from '../../core/TaskStore'
 import { buildActions } from '../../core/Actions'
 import * as storage from '../../core/storage'
-import state from '../../core/state'
 
 import { buildHotkeys } from './hotkeys'
 import Task from './components/Task'
 import Help from './components/Help'
 import { TaskListComponentState } from './models'
-import { StorageStatus } from '../../core/models'
-import { Morphing, morphing, stop } from '../../utils/morphing';
+import { bind, unbind } from '../../utils/bind'
 
 interface TaskListAttrs {
     taskListId: string
@@ -29,8 +27,7 @@ export default function TaskList(vnode: m.VnodeDOM<TaskListAttrs>) {
     
     const isHelpVisible = () => taskListState.helpMenuVisible
 
-    const storageStatus: Morphing<StorageStatus> = morphing(() =>
-        state.storageStatus[taskListId()]);
+    const storageStatus = bind('loading', storage.getStorageStatus(taskListId()))
 
     const keydownListener = (e: KeyboardEvent) => {
         const handlerName = [
@@ -55,13 +52,13 @@ export default function TaskList(vnode: m.VnodeDOM<TaskListAttrs>) {
 
     const onremove = () => {
         document.removeEventListener('keydown', keydownListener, true);
-        stop(storageStatus);
+        unbind(storageStatus)
     }
 
     const view = () => [
         m('div.egin-task-list', taskStore().getAll()
             .map((_, i) => m(Task, {key: i, taskStore: taskStore(), actions: actions()}))),
-        m('div.egin-task-list-storage-state', storageStatus.value),
+        m('div.egin-task-list-storage-state', storageStatus.getValue()),
         isHelpVisible() && m(Help, { hotkeys: hotkeys() })
     ]
 

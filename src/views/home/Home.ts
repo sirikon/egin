@@ -1,27 +1,33 @@
 import m from 'mithril'
-import { BehaviorSubject, combineLatest, from } from 'rxjs'
+import { combineLatest, from } from 'rxjs'
 import { map, startWith } from "rxjs/operators";
 import * as storage from '../../core/storage'
+import { bind } from '../../utils/bind';
 
 export default function Home() {
 
     const backends = storage.getBackends();
     const backendsKeys = Object.keys(backends);
-    const taskListsPerBackend = new BehaviorSubject<{ [backend:string]: string[] }>({});
-    taskListsPerBackend.subscribe(() => m.redraw());
-
-    const fetchBackendsTaskLists = async () => {
-        combineLatest(getBackendsTaskLists())
-            .pipe(map(Object.fromEntries))
-            .subscribe(taskListsPerBackend)
-    }
+    const backendTaskListsIndex = bind({}, combineLatest(getBackendsTaskLists())
+        .pipe(map(indexBackends)))
 
     function getBackendsTaskLists() {
         return Object.keys(storage.getBackends())
             .map(backend => from(storage.list(backend)).pipe(
-                startWith([]),
-                map(list => [backend, list])));
+                startWith(new Array<string>()),
+                map(list => {return { backend, list }})));
     }
+
+    function indexBackends(backends: { backend: string, list: string[] }[]) {
+        const result: { [backend: string]: string[] } = {};
+        backends.forEach(i => {
+            result[i.backend] = i.list;
+        });
+        return result;
+    }
+
+    const getTaskLists = (backend: string) =>
+        backendTaskListsIndex.getValue()[backend] || [];
 
     const createTaskList = (backend: string) => {
         const taskListName = prompt('Task list name');
@@ -33,8 +39,6 @@ export default function Home() {
         storage.getAuthenticationUrl(backend)
             .then(url => location.href = url);
     }
-
-    const oncreate = () => fetchBackendsTaskLists();
 
     const view = () =>
         m('div.egin-home', [
@@ -56,9 +60,9 @@ export default function Home() {
                                     m('span', 'Login')
                                 ])
                         ]),
-                        (taskListsPerBackend.value[backend] || []).length === 0
+                        getTaskLists(backend).length === 0
                             ? m('span.egin-home-tasklist-loading', '...')
-                            : m('div', taskListsPerBackend.value[backend].map(taskListKey => m('div', [
+                            : m('div', getTaskLists(backend).map(taskListKey => m('div', [
                                 m('a.egin-home-tasklist-link', {href: `#/${backend}/${taskListKey}`}, taskListKey)
                             ])))
                     ]))),
@@ -71,5 +75,5 @@ export default function Home() {
             ])
         ]);
 
-    return { view, oncreate }
+    return { view }
 }

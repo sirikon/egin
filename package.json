@@ -21,7 +21,6 @@
         "@sentry/tracing": "^6.2.1",
         "dropbox": "^9.2.0",
         "fast-json-patch": "^3.0.0-1",
-        "hyperactiv": "^0.8.6",
         "mithril": "^2.0.4",
         "rxjs": "^6.6.6"
     },

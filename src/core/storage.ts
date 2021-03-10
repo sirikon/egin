@@ -4,6 +4,7 @@ import history from './history'
 import { LocalStorageBackend } from '../storageBackends/localStorage'
 import { DropboxBackend } from '../storageBackends/dropbox'
 import { StorageBackend, StorageBackendInfo, StorageStatus, TaskListState } from './models'
+import { BehaviorSubject } from 'rxjs'
 
 const backends: { [key: string]: StorageBackend } = {
     local: new LocalStorageBackend(),
@@ -11,6 +12,7 @@ const backends: { [key: string]: StorageBackend } = {
 }
 
 const lastSavedTaskListStates: { [key: string]: string } = {}
+const storageStatus: { [taskListId: string]: BehaviorSubject<StorageStatus> } = {};
 
 export function load(taskListId: string) {
     setStorageStatus(taskListId, 'loading')
@@ -46,6 +48,17 @@ export function getAuthenticationUrl(backend: string) {
     return backends[backend].getAuthenticationUrl()
 }
 
+export function getStorageStatus(taskListId: string) {
+    if (!storageStatus[taskListId]) {
+        storageStatus[taskListId] = new BehaviorSubject('loading');
+    }
+    return storageStatus[taskListId];
+}
+
+export function setStorageStatus(taskListId: string, status: StorageStatus) {
+    getStorageStatus(taskListId).next(status);
+}
+
 function getBackend(taskListId: string) {
     return backends[taskListId.split('/')[0]]
 }
@@ -63,8 +76,4 @@ function setTaskListState(taskListId: string, newState: TaskListState) {
     })
     lastSavedTaskListStates[taskListId] = JSON.stringify(state.taskLists[taskListId])
     history.reset()
-}
-
-function setStorageStatus(taskListId: string, status: StorageStatus) {
-    state.storageStatus[taskListId] = status
 }
