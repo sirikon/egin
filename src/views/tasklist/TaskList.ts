@@ -1,6 +1,6 @@
 import m from 'mithril'
 import hyperactiv from 'hyperactiv'
-const { computed } = hyperactiv
+const { computed, dispose } = hyperactiv;
 
 import { TaskStore } from '../../core/TaskStore'
 import { buildActions } from '../../core/Actions'
@@ -31,7 +31,7 @@ export default function TaskList(vnode: m.VnodeDOM<TaskListAttrs>) {
     const isHelpVisible = () => taskListState.helpMenuVisible
 
     let storageStatus:StorageStatus | null = null;
-    computed(() => {
+    const subscription = computed(() => {
         storageStatus = state.storageStatus[taskListId()]
         m.redraw()
     })
@@ -59,6 +59,7 @@ export default function TaskList(vnode: m.VnodeDOM<TaskListAttrs>) {
 
     const onremove = () => {
         document.removeEventListener('keydown', keydownListener, true)
+        dispose(subscription);
     }
 
     const view = () => [
