@@ -14,10 +14,15 @@ export class DropboxBackend implements StorageBackend {
 
     async get(taskListId: string): Promise<TaskListState | null> {
         if (!this.isAuthenticated()) { return null }
-        const response = await getAuthenticatedClient()
-            .filesDownload({path: filePath(taskListId)});
-        const textResponse = await ((response.result as any).fileBlob.text() as Promise<string>);
-        return JSON.parse(textResponse);
+        try {
+            const response = await getAuthenticatedClient()
+                .filesDownload({path: filePath(taskListId)});
+            const textResponse = await ((response.result as any).fileBlob.text() as Promise<string>);
+            return JSON.parse(textResponse);
+        } catch (err) {
+            if (errorIsNotFound(err)) return null;
+            throw err;
+        }
     }
 
     async save(taskListId: string, taskListState: TaskListState): Promise<void> {
@@ -56,4 +61,10 @@ function getAuthenticatedClient() {
     const accessToken = getAccessToken();
     if (!accessToken) { throw new Error("You are not authenticated") }
     return new Dropbox({ accessToken });
+}
+
+function errorIsNotFound(err: any) {
+    return err.name === 'DropboxResponseError'
+        && err.error.error['.tag'] === 'path'
+        && err.error.error.path['.tag'] === 'not_found';
 }
