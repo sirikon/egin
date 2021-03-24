@@ -90,12 +90,12 @@ function TaskName(vnode: m.VnodeDOM<TaskNameAttrs>) {
     const keydownHandler = (e: KeyboardEvent) => {
         const nameInput = (e.target as HTMLTextAreaElement)
 
-        if (e.code === 'ArrowUp') {
+        if (e.code === 'ArrowUp' && !e.ctrlKey && !e.shiftKey && !e.altKey) {
             if (nameInput.selectionStart === 0 && nameInput.selectionEnd === 0) return;
             e.stopPropagation();
         }
 
-        if (e.code === 'ArrowDown') {
+        if (e.code === 'ArrowDown' && !e.ctrlKey && !e.shiftKey && !e.altKey) {
             const inputLength = nameInput.value.length;
             if ( nameInput.selectionStart === inputLength && nameInput.selectionEnd === inputLength) return;
             e.stopPropagation();
