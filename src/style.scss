@@ -163,7 +163,7 @@ body {
     border: 1px solid #ccc;
     box-sizing: border-box;
 
-    input[type='text'] {
+    .egin-task-name {
         font-family: 'Open Sans', sans-serif;
         line-height: 1em;
         font-size: .9em;
@@ -177,11 +177,12 @@ body {
         flex-grow: 1;
     }
 
-    input[type='checkbox'] {
+    .egin-task-checkbox {
         flex-shrink: 0;
     }
 
-    input:focus-visible {
+    .egin-task-name:focus-visible,
+    .egin-task-checkbox:focus-visible {
         outline: none;
     }
 
@@ -193,7 +194,7 @@ body {
         background-color: #ffffdb;
     }
 
-    &.is-done input[type='text'] {
+    &.is-done .egin-task-name {
         text-decoration: line-through;
         color: rgba(0,0,0,0.5);
     }
@@ -209,11 +210,11 @@ body {
             margin-top: 0;
         }
 
-        input[type='checkbox'] {
+        .egin-task-checkbox {
             display: none;
         }
 
-        input[type='text'] {
+        .egin-task-name {
             font-size: 1.05em;
         }
     }

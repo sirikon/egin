@@ -45,14 +45,14 @@ export default function Task(vnode: m.VnodeDOM<TaskAttrs>) {
             class: classes(),
             style: `margin-left: ${getLevel() * 20}px;`
         }, [
-        m('input', {
+        m('input.egin-task-checkbox', {
             type: 'checkbox',
             checked: task().done,
             onchange: (e: InputEvent) => setDone((e.target as HTMLInputElement).checked),
             onfocus: setSelected,
             onblur: () => { removeSelected(); removeTaskOnBlur() }
         }),
-        m('input', {
+        m('input.egin-task-name', {
             type: 'text',
             value: task().name,
             oninput: (e: InputEvent) => setName((e.target as HTMLInputElement).value),
