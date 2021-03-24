@@ -34,7 +34,9 @@ export function buildHotkeys(taskListId: string, taskListState: TaskListComponen
         },
         Enter: {
             name: 'Insert task',
-            action: () => {
+            action: (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 actions.insertTask()
             }
         },

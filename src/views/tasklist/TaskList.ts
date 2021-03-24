@@ -46,12 +46,12 @@ export default function TaskList(vnode: m.VnodeDOM<TaskListAttrs>) {
     }
 
     const oncreate = () => {
-        document.addEventListener('keydown', keydownListener, true)
+        document.addEventListener('keydown', keydownListener)
         storage.load(taskListId()).then(() => m.redraw())
     }
 
     const onremove = () => {
-        document.removeEventListener('keydown', keydownListener, true);
+        document.removeEventListener('keydown', keydownListener);
         unbind(storageStatus)
     }
 

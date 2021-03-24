@@ -13,6 +13,8 @@ Sentry.init({
     tracesSampleRate: 1.0,
 });
 
+window.addEventListener('resize', () => m.redraw());
+
 const root = document.getElementById('app')
 root && m.route(root, '/', {
     '/': { view: () => m(Home) },

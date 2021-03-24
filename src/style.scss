@@ -160,21 +160,27 @@ body {
     background-color: white;
     display: flex;
     flex-direction: row;
+    align-items: flex-start;
     border: 1px solid #ccc;
     box-sizing: border-box;
 
     .egin-task-name {
         font-family: 'Open Sans', sans-serif;
-        line-height: 1em;
-        font-size: .9em;
-        padding-bottom: .14em;
         appearance: none;
         -webkit-appearance: none;
         -moz-appearance: none;
+        resize: none;
+        overflow: hidden;
+
         background: transparent;
         border: none;
         display: block;
         flex-grow: 1;
+
+        margin-top: .18em;
+        line-height: 1em;
+        height: 1em;
+        font-size: .9em;
     }
 
     .egin-task-checkbox {

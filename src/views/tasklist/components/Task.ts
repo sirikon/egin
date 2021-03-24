@@ -31,19 +31,20 @@ export default function Task(vnode: m.VnodeDOM<TaskAttrs>) {
     const removeSelected = () => isSelected() && actions().setSelectedTaskIndex(null)
     const removeTaskOnBlur = () => (actions().getSelectedTaskIndex() === null) && actions().removeTaskIfEmpty(taskIndex())
 
-    const updateFocus = () => {
-        const textInput = (vnode.dom.querySelector('input[type="text"]') as HTMLInputElement)
+    const updateFocus = (v: m.VnodeDOM<TaskAttrs>) => {
+        const nameInput = (v.dom.querySelector('.egin-task-name') as HTMLTextAreaElement)
         isSelected()
-            ? textInput.focus()
-            : textInput.blur()
+            ? nameInput.focus()
+            : nameInput.blur()
     }
 
-    const oncreate = () => updateFocus()
-    const onupdate = () => updateFocus()
+    const oncreate = (v: m.VnodeDOM<TaskAttrs>) => updateFocus(v);
+    const onupdate = (v: m.VnodeDOM<TaskAttrs>) => updateFocus(v);
 
     const view = () => m('div.egin-task', {
             class: classes(),
-            style: `margin-left: ${getLevel() * 20}px;`
+            style: `margin-left: ${getLevel() * 20}px;`,
+            onclick: setSelected,
         }, [
         m('input.egin-task-checkbox', {
             type: 'checkbox',
@@ -52,14 +53,63 @@ export default function Task(vnode: m.VnodeDOM<TaskAttrs>) {
             onfocus: setSelected,
             onblur: () => { removeSelected(); removeTaskOnBlur() }
         }),
-        m('input.egin-task-name', {
-            type: 'text',
-            value: task().name,
-            oninput: (e: InputEvent) => setName((e.target as HTMLInputElement).value),
-            onfocus: setSelected,
-            onblur: () => { removeSelected(); removeTaskOnBlur() }
+        m(TaskName, {
+            name: task().name,
+            onName: setName,
+            onFocus: setSelected,
+            onBlur: () => { removeSelected(); removeTaskOnBlur() }
         })
     ])
+
+    return { view, oncreate, onupdate }
+}
+
+interface TaskNameAttrs {
+    name: string;
+    onName: (name: string) => void;
+    onFocus: () => void;
+    onBlur: () => void;
+}
+
+function TaskName() {
+
+    let lastRenderedText = '';
+    const updateNameHeight = (vnode: m.VnodeDOM<TaskNameAttrs>) => {
+        if (!vnode.dom) return;
+        if (lastRenderedText === vnode.attrs.name) return;
+        const nameInput = (vnode.dom as HTMLTextAreaElement)
+        nameInput.style.height = '';
+        nameInput.style.height = `${nameInput.scrollHeight}px`;
+        lastRenderedText = vnode.attrs.name;
+    }
+
+    const keydownHandler = (e: KeyboardEvent) => {
+        const nameInput = (e.target as HTMLTextAreaElement)
+
+        if (e.code === 'ArrowUp') {
+            if (nameInput.selectionStart === 0 && nameInput.selectionEnd === 0) return;
+            e.stopPropagation();
+        }
+
+        if (e.code === 'ArrowDown') {
+            const inputLength = nameInput.value.length;
+            if ( nameInput.selectionStart === inputLength && nameInput.selectionEnd === inputLength) return;
+            e.stopPropagation();
+        }
+    }
+
+    const oncreate = (v: m.VnodeDOM<TaskNameAttrs>) => updateNameHeight(v);
+    const onupdate = (v: m.VnodeDOM<TaskNameAttrs>) => updateNameHeight(v);
+
+    const view = (vnode: m.VnodeDOM<TaskNameAttrs>) =>
+        m('textarea.egin-task-name', {
+            spellcheck: false,
+            value: vnode.attrs.name,
+            onkeydown: keydownHandler,
+            oninput: (e: InputEvent) => vnode.attrs.onName((e.target as HTMLTextAreaElement).value),
+            onfocus: vnode.attrs.onFocus,
+            onblur: vnode.attrs.onBlur
+        })
 
     return { view, oncreate, onupdate }
 }
