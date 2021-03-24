@@ -71,12 +71,16 @@ interface TaskNameAttrs {
     onBlur: () => void;
 }
 
-function TaskName() {
+function TaskName(vnode: m.VnodeDOM<TaskNameAttrs>) {
 
     let lastRenderedText = '';
     const updateNameHeight = (vnode: m.VnodeDOM<TaskNameAttrs>) => {
-        if (!vnode.dom) return;
         if (lastRenderedText === vnode.attrs.name) return;
+        forceUpdateNameHeight(vnode);
+    }
+
+    const forceUpdateNameHeight = (vnode: m.VnodeDOM<TaskNameAttrs>) => {
+        if (!vnode.dom) return;
         const nameInput = (vnode.dom as HTMLTextAreaElement)
         nameInput.style.height = '';
         nameInput.style.height = `${nameInput.scrollHeight}px`;
@@ -98,8 +102,22 @@ function TaskName() {
         }
     }
 
-    const oncreate = (v: m.VnodeDOM<TaskNameAttrs>) => updateNameHeight(v);
-    const onupdate = (v: m.VnodeDOM<TaskNameAttrs>) => updateNameHeight(v);
+    function windowResizeHandler() {
+        forceUpdateNameHeight(vnode);
+    }
+
+    const oncreate = (vnode: m.VnodeDOM<TaskNameAttrs>) => {
+        window.addEventListener('resize', windowResizeHandler)
+        updateNameHeight(vnode);
+    }
+    
+    const onremove = () => {
+        window.removeEventListener('resize', windowResizeHandler)
+    }
+
+    const onupdate = (vnode: m.VnodeDOM<TaskNameAttrs>) => {
+        updateNameHeight(vnode);
+    }
 
     const view = (vnode: m.VnodeDOM<TaskNameAttrs>) =>
         m('textarea.egin-task-name', {
@@ -111,7 +129,7 @@ function TaskName() {
             onblur: vnode.attrs.onBlur
         })
 
-    return { view, oncreate, onupdate }
+    return { view, oncreate, onremove, onupdate }
 }
 
 function buildClasses(obj: any) {
