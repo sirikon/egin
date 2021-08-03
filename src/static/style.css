@@ -1,0 +1,247 @@
+@font-face {
+  font-family: "Open Sans";
+  font-weight: normal;
+  font-style: normal;
+  src: url("/fonts/OpenSans-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Open Sans";
+  font-weight: bold;
+  font-style: normal;
+  src: url("/fonts/OpenSans-Bold.ttf") format("truetype");
+}
+body {
+  background-color: whitesmoke;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  font-family: "Open Sans", sans-serif;
+}
+
+#app {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.egin-home {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+.egin-home-content {
+  padding: 15px;
+  margin-top: 15px;
+  width: 400px;
+  background-color: white;
+}
+.egin-home-content h1 {
+  margin-top: 0.1em;
+  margin-bottom: 0;
+}
+.egin-home-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1em;
+  vertical-align: middle;
+}
+.egin-home-header img {
+  height: 1em;
+  width: 1em;
+  margin-right: 0.1em;
+  margin-bottom: 0.1em;
+}
+.egin-home-backend-title {
+  margin-bottom: 0;
+  border-bottom: 1px solid #0000001c;
+  padding: 0 8px 0.2em 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.egin-home-backend-title > img {
+  width: 1.3em;
+  height: 1.3em;
+  vertical-align: bottom;
+  margin-right: 0.2em;
+}
+.egin-home-backend-title > span {
+  flex-grow: 1;
+}
+.egin-home-backend-title > button {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  margin: 0;
+  padding: 0 0.4em 0.1em 0.4em;
+  font-size: 1em;
+  float: right;
+  line-height: 1em;
+  align-self: stretch;
+  color: black;
+  background-color: whitesmoke;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.egin-home-backend-title > button:hover {
+  background-color: #eee;
+}
+.egin-home-backend-title > button.is-login {
+  font-size: 0.8em;
+  padding: 0 0.5em 0.1em 0.5em;
+}
+.egin-home-backend-title > button > img {
+  height: 0.8em;
+}
+.egin-home-tasklist-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  border-bottom: 1px solid #0000001c;
+  padding: 0.3em 0 0.38em 8px;
+}
+.egin-home-tasklist-link:hover {
+  background-color: whitesmoke;
+}
+.egin-home-tasklist-loading {
+  margin-left: 8px;
+}
+.egin-home-footer {
+  margin-top: 30px;
+  font-size: 0.8em;
+  text-align: center;
+}
+.egin-home-footer a {
+  text-decoration: none;
+  color: #FF4500;
+  font-weight: bold;
+}
+
+.egin-task-list {
+  flex-grow: 1;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding: 15px;
+}
+
+.egin-task-list-storage-state {
+  text-align: right;
+  padding: 5px 5px;
+}
+
+.egin-task {
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+.egin-task .egin-task-name {
+  font-family: "Open Sans", sans-serif;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  resize: none;
+  overflow: hidden;
+  background: transparent;
+  border: none;
+  display: block;
+  flex-grow: 1;
+  margin-top: 0.18em;
+  line-height: 1em;
+  height: 1em;
+  font-size: 0.9em;
+}
+.egin-task .egin-task-checkbox {
+  flex-shrink: 0;
+}
+.egin-task .egin-task-name:focus-visible,
+.egin-task .egin-task-checkbox:focus-visible {
+  outline: none;
+}
+.egin-task:not(:last-child):not(.is-header) {
+  margin-bottom: -1px;
+}
+.egin-task.is-selected:not(.is-header) {
+  background-color: #ffffdb;
+}
+.egin-task.is-done .egin-task-name {
+  text-decoration: line-through;
+  color: rgba(0, 0, 0, 0.5);
+}
+.egin-task.is-header {
+  background-color: transparent;
+  border: none;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  font-size: 1em;
+}
+.egin-task.is-header:first-child {
+  margin-top: 0;
+}
+.egin-task.is-header .egin-task-checkbox {
+  display: none;
+}
+.egin-task.is-header .egin-task-name {
+  font-size: 1.05em;
+}
+
+.egin-help {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+.egin-help h1 {
+  text-align: center;
+  margin: 0 0 0.5em 0;
+}
+.egin-help > div {
+  background-color: whitesmoke;
+  padding: 2em;
+}
+.egin-help-key {
+  border: 1px solid #0000001f;
+  background-color: rgba(0, 0, 0, 0.05);
+  margin-right: 15px;
+  line-height: 1em;
+  border-radius: 3px;
+  padding: 0 0.2em;
+  position: relative;
+}
+.egin-help-key:not(:last-child)::after {
+  content: "+";
+  color: black;
+  font-size: 0.7em;
+  position: absolute;
+  top: 0;
+  right: -13px;
+}
+.egin-help-keylist {
+  display: flex;
+  flex-direction: row;
+}
+.egin-help-bind-column {
+  text-align: right;
+}
+.egin-help-bind-column > div, .egin-help-name-column > div {
+  line-height: 1.5em;
+}
