@@ -1,14 +1,21 @@
 {
-    "compilerOptions": {
-        "esModuleInterop": true,
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "strictNullChecks": true,
-        "strictBindCallApply": true,
-        "strictPropertyInitialization": true,
-        "lib": ["ES2019", "DOM"],
-    },
-    "include": ["src/**/*.ts"],
-    "exclude": ["node_modules/**/*.ts"]
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "lib": [
+      "ES2019",
+      "DOM"
+    ],
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules/**/*.ts"
+  ]
 }
