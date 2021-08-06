@@ -2,8 +2,11 @@ import config from '../config'
 import { Dropbox, files } from 'dropbox'
 import { StorageBackend, StorageBackendInfo, TaskListState } from '../core/models'
 
+import icon from '../assets/storageBackends/dropbox.svg'
+
 export class DropboxBackend implements StorageBackend {
     readonly displayName = 'Dropbox'
+    readonly iconUrl = icon
 
     isAuthenticated() { return !!getAccessToken(); }
     async getAuthenticationUrl() {

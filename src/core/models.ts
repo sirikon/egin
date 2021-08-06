@@ -18,6 +18,7 @@ export type StorageStatus = 'loading' | 'saving' | 'pristine';
 
 export interface StorageBackendInfo {
     readonly displayName: string;
+    readonly iconUrl: string;
 }
 
 export interface StorageBackend extends StorageBackendInfo {

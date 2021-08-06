@@ -1,5 +1,8 @@
 import config from './config'
 
+import 'style.scss'
+import icon from './assets/icon.svg'
+
 import m from "mithril"
 import Home from './views/home/Home'
 import TaskList from './views/tasklist/TaskList'
@@ -12,6 +15,11 @@ Sentry.init({
     integrations: [new Integrations.BrowserTracing()],
     tracesSampleRate: 1.0,
 });
+
+const iconEl = document.createElement('link');
+iconEl.setAttribute('rel', 'icon');
+iconEl.setAttribute('href', icon);
+document.head.appendChild(iconEl);
 
 const root = document.getElementById('app')
 root && m.route(root, '/', {

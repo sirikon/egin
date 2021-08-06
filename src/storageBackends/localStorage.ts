@@ -1,7 +1,10 @@
 import { StorageBackend, TaskListState } from "../core/models";
 
+import icon from '../assets/storageBackends/local.svg'
+
 export class LocalStorageBackend implements StorageBackend {
     readonly displayName = 'Local'
+    readonly iconUrl = icon
 
     isAuthenticated() { return true; }
     async getAuthenticationUrl() { return ''; }

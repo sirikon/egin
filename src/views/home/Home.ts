@@ -4,6 +4,8 @@ import { map, startWith } from "rxjs/operators";
 import * as storage from '../../core/storage'
 import { bind } from '../../utils/bind';
 
+import icon from '../../assets/icon.svg'
+
 interface Backend {
     backend: string;
     list: string[];
@@ -64,13 +66,13 @@ export default function Home() {
         m('div.egin-home', [
             m('div.egin-home-content', [
                 m('h1.egin-home-header', [
-                    m('img', { src: '/icon.svg' }),
+                    m('img', { src: icon }),
                     m('span', 'Egin')
                 ]),
                 m('div', backendsKeys.map(backend => 
                     m('div', [
                         m('h3.egin-home-backend-title', [
-                            m('img', { src: `/storageBackends/${backend}.svg` }),
+                            m('img', { src: backends[backend].iconUrl }),
                             m('span', backends[backend].displayName),
                             storage.isAuthenticated(backend)
                                 ?  m('button', {type: 'button', onclick: () => createTaskList(backend)}, [
