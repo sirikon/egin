@@ -1,31 +1,34 @@
 {
-    "scripts": {
-        "start": "teseract serve",
-        "build": "teseract build",
-        "release": "teseract release",
-        "lint": "teseract lint",
-        "test": "teseract test"
-    },
-    "dependencies": {
-        "@sentry/browser": "^6.10.0",
-        "@sentry/tracing": "^6.10.0",
-        "dropbox": "^10.5.0",
-        "fast-json-patch": "^3.0.0-1",
-        "mithril": "^2.0.4",
-        "rxjs": "^7.3.0"
-    },
-    "devDependencies": {
-        "@types/chai": "^4.2.21",
-        "@types/mithril": "^2.0.8",
-        "@types/mocha": "^9.0.0",
-        "@types/node": "^16.4.10",
-        "@types/node-fetch": "^2.5.12",
-        "chai": "^4.3.4",
-        "http-server": "^0.12.3",
-        "teseract": "^2.0.6",
-        "typescript": "^4.3.5"
-    },
-    "teseract": {
-        "externalDependencies": ["crypto", "util"]
-    }
+  "scripts": {
+    "start": "teseract serve",
+    "build": "teseract build",
+    "release": "teseract release",
+    "lint": "teseract lint",
+    "test": "teseract test"
+  },
+  "dependencies": {
+    "@sentry/browser": "^6.10.0",
+    "@sentry/tracing": "^6.10.0",
+    "dropbox": "^10.5.0",
+    "fast-json-patch": "^3.0.0-1",
+    "mithril": "^2.0.4",
+    "rxjs": "^7.3.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.21",
+    "@types/mithril": "^2.0.8",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.4.10",
+    "@types/node-fetch": "^2.5.12",
+    "chai": "^4.3.4",
+    "http-server": "^0.12.3",
+    "teseract": "^2.1.0",
+    "typescript": "^4.3.5"
+  },
+  "teseract": {
+    "externalDependencies": [
+      "crypto",
+      "util"
+    ]
+  }
 }

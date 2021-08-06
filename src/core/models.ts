@@ -1,8 +1,8 @@
 export interface Task {
     name: string;
-    done: Boolean;
+    done: boolean;
     level: number;
-    header: Boolean;
+    header: boolean;
 }
 
 export interface TaskListState {
@@ -14,7 +14,7 @@ export interface State {
     taskLists: { [taskListId: string]: TaskListState }
 }
 
-export type StorageStatus = 'loading' | 'saving' | 'pristine';
+export type StorageStatus = "loading" | "saving" | "pristine";
 
 export interface StorageBackendInfo {
     readonly displayName: string;

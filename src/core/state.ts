@@ -1,6 +1,6 @@
-import { State } from './models';
+import { State } from "./models";
 
 const state: State = {
-    taskLists: {}
+  taskLists: {}
 }
 export default state;
