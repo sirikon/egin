@@ -14,7 +14,7 @@ interface TaskListAttrs {
     taskListId: string
 }
 
-export default function TaskList(vnode: m.VnodeDOM<TaskListAttrs>) {
+export default function TaskList(vnode: m.Vnode<TaskListAttrs>) {
   const taskListState: TaskListComponentState = {
     helpMenuVisible: false
   }

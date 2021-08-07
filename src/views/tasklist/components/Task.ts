@@ -9,7 +9,7 @@ interface TaskAttrs {
     key: number;
 }
 
-export default function Task(vnode: m.VnodeDOM<TaskAttrs>) {
+export default function Task(vnode: m.Vnode<TaskAttrs>) {
   const taskStore = (): TaskStore => vnode.attrs.taskStore
   const actions = (): Actions => vnode.attrs.actions
   const taskIndex = (): number => vnode.attrs.key
@@ -71,7 +71,7 @@ interface TaskNameAttrs {
     onBlur: () => void;
 }
 
-function TaskName(vnode: m.VnodeDOM<TaskNameAttrs>) {
+function TaskName(vnode: m.Vnode<TaskNameAttrs>) {
 
   let lastRenderedText = "";
   const updateNameHeight = (vnode: m.VnodeDOM<TaskNameAttrs>) => {
@@ -103,7 +103,7 @@ function TaskName(vnode: m.VnodeDOM<TaskNameAttrs>) {
   }
 
   function windowResizeHandler() {
-    forceUpdateNameHeight(vnode);
+    forceUpdateNameHeight(vnode as m.VnodeDOM<TaskNameAttrs>);
   }
 
   const oncreate = (vnode: m.VnodeDOM<TaskNameAttrs>) => {

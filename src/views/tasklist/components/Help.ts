@@ -6,7 +6,7 @@ interface HelpAttrs {
     hotkeys: HotkeyMap
 }
 
-export default function Help(vnode: m.VnodeDOM<HelpAttrs>) {
+export default function Help(vnode: m.Vnode<HelpAttrs>) {
   const hotkeys = () => vnode.attrs.hotkeys
   const view = () => m("div.egin-help", [
     m("div", [

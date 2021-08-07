@@ -113,7 +113,7 @@ export class TaskStore {
       ? newIndex - size
       : newIndex
     const tasks = this.getAll().splice(index, size)
-    Array.prototype.splice.apply(this.getAll(), ([finalIndex, 0] as unknown[]).concat(tasks))
+    this.getAll().splice(finalIndex, 0, ...tasks)
     return finalIndex
   }
 

@@ -50,7 +50,7 @@ export function getAuthenticationUrl(backend: string) {
 
 export function getStorageStatus(taskListId: string) {
   if (!storageStatus[taskListId]) {
-    storageStatus[taskListId] = new BehaviorSubject("loading");
+    storageStatus[taskListId] = new BehaviorSubject<StorageStatus>("loading");
   }
   return storageStatus[taskListId];
 }
