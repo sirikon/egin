@@ -1,4 +1,6 @@
 declare module "hyperactiv";
+
+// GENERATED teseract definitions
 declare module "*.jpg" {
   const content: string;
   export default content;
@@ -23,3 +25,4 @@ declare module "*.ttf" {
   const content: string;
   export default content;
 }
+// END GENERATED teseract definitions
