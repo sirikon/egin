@@ -4,9 +4,9 @@ import history from "../../../core/history"
 import { TaskStore } from "../../../core/TaskStore"
 
 interface TaskAttrs {
-    taskStore: TaskStore;
-    actions: Actions;
-    key: number;
+  taskStore: TaskStore
+  actions: Actions
+  key: number
 }
 
 export default function Task(vnode: m.Vnode<TaskAttrs>) {

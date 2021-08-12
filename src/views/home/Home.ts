@@ -7,16 +7,16 @@ import { bind } from "../../utils/bind";
 import icon from "../../assets/icon.svg"
 
 interface Backend {
-    backend: string;
-    list: string[];
-    loading: boolean;
+  backend: string;
+  list: string[];
+  loading: boolean;
 }
 
 interface BackendIndex {
-    [backend: string]: {
-        list: string[];
-        loading: boolean;
-    }
+  [backend: string]: {
+    list: string[];
+    loading: boolean;
+  }
 }
 
 export default function Home() {
