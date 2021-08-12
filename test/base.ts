@@ -3,29 +3,29 @@ import { expect } from "chai"
 import { Actions } from "../src/core/Actions"
 import { History } from "../src/core/history"
 import { TaskStore } from "../src/core/TaskStore"
-import state from "../src/core/state"
+import { state } from "../src/core/State"
 
-const taskListId = "test/test"
+const bookId = "test/test"
 const actions = getActions()
 
 export function getTaskStore() {
-  return new TaskStore(taskListId)
+  return new TaskStore(state, bookId)
 }
 
 export function getActions() {
-  return new Actions(taskListId, getTaskStore(), new History(false));
+  return new Actions(bookId, getTaskStore(), new History(false));
 }
 
 export function givenTasks(mocks) {
-  state.taskLists[taskListId].tasks = mocksToTasks(mocks)
+  state.books[bookId].tasks = mocksToTasks(mocks)
 }
 
 export function givenSelectedTaskIndex(index) {
-  state.taskLists[taskListId].selectedTaskIndex = index
+  state.books[bookId].selectedTaskIndex = index
 }
 
 export function expectTasks(mocks) {
-  expect(state.taskLists[taskListId].tasks).to.deep.equal(mocksToTasks(mocks))
+  expect(state.books[bookId].tasks).to.deep.equal(mocksToTasks(mocks))
 }
 
 export function expectSelectedTask(mock) {
@@ -33,13 +33,14 @@ export function expectSelectedTask(mock) {
 }
 
 export function expectSelectedTaskIndex(index) {
-  expect(state.taskLists[taskListId].selectedTaskIndex).to.equal(index)
+  expect(state.books[bookId].selectedTaskIndex).to.equal(index)
 }
 
 export function reset() {
-  state.taskLists[taskListId] = {
+  state.books[bookId] = {
     tasks: [],
-    selectedTaskIndex: null
+    selectedTaskIndex: null,
+    storageStatus: "pristine"
   }
 }
 

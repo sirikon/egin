@@ -1,21 +1,21 @@
 import { TaskStore } from "./TaskStore"
-import { Task } from "./models";
-import state from "./state"
+import { Task } from "./Task";
+import { state } from "./State"
 import history, { History } from "./history"
 
 export class Actions {
   constructor(
-        private taskListId: string,
-        private taskStore: TaskStore,
-        private history: History) {}
+    private bookId: string,
+    private taskStore: TaskStore,
+    private history: History) {}
 
   getSelectedTaskIndex(): number | null {
-    const value = state.taskLists[this.taskListId].selectedTaskIndex
+    const value = state.books[this.bookId].selectedTaskIndex
     return value !== undefined ? value : null
   }
 
   setSelectedTaskIndex(index: number | null) {
-    state.taskLists[this.taskListId].selectedTaskIndex = index
+    state.books[this.bookId].selectedTaskIndex = index
   }
 
   getSelectedTask(): Task | null {
@@ -186,6 +186,6 @@ export class Actions {
 export function buildActions(taskListId: string) {
   return new Actions(
     taskListId,
-    new TaskStore(taskListId),
+    new TaskStore(state, taskListId),
     history);
 }

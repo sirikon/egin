@@ -1,12 +1,14 @@
-import { Task } from "./models";
-import state from "./state"
+import { State } from "./State";
+import { Task } from "./Task";
 
 export class TaskStore {
-  constructor(private taskListId: string) {}
+  constructor(
+    private state: State,
+    private bookId: string) {}
 
   getAll(): Task[] {
-    if (!state.taskLists[this.taskListId]) { return [] }
-    return state.taskLists[this.taskListId].tasks;
+    if (!this.state.books[this.bookId]) { return [] }
+    return this.state.books[this.bookId].tasks;
   }
 
   get(index: number): Task {
