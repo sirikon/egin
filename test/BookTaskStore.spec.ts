@@ -5,11 +5,11 @@ import {
   givenTasks,
   expectTasks,
   mocksToTasks,
-  getTaskStore
+  getBookTaskStore
 } from "./base"
-const taskStore = getTaskStore()
+const taskStore = getBookTaskStore()
 
-describe("TaskStore", () => {
+describe("BookTaskStore", () => {
     
   describe("#get", () => {
     beforeEach(() => reset())

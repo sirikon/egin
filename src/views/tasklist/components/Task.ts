@@ -1,17 +1,17 @@
 import m from "mithril"
-import { Actions } from "../../../core/Actions"
-import history from "../../../core/history"
-import { TaskStore } from "../../../core/TaskStore"
+import { BookActions } from "../../../core/BookActions"
+import history from "../../../core/BookHistory"
+import { BookTaskStore } from "../../../core/BookTaskStore"
 
 interface TaskAttrs {
-  taskStore: TaskStore
-  actions: Actions
+  taskStore: BookTaskStore
+  actions: BookActions
   key: number
 }
 
 export default function Task(vnode: m.Vnode<TaskAttrs>) {
-  const taskStore = (): TaskStore => vnode.attrs.taskStore
-  const actions = (): Actions => vnode.attrs.actions
+  const taskStore = (): BookTaskStore => vnode.attrs.taskStore
+  const actions = (): BookActions => vnode.attrs.actions
   const taskIndex = (): number => vnode.attrs.key
 
   const task = () => taskStore().get(taskIndex())

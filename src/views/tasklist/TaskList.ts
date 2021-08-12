@@ -1,7 +1,7 @@
 import m from "mithril"
 
-import { TaskStore } from "../../core/TaskStore"
-import { buildActions } from "../../core/Actions"
+import { BookTaskStore } from "../../core/BookTaskStore"
+import { buildActions } from "../../core/BookActions"
 import * as storage from "../../core/storage"
 
 import { buildHotkeys } from "./hotkeys"
@@ -21,7 +21,7 @@ export default function TaskList(vnode: m.Vnode<TaskListAttrs>) {
 
   const taskListId = () => vnode.attrs.taskListId
 
-  const taskStore = () => new TaskStore(taskListId())
+  const taskStore = () => new BookTaskStore(taskListId())
   const actions = () => buildActions(taskListId())
   const hotkeys = () => buildHotkeys(taskListId(), taskListState, actions())
     

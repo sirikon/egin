@@ -1,5 +1,5 @@
 import state from "./State"
-import history from "./history"
+import history from "./BookHistory"
 
 import { LocalStorageBackend } from "../storageBackends/localStorage"
 import { DropboxBackend } from "../storageBackends/dropbox"

@@ -1,37 +1,39 @@
 import * as jsonpatch from "fast-json-patch"
-import { State, state } from "./State"
+import { BookState, State } from "./State"
 
-export class History {
-  private previousState: State = jsonpatch.deepClone(state);
+type BookHistoryState = Pick<BookState, "tasks" | "selectedTaskIndex">
+
+export class BookHistory {
+
+  private previousState: BookHistoryState
   private readonly stateHistory: jsonpatch.Operation[][] = [];
   private delayedCommitTimeout: NodeJS.Timeout | null = null;
+
   constructor(
-    private enabled: boolean) { }
+    private state: State,
+    private bookId: string)
+  {
+    this.previousState = jsonpatch.deepClone(state);
+  }
 
   commit() {
-    if (!this.enabled) { return }
-
     this.cancelDelayedCommit()
-    const patches = jsonpatch.compare(state, this.previousState)
+    const patches = jsonpatch.compare(this.getState(), this.previousState)
     if (patches.length === 0) { return }
     this.stateHistory.push(patches)
     this.savePreviousState()
   }
 
   rollback() {
-    if (!this.enabled) { return }
-
     this.commit()
     const lastPatch = this.stateHistory.pop()
     if (lastPatch === undefined) { return }
-    jsonpatch.applyPatch(state, lastPatch)
+    jsonpatch.applyPatch(this.getState(), lastPatch)
     this.savePreviousState()
     this.commit()
   }
 
   delayedCommit() {
-    if (!this.enabled) { return }
-
     this.cancelDelayedCommit()
     this.delayedCommitTimeout = setTimeout(() => {
       this.delayedCommitTimeout = null;
@@ -45,6 +47,14 @@ export class History {
     this.stateHistory.splice(0, this.stateHistory.length);
   }
 
+  private getState(): BookHistoryState {
+    const bookState = this.state.books[this.bookId];
+    return {
+      tasks: bookState.tasks,
+      selectedTaskIndex: bookState.selectedTaskIndex
+    }
+  }
+
   private cancelDelayedCommit() {
     if (this.delayedCommitTimeout !== null) {
       clearTimeout(this.delayedCommitTimeout);
@@ -53,8 +63,6 @@ export class History {
   }
 
   private savePreviousState() {
-    this.previousState = jsonpatch.deepClone(state)
+    this.previousState = jsonpatch.deepClone(this.state)
   }
 }
-
-export default new History(true);

@@ -1,21 +1,22 @@
-import { TaskStore } from "./TaskStore"
+import { BookTaskStore } from "./BookTaskStore"
 import { Task } from "./Task";
-import { state } from "./State"
-import history, { History } from "./history"
+import { state, State } from "./State"
+// import history, { History } from "./history"
 
-export class Actions {
+export class BookActions {
   constructor(
-    private bookId: string,
-    private taskStore: TaskStore,
-    private history: History) {}
+    private state: State,
+    private taskStore: BookTaskStore,
+    // private history: History,
+    private bookId: string) {}
 
   getSelectedTaskIndex(): number | null {
-    const value = state.books[this.bookId].selectedTaskIndex
+    const value = this.state.books[this.bookId].selectedTaskIndex
     return value !== undefined ? value : null
   }
 
   setSelectedTaskIndex(index: number | null) {
-    state.books[this.bookId].selectedTaskIndex = index
+    this.state.books[this.bookId].selectedTaskIndex = index
   }
 
   getSelectedTask(): Task | null {
@@ -28,14 +29,14 @@ export class Actions {
     const selectedTaskIndex = this.getSelectedTaskIndex()
     if (selectedTaskIndex === null) { return }
     this.taskStore.toggle(selectedTaskIndex)
-    this.history.commit()
+    // this.history.commit()
   }
     
   toggleSelectedTaskHeaderState() {
     const selectedTaskIndex = this.getSelectedTaskIndex()
     if (selectedTaskIndex === null) { return }
     this.taskStore.toggleHeader(selectedTaskIndex)
-    this.history.commit()
+    // this.history.commit()
   }
 
   removeTask(index: number) {
@@ -68,7 +69,7 @@ export class Actions {
         this.setSelectedTaskIndex(selectedTaskIndex - taskIndexesToRemove.length)
       }
     })();
-    this.history.commit()
+    // this.history.commit()
   }
     
   removeTaskIfEmpty(index: number) {
@@ -112,7 +113,7 @@ export class Actions {
       .length
     
     this.setSelectedTaskIndex(this.taskStore.move(selectedTaskIndex, taskIndexesToMove, targetPosition))
-    this.history.commit()
+    // this.history.commit()
   }
     
   moveSelectedTaskDown() {
@@ -127,11 +128,11 @@ export class Actions {
       .length
     
     this.setSelectedTaskIndex(this.taskStore.move(selectedTaskIndex, taskIndexesToMove, targetPosition))
-    this.history.commit()
+    // this.history.commit()
   }
 
   insertTask() {
-    this.history.commit()
+    // this.history.commit()
     const selectedTaskIndex = this.getSelectedTaskIndex()
     const indexToInsert = selectedTaskIndex !== null
       ? selectedTaskIndex + this.taskStore.getSubtasks(selectedTaskIndex).length + 1
@@ -147,7 +148,7 @@ export class Actions {
     
     this.taskStore.insert(indexToInsert, { name: "", done: false, level: newTaskLevel, header: false })
     this.setSelectedTaskIndex(indexToInsert)
-    this.history.commit()
+    // this.history.commit()
   }
     
   indentSelectedTask() {
@@ -159,11 +160,11 @@ export class Actions {
     if (previousTask.level >= selectedTask.level) {
       const taskIndexesToIndent = [selectedTaskIndex]
         .concat(this.taskStore.getSubtasks(selectedTaskIndex));
-      this.history.commit()
+      // this.history.commit()
       taskIndexesToIndent.forEach(i => {
         this.taskStore.addLevel(i, 1)
       })
-      this.history.commit()
+      // this.history.commit()
     }
   }
     
@@ -175,17 +176,18 @@ export class Actions {
     if (selectedTask.level <= 0) { return }
     const taskIndexesToUnindent = [selectedTaskIndex]
       .concat(this.taskStore.getSubtasks(selectedTaskIndex))
-    this.history.commit()
+    // this.history.commit()
     taskIndexesToUnindent.forEach(i => {
       this.taskStore.addLevel(i, -1)
     })
-    this.history.commit()
+    // this.history.commit()
   }
 }
 
 export function buildActions(taskListId: string) {
-  return new Actions(
-    taskListId,
-    new TaskStore(state, taskListId),
-    history);
+  return new BookActions(
+    state,
+    // history,
+    new BookTaskStore(state, taskListId),
+    taskListId);
 }

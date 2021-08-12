@@ -1,7 +1,7 @@
 import { State } from "./State";
 import { Task } from "./Task";
 
-export class TaskStore {
+export class BookTaskStore {
   constructor(
     private state: State,
     private bookId: string) {}

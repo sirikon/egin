@@ -1,7 +1,7 @@
 import { expect } from "chai"
 
 import {
-  getActions,
+  getBookActions,
   givenTasks,
   givenSelectedTaskIndex,
   expectSelectedTask,
@@ -9,9 +9,9 @@ import {
   expectTasks,
   reset
 } from "./base"
-const actions = getActions()
+const actions = getBookActions()
 
-describe("Actions", () => {
+describe("BookActions", () => {
 
   describe("#getSelectedTask()", () => {
     beforeEach(() => reset())
