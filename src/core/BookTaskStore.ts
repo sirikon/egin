@@ -2,6 +2,8 @@ import { State } from "./State";
 import { Task } from "./Task";
 
 export class BookTaskStore {
+  static readonly TYPE = "BookTaskStore"
+
   constructor(
     private state: State,
     private bookId: string) {}

@@ -4,6 +4,7 @@ import { BookState, State } from "./State"
 type BookHistoryState = Pick<BookState, "tasks" | "selectedTaskIndex">
 
 export class BookHistory {
+  static readonly TYPE = "BookHistory"
 
   private previousState: BookHistoryState
   private readonly stateHistory: jsonpatch.Operation[][] = [];
@@ -13,7 +14,7 @@ export class BookHistory {
     private state: State,
     private bookId: string)
   {
-    this.previousState = jsonpatch.deepClone(state);
+    this.previousState = deepClone(this.getState());
   }
 
   commit() {
@@ -24,6 +25,14 @@ export class BookHistory {
     this.savePreviousState()
   }
 
+  delayedCommit() {
+    this.cancelDelayedCommit()
+    this.delayedCommitTimeout = setTimeout(() => {
+      this.delayedCommitTimeout = null;
+      this.commit();
+    }, 1000)
+  }
+
   rollback() {
     this.commit()
     const lastPatch = this.stateHistory.pop()
@@ -31,14 +40,6 @@ export class BookHistory {
     jsonpatch.applyPatch(this.getState(), lastPatch)
     this.savePreviousState()
     this.commit()
-  }
-
-  delayedCommit() {
-    this.cancelDelayedCommit()
-    this.delayedCommitTimeout = setTimeout(() => {
-      this.delayedCommitTimeout = null;
-      this.commit();
-    }, 1000)
   }
 
   reset() {
@@ -63,6 +64,10 @@ export class BookHistory {
   }
 
   private savePreviousState() {
-    this.previousState = jsonpatch.deepClone(this.state)
+    this.previousState = deepClone(this.getState())
   }
+}
+
+function deepClone<T>(obj: T): T {
+  return jsonpatch.deepClone(obj)
 }

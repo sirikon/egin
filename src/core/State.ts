@@ -1,15 +1,9 @@
-import { Task } from "./Task";
-
-export type BookState = {
-  tasks: Task[];
-  selectedTaskIndex: number | null;
-  storageStatus: "loading" | "saving" | "pristine";
-}
+import { BookState } from "./Book"
 
 export type State = {
-  books: Record<string, BookState>
+  books: { [bookId: string]: BookState }
 }
 
-export const state: State = {
+export const getInitialState = (): State => ({
   books: {}
-}
+})
