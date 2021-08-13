@@ -18,18 +18,20 @@ export default function (): BookStorageBackendInfo[] {
   const backends = bookStorage.getBackends();
   const backendsNames = Object.keys(backends);
 
-  const [books, setBooks] = useState(recordForEachBackend(backends, { loading: true, data: [] as string[] }))
+  const [books, setBooks] = useState(recordForEachBackend(backends, {
+    loading: true,
+    data: [] as string[]
+  }))
 
   useEffect(() => {
-    backendsNames.forEach((backend) => {
-      bookStorage.listBooks(backend).then((books) => {
-        setBooks((b) => ({ ...b, [backend]: {
-          loading: false,
-          data: books
-        } }))
-      })
+    backendsNames.forEach(async (backend) => {
+      const books = await bookStorage.listBooks(backend);
+      setBooks((b) => ({ ...b, [backend]: {
+        loading: false,
+        data: books
+      } }))
     })
-  }, backendsNames)
+  }, [])
 
   return Object.entries(bookStorage.getBackends())
     .map(([name, clazz]) => ({
