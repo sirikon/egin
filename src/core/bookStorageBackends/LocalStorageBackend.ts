@@ -1,4 +1,4 @@
-import icon from "../assets/storageBackends/local.svg"
+import icon from "../../assets/storageBackends/local.svg"
 import { BookStorableState, BookStorageBackend } from "../BookStorage";
 
 export class LocalStorageBackend implements BookStorageBackend {

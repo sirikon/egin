@@ -1,7 +1,7 @@
 import config from "../../config"
 import { Dropbox, files } from "dropbox"
 
-import icon from "../assets/storageBackends/dropbox.svg"
+import icon from "../../assets/storageBackends/dropbox.svg"
 import { BookStorableState, BookStorageBackend } from "../BookStorage"
 
 export class DropboxBackend implements BookStorageBackend {

@@ -18,7 +18,7 @@ export type BookStorageBackendClass = {
   readonly iconUrl: string
 } & (new (...args: never[]) => BookStorageBackend)
 
-type BookStorageBackendRecord = { [name: string]: BookStorageBackendClass }
+export type BookStorageBackendRecord = { [name: string]: BookStorageBackendClass }
 
 export class BookStorage {
   static readonly TYPE = "BookStorage"

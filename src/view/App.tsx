@@ -1,20 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
+
+import Home from "./components/Home/Home"
 
 export default () => {
-  const [text, setText] = useState("Hello World");
-
   return <>
-    <h1>{text}</h1>
-    <TextInput text={text} onText={setText}></TextInput>
+    <Home />
   </>;
 };
-
-const TextInput = (params: {
-	text: string,
-	onText: (text: string) => void
-}) => (
-  <input
-    type="text"
-    value={params.text}
-    onChange={(e) => params.onText(e.target.value)} />
-);
