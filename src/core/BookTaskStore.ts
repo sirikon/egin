@@ -1,5 +1,5 @@
+import { Task } from "./Book";
 import { State } from "./State";
-import { Task } from "./Task";
 
 export class BookTaskStore {
   static readonly TYPE = "BookTaskStore"

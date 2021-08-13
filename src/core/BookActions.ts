@@ -1,7 +1,7 @@
 import { BookTaskStore } from "./BookTaskStore"
-import { Task } from "./Task";
 import { State } from "./State"
 import { BookHistory } from "./BookHistory"
+import { Task } from "./Book"
 
 export class BookActions {
   static readonly TYPE = "BookActions"

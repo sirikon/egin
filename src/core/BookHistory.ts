@@ -1,5 +1,6 @@
 import * as jsonpatch from "fast-json-patch"
-import { BookState, State } from "./State"
+import { BookState } from "./Book"
+import { State } from "./State"
 
 type BookHistoryState = Pick<BookState, "tasks" | "selectedTaskIndex">
 
