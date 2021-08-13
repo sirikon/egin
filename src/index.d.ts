@@ -1,5 +1,3 @@
-declare module "hyperactiv";
-
 // GENERATED teseract definitions
 declare module "*.jpg" {
   const content: string;
