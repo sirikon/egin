@@ -1,19 +1,19 @@
 import { expect } from "chai"
 
-import { BookActions } from "../src/core/BookActions"
+import { BookController } from "../src/core/BookController"
 import { BookTaskStore } from "../src/core/BookTaskStore"
 import { state } from "../src/core/State"
 import { Task } from "../src/core/Task"
 
 const bookId = "test/test"
-const actions = getBookActions()
+const actions = getBookController()
 
 export function getBookTaskStore() {
   return new BookTaskStore(state, bookId)
 }
 
-export function getBookActions() {
-  return new BookActions(state, getBookTaskStore(), bookId);
+export function getBookController() {
+  return new BookController(state, getBookTaskStore(), null, bookId);
 }
 
 export function givenTasks(mocks: any) {

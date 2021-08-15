@@ -1,5 +1,5 @@
 import * as jsonpatch from "fast-json-patch"
-import { BookState } from "./Book"
+import { BookId, BookState, stringify } from "./Book"
 import { State } from "./State"
 
 type BookHistoryState = Pick<BookState, "tasks" | "selectedTaskIndex">
@@ -13,7 +13,7 @@ export class BookHistory {
 
   constructor(
     private state: State,
-    private bookId: string)
+    private bookId: BookId)
   {
     this.previousState = deepClone(this.getState());
   }
@@ -50,10 +50,10 @@ export class BookHistory {
   }
 
   private getState(): BookHistoryState {
-    const bookState = this.state.books[this.bookId];
+    const bookState = this.state.books[stringify(this.bookId)];
     return {
-      tasks: bookState.tasks,
-      selectedTaskIndex: bookState.selectedTaskIndex
+      tasks: bookState ? bookState.tasks : [],
+      selectedTaskIndex: bookState ? bookState.selectedTaskIndex : null
     }
   }
 

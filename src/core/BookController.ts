@@ -1,24 +1,32 @@
 import { BookTaskStore } from "./BookTaskStore"
 import { State } from "./State"
 import { BookHistory } from "./BookHistory"
-import { Task } from "./Book"
+import { BookId, stringify, Task } from "./Book"
 
-export class BookActions {
-  static readonly TYPE = "BookActions"
+export class BookController {
+  static readonly TYPE = "BookController"
 
   constructor(
     private state: State,
     private taskStore: BookTaskStore,
     private history: BookHistory,
-    private bookId: string) {}
+    private bookId: BookId) {}
+
+  initialize() {
+    this.state.books[stringify(this.bookId)] = {
+      tasks: [],
+      storageStatus: "pristine",
+      selectedTaskIndex: null
+    }
+  }
 
   getSelectedTaskIndex(): number | null {
-    const value = this.state.books[this.bookId].selectedTaskIndex
+    const value = this.state.books[stringify(this.bookId)].selectedTaskIndex
     return value !== undefined ? value : null
   }
 
   setSelectedTaskIndex(index: number | null) {
-    this.state.books[this.bookId].selectedTaskIndex = index
+    this.state.books[stringify(this.bookId)].selectedTaskIndex = index
   }
 
   getSelectedTask(): Task | null {

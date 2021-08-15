@@ -1,4 +1,4 @@
-import { Task } from "./Book";
+import { BookId, stringify, Task } from "./Book";
 import { State } from "./State";
 
 export class BookTaskStore {
@@ -6,11 +6,11 @@ export class BookTaskStore {
 
   constructor(
     private state: State,
-    private bookId: string) {}
+    private bookId: BookId) {}
 
   getAll(): Task[] {
-    if (!this.state.books[this.bookId]) { return [] }
-    return this.state.books[this.bookId].tasks;
+    if (!this.state.books[stringify(this.bookId)]) { return [] }
+    return this.state.books[stringify(this.bookId)].tasks;
   }
 
   get(index: number): Task {

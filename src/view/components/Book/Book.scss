@@ -1,0 +1,139 @@
+.egin-task-list {
+  flex-grow: 1;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding: 15px;
+}
+
+.egin-task-list-storage-state {
+  text-align: right;
+  padding: 5px 5px;
+}
+
+.egin-task {
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+
+  .egin-task-name {
+    font-family: "Open Sans", sans-serif;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    resize: none;
+    overflow: hidden;
+
+    background: transparent;
+    border: none;
+    display: block;
+    flex-grow: 1;
+
+    margin-top: 0.18em;
+    line-height: 1em;
+    height: 1em;
+    font-size: 0.9em;
+  }
+
+  .egin-task-checkbox {
+    flex-shrink: 0;
+  }
+
+  .egin-task-name:focus-visible,
+  .egin-task-checkbox:focus-visible {
+    outline: none;
+  }
+
+  &:not(:last-child):not(.is-header) {
+    margin-bottom: -1px;
+  }
+
+  &.is-selected:not(.is-header) {
+    background-color: #ffffdb;
+  }
+
+  &.is-done .egin-task-name {
+    text-decoration: line-through;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  &.is-header {
+    background-color: transparent;
+    border: none;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    font-size: 1em;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    .egin-task-checkbox {
+      display: none;
+    }
+
+    .egin-task-name {
+      font-size: 1.05em;
+    }
+  }
+}
+
+.egin-help {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+
+  h1 {
+    text-align: center;
+    margin: 0 0 0.5em 0;
+  }
+
+  > div {
+    background-color: whitesmoke;
+    padding: 2em;
+  }
+
+  &-key {
+    border: 1px solid #0000001f;
+    background-color: rgba(0, 0, 0, 0.05);
+    margin-right: 15px;
+    line-height: 1em;
+    border-radius: 3px;
+    padding: 0 0.2em;
+    position: relative;
+
+    &:not(:last-child)::after {
+      content: "+";
+      color: black;
+      font-size: 0.7em;
+      position: absolute;
+      top: 0;
+      right: -13px;
+    }
+  }
+
+  &-keylist {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &-bind-column {
+    text-align: right;
+  }
+
+  &-bind-column,
+  &-name-column {
+    > div {
+      line-height: 1.5em;
+    }
+  }
+}

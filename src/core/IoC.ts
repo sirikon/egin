@@ -1,4 +1,5 @@
-import { BookActions } from "./BookActions"
+import { BookId, stringify } from "./Book";
+import { BookController } from "./BookController"
 import { BookHistory } from "./BookHistory";
 import { BookStorage, buildBookStorage } from "./BookStorage";
 import { BookTaskStore } from "./BookTaskStore";
@@ -22,23 +23,23 @@ class IoC {
       buildBookStorage(this.state));
   }
 
-  public getBookTaskStore(bookId: string) {
-    return this.cached(BookTaskStore, bookId, () =>
+  public getBookTaskStore(bookId: BookId) {
+    return this.cached(BookTaskStore, stringify(bookId), () =>
       new BookTaskStore(
         this.state,
         bookId));
   }
 
-  public getBookHistory(bookId: string) {
-    return this.cached(BookHistory, bookId, () =>
+  public getBookHistory(bookId: BookId) {
+    return this.cached(BookHistory, stringify(bookId), () =>
       new BookHistory(
         this.state,
         bookId));
   }
 
-  public getBookActions(bookId: string) {
-    return this.cached(BookActions, bookId, () =>
-      new BookActions(
+  public getBookController(bookId: BookId) {
+    return this.cached(BookController, stringify(bookId), () =>
+      new BookController(
         this.state,
         this.getBookTaskStore(bookId),
         this.getBookHistory(bookId),

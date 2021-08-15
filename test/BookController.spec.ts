@@ -11,7 +11,7 @@ import {
 } from "./base"
 const actions = getBookActions()
 
-describe("BookActions", () => {
+describe("BookController", () => {
 
   describe("#getSelectedTask()", () => {
     beforeEach(() => reset())
