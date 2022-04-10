@@ -1,284 +1,287 @@
 @font-face {
-    font-family: 'Open Sans';
-    font-weight: normal;
-    font-style: normal;
-    src: url('./assets/fonts/OpenSans-Regular.ttf') format('truetype');
+  font-family: 'Open Sans';
+  font-weight: normal;
+  font-style: normal;
+  src: url('./assets/fonts/OpenSans-Regular.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'Open Sans';
-    font-weight: bold;
-    font-style: normal;
-    src: url('./assets/fonts/OpenSans-Bold.ttf') format('truetype');
+  font-family: 'Open Sans';
+  font-weight: bold;
+  font-style: normal;
+  src: url('./assets/fonts/OpenSans-Bold.ttf') format('truetype');
 }
 
 body {
-    background-color: whitesmoke;
-    margin: 0;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    font-family: 'Open Sans', sans-serif;
+  background-color: whitesmoke;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  font-family: 'Open Sans', sans-serif;
 }
 
 #app {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .egin-home {
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 
-    &-content {
-        padding: 15px;
-        margin-top: 15px;
-        width: 400px;
-        background-color: white;
-        h1 {
-            margin-top: .1em;
-            margin-bottom: 0;
-        }
-    }
-
-    &-header {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        line-height: 1em;
-        vertical-align: middle;
-        img {
-            height: 1em;
-            width: 1em;
-            margin-right: .1em;
-            margin-bottom: .1em;
-        }
-    }
-
-    &-backend-title {
-        margin-bottom: 0;
-        border-bottom: 1px solid #0000001c;
-        padding: 0 8px .2em 6px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        > img {
-            width: 1.3em;
-            height: 1.3em;
-            vertical-align: bottom;
-            margin-right: .2em;
-        }
-
-        > span {
-            flex-grow: 1;
-        }
-
-        > button {
-            appearance: none;
-            -webkit-appearance: none;
-            border: none;
-            margin: 0;
-            padding: 0 .4em .1em .4em;
-            font-size: 1em;
-            float: right;
-            line-height: 1em;
-            align-self: stretch;
-            color: black;
-            background-color: whitesmoke;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            &:hover {
-                background-color: #eee;
-            }
-
-            &.is-login {
-                font-size: .8em;
-                padding: 0 .5em .1em .5em;
-            }
-
-            > img {
-                height: .8em;
-            }
-        }
-    }
-
-    &-tasklist-link {
-        display: block;
-        text-decoration: none;
-        color: inherit;
-        border-bottom: 1px solid #0000001c;
-        padding: .3em 0 .38em 8px;
-
-        &:hover {
-            background-color: whitesmoke;
-        }
-    }
-
-    &-tasklist-loading {
-        margin-left: 8px;
-    }
-
-    &-footer {
-        margin-top: 30px;
-        font-size: .8em;
-        text-align: center;
-
-        a {
-            text-decoration: none;
-            color: #FF4500;
-            font-weight: bold;
-        }
-    }
-}
-
-.egin-task-list {
-    flex-grow: 1;
-    overflow-x: hidden;
-    overflow-y: scroll;
+  &-content {
     padding: 15px;
-}
-
-.egin-task-list-storage-state {
-    text-align: right;
-    padding: 5px 5px;
-}
-
-.egin-task {
+    margin-top: 15px;
+    width: 400px;
     background-color: white;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
 
-    .egin-task-name {
-        font-family: 'Open Sans', sans-serif;
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        resize: none;
-        overflow: hidden;
-
-        background: transparent;
-        border: none;
-        display: block;
-        flex-grow: 1;
-
-        margin-top: .18em;
-        line-height: 1em;
-        height: 1em;
-        font-size: .9em;
+    h1 {
+      margin-top: .1em;
+      margin-bottom: 0;
     }
+  }
 
-    .egin-task-checkbox {
-        flex-shrink: 0;
-    }
-
-    .egin-task-name:focus-visible,
-    .egin-task-checkbox:focus-visible {
-        outline: none;
-    }
-
-    &:not(:last-child):not(.is-header) {
-        margin-bottom: -1px;
-    }
-
-    &.is-selected:not(.is-header) {
-        background-color: #ffffdb;
-    }
-
-    &.is-done .egin-task-name {
-        text-decoration: line-through;
-        color: rgba(0,0,0,0.5);
-    }
-
-    &.is-header {
-        background-color: transparent;
-        border: none;
-        margin-top: 1em;
-        margin-bottom: .5em;
-        font-size: 1em;
-
-        &:first-child {
-            margin-top: 0;
-        }
-
-        .egin-task-checkbox {
-            display: none;
-        }
-
-        .egin-task-name {
-            font-size: 1.05em;
-        }
-    }
-}
-
-.egin-help {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: rgba(0,0,0,0.2);
+  &-header {
     display: flex;
     justify-content: center;
     align-items: center;
-    pointer-events: none;
+    line-height: 1em;
+    vertical-align: middle;
 
-    h1 {
-        text-align: center;
-        margin: 0 0 .5em 0;
+    img {
+      height: 1em;
+      width: 1em;
+      margin-right: .1em;
+      margin-bottom: .1em;
+    }
+  }
+
+  &-backend-title {
+    margin-bottom: 0;
+    border-bottom: 1px solid #0000001c;
+    padding: 0 8px .2em 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    >img {
+      width: 1.3em;
+      height: 1.3em;
+      vertical-align: bottom;
+      margin-right: .2em;
     }
 
-    > div {
-        background-color: whitesmoke;
-        padding: 2em;
+    >span {
+      flex-grow: 1;
     }
 
-    &-key {
-        border: 1px solid #0000001f;
-        background-color: rgba(0,0,0,0.05);
-        margin-right: 15px;
-        line-height: 1em;
-        border-radius: 3px;
-        padding: 0 .2em;
-        position: relative;
+    >button {
+      appearance: none;
+      -webkit-appearance: none;
+      border: none;
+      margin: 0;
+      padding: 0 .4em .1em .4em;
+      font-size: 1em;
+      float: right;
+      line-height: 1em;
+      align-self: stretch;
+      color: black;
+      background-color: whitesmoke;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-        &:not(:last-child)::after {
-            content: '+';
-            color: black;
-            font-size: .7em;
-            position: absolute;
-            top: 0;
-            right: -13px;
-        }
+      &:hover {
+        background-color: #eee;
+      }
+
+      &.is-login {
+        font-size: .8em;
+        padding: 0 .5em .1em .5em;
+      }
+
+      >img {
+        height: .8em;
+      }
+    }
+  }
+
+  &-tasklist-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 1px solid #0000001c;
+    padding: .3em 0 .38em 8px;
+
+    &:hover {
+      background-color: whitesmoke;
+    }
+  }
+
+  &-tasklist-loading {
+    margin-left: 8px;
+  }
+
+  &-footer {
+    margin-top: 30px;
+    font-size: .8em;
+    text-align: center;
+
+    a {
+      text-decoration: none;
+      color: #FF4500;
+      font-weight: bold;
+    }
+  }
+}
+
+.egin-task-list {
+  flex-grow: 1;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding: 15px;
+}
+
+.egin-task-list-storage-state {
+  text-align: right;
+  padding: 5px 5px;
+}
+
+.egin-task {
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+
+  .egin-task-name {
+    font-family: 'Open Sans', sans-serif;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    resize: none;
+    overflow: hidden;
+
+    background: transparent;
+    border: none;
+    display: block;
+    flex-grow: 1;
+
+    margin-top: .18em;
+    line-height: 1em;
+    height: 1em;
+    font-size: .9em;
+  }
+
+  .egin-task-checkbox {
+    flex-shrink: 0;
+  }
+
+  .egin-task-name:focus-visible,
+  .egin-task-checkbox:focus-visible {
+    outline: none;
+  }
+
+  &:not(:last-child):not(.is-header) {
+    margin-bottom: -1px;
+  }
+
+  &.is-selected:not(.is-header) {
+    background-color: #ffffdb;
+  }
+
+  &.is-done .egin-task-name {
+    text-decoration: line-through;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  &.is-header {
+    background-color: transparent;
+    border: none;
+    margin-top: 1em;
+    margin-bottom: .5em;
+    font-size: 1em;
+
+    &:first-child {
+      margin-top: 0;
     }
 
-    &-keylist {
-        display: flex;
-        flex-direction: row;
+    .egin-task-checkbox {
+      display: none;
     }
 
-    &-bind-column {
-        text-align: right;
+    .egin-task-name {
+      font-size: 1.05em;
     }
+  }
+}
 
-    &-bind-column, &-name-column {
-        > div {
-            line-height: 1.5em;
-        }
+.egin-help {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+
+  h1 {
+    text-align: center;
+    margin: 0 0 .5em 0;
+  }
+
+  >div {
+    background-color: whitesmoke;
+    padding: 2em;
+  }
+
+  &-key {
+    border: 1px solid #0000001f;
+    background-color: rgba(0, 0, 0, 0.05);
+    margin-right: 15px;
+    line-height: 1em;
+    border-radius: 3px;
+    padding: 0 .2em;
+    position: relative;
+
+    &:not(:last-child)::after {
+      content: '+';
+      color: black;
+      font-size: .7em;
+      position: absolute;
+      top: 0;
+      right: -13px;
     }
+  }
+
+  &-keylist {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &-bind-column {
+    text-align: right;
+  }
+
+  &-bind-column,
+  &-name-column {
+    >div {
+      line-height: 1.5em;
+    }
+  }
 }

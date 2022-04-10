@@ -1,6 +1,6 @@
 import config from "./config"
 
-import "style.scss"
+import "./style.scss"
 import icon from "./assets/icon.svg"
 
 import m from "mithril"

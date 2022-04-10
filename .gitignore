@@ -7,7 +7,7 @@
 /dist
 tsconfig.json
 .eslintrc.json
-.vscode/settings.json
 .vscode/extensions.json
 .vscode/launch.json
+.vscode/settings.json
 # END GENERATED teseract gitignore
