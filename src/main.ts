@@ -4,8 +4,8 @@ import "./style.scss"
 import icon from "./assets/icon.svg"
 
 import m from "mithril"
-import Home from "./views/home/Home"
-import TaskList from "./views/tasklist/TaskList"
+import Home from "./ui/home/Home"
+import TaskList from "./ui/tasklist/TaskList"
 
 import * as Sentry from "@sentry/browser";
 import { Integrations } from "@sentry/tracing";

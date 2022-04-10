@@ -5,9 +5,9 @@ import history, { History } from "./history"
 
 export class Actions {
   constructor(
-        private taskListId: string,
-        private taskStore: TaskStore,
-        private history: History) {}
+    private taskListId: string,
+    private taskStore: TaskStore,
+    private history: History) {}
 
   getSelectedTaskIndex(): number | null {
     const value = state.taskLists[this.taskListId].selectedTaskIndex

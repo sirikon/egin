@@ -8,7 +8,7 @@ import { buildHotkeys } from "./hotkeys"
 import Task from "./components/Task"
 import Help from "./components/Help"
 import { TaskListComponentState } from "./models"
-import { bind, unbind } from "../../utils/bind"
+import { bind, unbind } from "../utils/bind"
 
 interface TaskListAttrs {
     taskListId: string

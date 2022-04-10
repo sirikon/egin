@@ -2,7 +2,7 @@ import m from "mithril"
 import { combineLatest, from, Observable } from "rxjs"
 import { map, startWith } from "rxjs/operators";
 import * as storage from "../../core/storage"
-import { bind } from "../../utils/bind";
+import { bind } from "../utils/bind";
 
 import icon from "../../assets/icon.svg"
 

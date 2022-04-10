@@ -1,8 +1,8 @@
 import state from "./state"
 import history from "./history"
 
-import { LocalStorageBackend } from "../storageBackends/localStorage"
-import { DropboxBackend } from "../storageBackends/dropbox"
+import { LocalStorageBackend } from "./storageBackends/localStorage"
+import { DropboxBackend } from "./storageBackends/dropbox"
 import { StorageBackend, StorageBackendInfo, StorageStatus, TaskListState } from "./models"
 import { BehaviorSubject } from "rxjs"
 
